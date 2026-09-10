@@ -1,0 +1,55 @@
+name: Deploy Ferreteria Static Site to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  repository_dispatch:
+    types: [supabase_update]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Data Ingestion Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Extract and Cache Supabase Catalog
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          python scripts/sync_supabase.py
+
+      - name: Configure GitHub Pages Environment
+        uses: actions/configure-pages@v5
+
+      - name: Package Artifacts for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Publish to GitHub Pages CDN
+        id: deployment
+        uses: actions/deploy-pages@v4
