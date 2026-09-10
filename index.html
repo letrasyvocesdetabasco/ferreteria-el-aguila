@@ -3,46 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ferretería y Tlapalería El Águila | Villahermosa - Catálogo Técnico y Cotizaciones</title>
-  <meta name="description" content="Comercializadora de herramientas, material eléctrico, plomería PVC, CPVC, cobre, galvanizado, tornillería G5, varilla roscada y lijas Fandeli. 3 sucursales en Villahermosa, Tabasco.">
-  <meta name="theme-color" content="#0f1e2f">
+  <title>Ferretería y Tlapalería El Águila | Villahermosa - Catálogo y Cotizaciones</title>
+  <meta name="description" content="Comercializamos herramientas, material eléctrico, plomería PVC, CPVC, cobre, galvanizado, tornillería G5, varilla roscada y lijas Fandeli. 3 sucursales en Villahermosa, Tabasco.">
+  <meta name="theme-color" content="#0c1c2e">
   
-  <!-- Estilos de Alta Densidad Técnica -->
+  <!-- Tipografía Inter y Estilos Visuales Modernos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
   
-  <!-- Supabase JS Client (v2) para conectividad con PostgREST -->
+  <!-- Supabase JS Client (v2) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <!-- Barra Superior Operativa -->
+  <!-- 1. Barra Superior Operativa -->
   <div class="top-notice-bar">
     <div class="top-notice-inner">
       <div>
-        <span>📍 3 Sucursales en Villahermosa, Tabasco: Las Delicias | 18 de Marzo | Gaviotas Norte</span>
+        <span class="top-notice-pill">📍 VILLAHERMOSA, TABASCO</span>
+        <span>3 Sucursales: Las Delicias (San Joaquín) | 18 de Marzo | Gaviotas Norte</span>
       </div>
-      <div>
-        <span>Horario Corrido: Lunes a Sábado 7:30 a 18:30 hrs | 📞 Atención: <a href="tel:9932892935">993 289 2935</a></span>
+      <div class="top-notice-links">
+        <span>Horario Corrido: <strong>7:30 a 18:30 hrs</strong> | 📞 Mostrador Central: <a href="tel:9932892935">993 289 2935</a></span>
       </div>
     </div>
   </div>
 
-  <!-- Cabecera Principal y Búsqueda Técnica -->
+  <!-- 2. Cabecera Principal y Navegación -->
   <header class="main-header">
     <div class="header-inner">
       
-      <!-- Identidad de Marca -->
-      <div class="brand-wrapper">
+      <!-- Logotipo y Nombre de Marca -->
+      <a href="#" class="brand-wrapper">
         <div class="brand-badge-logo">🦅</div>
         <div class="brand-block">
-          <span class="store-title">FERRETERÍA Y TLAPALERÍA EL ÁGUILA</span>
-          <span class="store-subtitle">Suministros para Construcción, Taller y Obra Pesada</span>
+          <span class="store-title">FERRETERÍA EL ÁGUILA</span>
+          <span class="store-subtitle">Tlapalería y Suministros para Construcción, Taller y Obra</span>
         </div>
-      </div>
+      </a>
 
       <!-- Selector Rápido de Sucursal Destino -->
-      <div class="branch-selector-block" title="Selecciona la sucursal de Villahermosa a la que enviarás tu cotización">
-        <label for="branch-select">Mostrador / Entrega:</label>
+      <div class="branch-selector-block" title="Selecciona la sucursal de Villahermosa a la que se enviará tu cotización">
+        <label for="branch-select">Mostrador de Atención:</label>
         <select id="branch-select" class="branch-select">
           <option value="delicias">Suc. Las Delicias (Matriz)</option>
           <option value="marzo">Suc. 18 de Marzo (Local G)</option>
@@ -50,27 +54,27 @@
         </select>
       </div>
 
-      <!-- Campo de Búsqueda Dominante -->
+      <!-- Buscador Dominante con Limpieza Rápida -->
       <div class="search-wrapper">
         <input 
           type="text" 
           id="catalog-search-input" 
           class="search-input-field" 
-          placeholder="Buscar por producto, medida (ej. 1/2), clave (ej. 49012) o SKU..." 
+          placeholder="Buscar tornillo G5, tubo PVC, cable THW, lija Fandeli, taladro..." 
           autocomplete="off"
           spellcheck="false"
         >
         <button id="search-clear-btn" class="search-clear-btn" title="Limpiar búsqueda">&times;</button>
       </div>
 
-      <!-- Acciones Rápidas -->
+      <!-- Acciones Rápidas en Cabecera -->
       <div class="header-actions">
-        <button id="btn-view-branches" class="btn-header-branches" title="Ver ubicaciones y teléfonos de las 3 sucursales">
-          <span>📍 Sucursales</span>
+        <button class="btn-header-branches" onclick="scrollToBranches()" title="Ver detalles y mapas de las 3 sucursales">
+          <span>📍 3 Sucursales</span>
         </button>
 
-        <button id="quote-drawer-trigger" class="btn-quote-cart" title="Ver presupuesto acumulado de materiales">
-          <span>📋 Presupuesto</span>
+        <button id="quote-drawer-trigger" class="btn-quote-cart" title="Ver presupuesto de materiales">
+          <span>📋 Cotización</span>
           <span id="cart-item-count" class="cart-pill">0</span>
         </button>
       </div>
@@ -78,13 +82,134 @@
     </div>
   </header>
 
-  <!-- Layout Principal de Trabajo -->
-  <main class="main-layout">
+  <!-- 3. Sección Hero Visual y Comercial -->
+  <section class="hero-showcase">
+    <div class="hero-inner">
+      <div class="hero-badge-tag">
+        <span>🦅 FERRETERÍA Y TLAPALERÍA EL ÁGUILA</span>
+      </div>
+      
+      <h1 class="hero-title">
+        Todo para tu Obra, Taller e Instalación al Mejor Precio en <span>Villahermosa</span>
+      </h1>
+      
+      <p class="hero-description">
+        Especialistas en <strong>tornillería hexagonal Grado 5 (NF y NC)</strong>, varilla roscada, plomería hidráulica (PVC, CPVC y cobre), conductores eléctricos THW, <strong>lijas Fandeli</strong> y herramientas profesionales Truper. Cotiza directamente con tu mostrador de confianza y recibe en tu obra.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#catalog-section" class="btn-hero-primary" onclick="scrollToCatalog()">
+          <span>🔍 Explorar Catálogo de Productos</span>
+        </a>
+        <a href="javascript:void(0)" class="btn-hero-whatsapp" onclick="openQuoteDrawer()">
+          <span>💬 Cotizar Materiales por WhatsApp</span>
+        </a>
+        <button class="btn-hero-outline" onclick="scrollToBranches()">
+          <span>📍 Ubicación de Sucursales</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Barra de Confianza y Garantías (Trust Badges) -->
+  <section class="trust-badges-bar">
+    <div class="trust-badges-inner">
+      
+      <div class="trust-badge-item">
+        <div class="trust-icon">🚚</div>
+        <div class="trust-text">
+          <h4>Entrega a Pie de Obra</h4>
+          <p>Surtido rápido en toda la zona urbana de Villahermosa.</p>
+        </div>
+      </div>
+
+      <div class="trust-badge-item">
+        <div class="trust-icon">💰</div>
+        <div class="trust-text">
+          <h4>Precios de Mayoreo y Menudeo</h4>
+          <p>Descuentos especiales a contratistas y talleres mecánicos.</p>
+        </div>
+      </div>
+
+      <div class="trust-badge-item">
+        <div class="trust-icon">🏢</div>
+        <div class="trust-text">
+          <h4>3 Mostradores Físicos</h4>
+          <p>Las Delicias, Col. 18 de Marzo y Gaviotas Norte.</p>
+        </div>
+      </div>
+
+      <div class="trust-badge-item">
+        <div class="trust-icon">🧾</div>
+        <div class="trust-text">
+          <h4>Facturación Electrónica Inmediata</h4>
+          <p>Emisión de CFDI con datos fiscales vigentes al momento.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. Cuadrícula de Categorías Visuales con Fotos Reales -->
+  <section class="categories-visual-section">
+    <div class="section-header-row">
+      <div>
+        <h2>Líneas de Producto Principales</h2>
+        <p>Selecciona una categoría para ver los productos y especificaciones disponibles:</p>
+      </div>
+      <button class="btn-reset-filter" onclick="resetAllFilters()" style="font-size: 0.85rem;">
+        Ver Todo el Catálogo &rarr;
+      </button>
+    </div>
+
+    <div class="categories-visual-grid">
+      
+      <!-- Tarjeta 1: Tornillería y Fijación -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Fijación y Tornillería')">
+        <img src="assets/images/cat-tornilleria.jpg" alt="Tornillería Grado 5, Varilla Roscada y Arandelas" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">🔩 Fijación y Tornillería</h3>
+          <p class="category-banner-desc">Hexagonal G5 (NC y NF), métricos, varilla roscada, pijas y rondanas.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2: Plomería y Conducción -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Plomería y Conducción')">
+        <img src="assets/images/cat-plomeria.jpg" alt="Tubería PVC, CPVC, Cobre y Válvulas" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">🚰 Plomería y Fluidos</h3>
+          <p class="category-banner-desc">PVC C40, CPVC caliente, cobre Nacobre, galvanizado y válvulas.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3: Material Eléctrico -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Material Eléctrico')">
+        <img src="assets/images/cat-electrico.jpg" alt="Cables de Cobre THW, Conduit y Centros de Carga" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">⚡ Material Eléctrico</h3>
+          <p class="category-banner-desc">Cable THW 10/12 Condumex/IUSA, pastillas Square D y campanas LED.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 4: Herramientas y Abrasivos -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Herramientas Manuales')">
+        <img src="assets/images/cat-herramientas.jpg" alt="Herramientas Truper y Lijas Fandeli" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">🛠️ Herramientas y Abrasivos</h3>
+          <p class="category-banner-desc">Taladros y esmeriladoras Truper, pinzas y lijas de agua Fandeli.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. Layout Principal del Catálogo de Productos -->
+  <main id="catalog-section" class="main-layout">
     
     <!-- Barra Lateral de Facetas y Filtros -->
     <aside class="sidebar-facets">
       
-      <!-- Filtro por Departamentos -->
+      <!-- Departamentos -->
       <section class="facet-card">
         <div class="facet-title-bar">
           <h2 class="facet-heading">Departamentos</h2>
@@ -97,7 +222,7 @@
         </ul>
       </section>
 
-      <!-- Filtro por Marcas Homologadas -->
+      <!-- Marcas Homologadas -->
       <section class="facet-card">
         <div class="facet-title-bar">
           <h2 class="facet-heading">Marcas Homologadas</h2>
@@ -109,29 +234,18 @@
         </ul>
       </section>
 
-      <!-- Resumen Rápido de Sucursales Villahermosa -->
-      <section class="branches-sidebar-box">
-        <h3>Mostradores en Villahermosa</h3>
-        <div class="branch-mini-card">
-          <strong>1. Las Delicias (Matriz)</strong>
-          <span>Calle Revolución 1203 (junto al C.S. San Joaquín)</span><br>
-          <span>Tel: 993 289 2935</span>
-        </div>
-        <div class="branch-mini-card">
-          <strong>2. 18 de Marzo</strong>
-          <span>Revolución 1350 Local G, Cuadrante II</span><br>
-          <span>Tel: 993 161 2163</span>
-        </div>
-        <div class="branch-mini-card">
-          <strong>3. Gaviotas Norte</strong>
-          <span>Aquiles Calderón Marchena 120</span><br>
-          <span>Tel: 993 289 2935</span>
-        </div>
-      </section>
+      <!-- Banner de Cotización Inmediata -->
+      <div class="sidebar-cta-banner">
+        <h4>¿Buscas una partida especial?</h4>
+        <p>Cotizamos pedidos por volumen de varilla roscada, tubería o material eléctrico para constructoras.</p>
+        <a href="https://wa.me/529932892935?text=Hola%20Ferreter%C3%ADa%20El%20%C3%81guila,%20solicito%20cotizar%20materiales%20por%20volumen" target="_blank" class="btn-sidebar-wa">
+          <span>💬 WhatsApp Mostrador</span>
+        </a>
+      </div>
 
     </aside>
 
-    <!-- Vista Principal del Catálogo Técnico -->
+    <!-- Vista de Catálogo -->
     <section class="catalog-content">
       
       <!-- Barra de Metadatos y Ordenación -->
@@ -154,45 +268,141 @@
 
       <!-- Cuadrícula Dinámica de Fichas de Producto -->
       <div id="products-container" class="products-grid">
-        <!-- Renderizado dinámico vía app.js -->
+        <!-- Generado dinámicamente con fotos reales por app.js -->
       </div>
 
     </section>
 
   </main>
 
-  <!-- Pie de Página Institucional -->
+  <!-- 7. Sección Destacada de las 3 Sucursales en Villahermosa -->
+  <section id="branches-section" class="branches-showcase-section">
+    <div class="branches-section-inner">
+      <div class="section-header-row">
+        <div>
+          <h2>Nuestras 3 Sucursales en Villahermosa, Tabasco</h2>
+          <p>Visita nuestro mostrador o cotiza directamente con el equipo de cada sucursal:</p>
+        </div>
+      </div>
+
+      <div class="branches-grid-three">
+        
+        <!-- Sucursal 1: Las Delicias (Matriz) -->
+        <article class="branch-feature-card selected-branch" data-branch-id="delicias">
+          <div>
+            <span class="branch-type-pill pill-matriz">Matriz Central</span>
+            <h3>Sucursal Las Delicias</h3>
+            <p class="branch-address-text">
+              📍 <strong>Calle Revolución No. 1203</strong>, Col. Las Delicias (a un lado del Centro de Salud San Joaquín), Villahermosa, Tabasco.
+            </p>
+            <p class="branch-hours-text">
+              🕒 <strong>Lunes a Sábado:</strong> 7:30 a 18:30 hrs<br>
+              🕒 <strong>Domingo:</strong> 8:00 a 14:00 hrs
+            </p>
+          </div>
+          <div>
+            <div class="branch-buttons-row">
+              <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 993 289 2935</a>
+              <a href="https://wa.me/529932892935" target="_blank" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
+            </div>
+            <button class="btn-branch-select-store" onclick="selectBranchFromCard('delicias')">
+              ✓ Sucursal Seleccionada para Cotizar
+            </button>
+          </div>
+        </article>
+
+        <!-- Sucursal 2: 18 de Marzo -->
+        <article class="branch-feature-card" data-branch-id="marzo">
+          <div>
+            <span class="branch-type-pill pill-sucursal">Sucursal</span>
+            <h3>Sucursal 18 de Marzo</h3>
+            <p class="branch-address-text">
+              📍 <strong>Revolución 1350, Local G</strong>, Cuadrante II, Col. 18 de Marzo, Villahermosa, Tabasco.
+            </p>
+            <p class="branch-hours-text">
+              🕒 <strong>Lunes a Sábado:</strong> 7:30 a 18:30 hrs<br>
+              🕒 <strong>Domingo:</strong> Cerrado
+            </p>
+          </div>
+          <div>
+            <div class="branch-buttons-row">
+              <a href="tel:9931612163" class="btn-branch-action btn-branch-phone">📞 993 161 2163</a>
+              <a href="https://wa.me/529931612163" target="_blank" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
+            </div>
+            <button class="btn-branch-select-store" onclick="selectBranchFromCard('marzo')">
+              Seleccionar esta Sucursal
+            </button>
+          </div>
+        </article>
+
+        <!-- Sucursal 3: Gaviotas Norte -->
+        <article class="branch-feature-card" data-branch-id="gaviotas">
+          <div>
+            <span class="branch-type-pill pill-sucursal">Sucursal</span>
+            <h3>Sucursal Gaviotas Norte</h3>
+            <p class="branch-address-text">
+              📍 <strong>Aquiles Calderón Marchena 120</strong>, Col. Gaviotas Norte, Villahermosa, Tabasco.
+            </p>
+            <p class="branch-hours-text">
+              🕒 <strong>Lunes a Sábado:</strong> 7:30 a 18:00 hrs<br>
+              🕒 <strong>Domingo:</strong> Cerrado
+            </p>
+          </div>
+          <div>
+            <div class="branch-buttons-row">
+              <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 993 289 2935</a>
+              <a href="https://wa.me/529932892935" target="_blank" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
+            </div>
+            <button class="btn-branch-select-store" onclick="selectBranchFromCard('gaviotas')">
+              Seleccionar esta Sucursal
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Pie de Página Institucional -->
   <footer class="main-footer">
     <div class="footer-inner">
-      <div>
-        <p><strong>Ferretería y Tlapalería El Águila</strong> &copy; 2026. Villahermosa, Tabasco.</p>
-        <p>Especialistas en tornillería de alta resistencia G5/NF/NC, plomería hidráulica, material eléctrico, lijas Fandeli y herramienta profesional.</p>
+      <div class="footer-col">
+        <h4>Ferretería y Tlapalería El Águila</h4>
+        <p>Más de 3 décadas abasteciendo obra gruesa, remodelaciones, fontanería, electricidad y mantenimiento industrial en Villahermosa y municipios de Tabasco.</p>
+        <p style="color: var(--accent-gold); font-weight: 700;">Atención a Contratistas y Venta al Mayoreo</p>
       </div>
-      <div class="footer-tags">
-        <span class="footer-tag">Tornillería G5</span>
-        <span class="footer-tag">Varilla Roscada</span>
-        <span class="footer-tag">CPVC & Cobre</span>
-        <span class="footer-tag">Cable THW</span>
-        <span class="footer-tag">Fandeli</span>
-        <span class="footer-tag">Truper</span>
+
+      <div class="footer-col">
+        <h4>Marcas Distribuidas</h4>
+        <p>Truper &bull; Fandeli &bull; Nacobre &bull; Condumex &bull; IUSA &bull; Cresco &bull; Square D &bull; Tangit &bull; FlowGuard Gold &bull; Urrea &bull; Amanco Wavin &bull; Fischer &bull; Tecno Lite</p>
       </div>
+
+      <div class="footer-col">
+        <h4>Contacto Rápido Mostrador</h4>
+        <p>📍 Matriz: Revolución 1203, Col. Las Delicias, Villahermosa.</p>
+        <p>📞 Teléfono: <a href="tel:9932892935" style="color: #fff; font-weight: 700;">993 289 2935</a></p>
+        <p>💬 WhatsApp: <a href="https://wa.me/529932892935" target="_blank" style="color: var(--whatsapp-green); font-weight: 700;">52 993 289 2935</a></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 Ferretería y Tlapalería El Águila. Todos los derechos reservados. Villahermosa, Tabasco, México.</span>
+      <span>Desarrollado con Arquitectura Jamstack de Alto Rendimiento.</span>
     </div>
   </footer>
 
-  <!-- Fondo Atenuado para Cajón de Cotización -->
+  <!-- 9. Cajón Deslizable de Presupuesto (WhatsApp Drawer) -->
   <div id="drawer-backdrop" class="drawer-backdrop"></div>
 
-  <!-- Cajón Deslizable para Formalización de Cotización (WhatsApp) -->
   <aside id="quote-panel" class="quote-drawer">
-    
     <div class="drawer-header">
-      <h2><span>📋 Presupuesto de Obra</span></h2>
+      <h2><span>📋 Presupuesto de Materiales</span></h2>
       <button id="quote-close-btn" class="btn-close-drawer" title="Cerrar presupuesto">&times;</button>
     </div>
 
     <div class="drawer-branch-bar">
       <div>
-        <span>Despacho asignado a:</span><br>
+        <span>Despacho a sucursal:</span><br>
         <strong id="drawer-selected-branch-name">Sucursal Las Delicias (Matriz)</strong>
       </div>
       <div>
@@ -201,28 +411,26 @@
     </div>
 
     <div class="drawer-body">
-      
-      <!-- Lista de Partidas Seleccionadas -->
+      <!-- Contenedor de partidas con thumbnails -->
       <div id="cart-items-container" class="cart-items-container">
-        <!-- Rellenado por app.js -->
+        <!-- Llenado reactivamente por app.js -->
       </div>
 
-      <!-- Formulario para Datos de Obra -->
+      <!-- Datos del Solicitante / Obra -->
       <div class="quote-customer-form">
         <div class="form-group">
-          <label for="quote-client-name">Nombre / Empresa Contratista:</label>
+          <label for="quote-client-name">Nombre del Cliente / Empresa:</label>
           <input type="text" id="quote-client-name" class="form-input" placeholder="Ej. Ing. Carlos Mendoza / Constructora Tabasco">
         </div>
         <div class="form-group">
-          <label for="quote-client-site">Obra o Destino en Villahermosa:</label>
-          <input type="text" id="quote-client-site" class="form-input" placeholder="Ej. Obra Fracc. Carrizal o Mostrador">
+          <label for="quote-client-site">Lugar de Entrega u Obra en Villahermosa:</label>
+          <input type="text" id="quote-client-site" class="form-input" placeholder="Ej. Fracc. Carrizal / Entrega en Mostrador">
         </div>
         <div class="form-group">
-          <label for="quote-client-notes">Instrucciones o Sustitutos Aceptados:</label>
-          <input type="text" id="quote-client-notes" class="form-input" placeholder="Ej. Confirmar si tienen en tramos de 6m o con flete">
+          <label for="quote-client-notes">Instrucciones o Detalles Adicionales:</label>
+          <input type="text" id="quote-client-notes" class="form-input" placeholder="Ej. Requiero factura y cotizar flete a obra">
         </div>
       </div>
-
     </div>
 
     <div class="drawer-footer">
@@ -231,80 +439,21 @@
         <span id="estimated-total-amount" class="total-amount">$0.00</span>
       </div>
       <p class="footer-disclaimer">
-        * El importe final, descuentos por volumen y disponibilidad de flete se confirman en tiempo real con el mostrador comercial vía WhatsApp.
+        * El precio final, fletes y descuentos por volumen se confirman inmediatamente con el mostrador comercial vía WhatsApp.
       </p>
       <button id="whatsapp-order-btn" class="btn-whatsapp-dispatch">
         <span>💬 Enviar Presupuesto a WhatsApp Mostrador</span>
       </button>
     </div>
-
   </aside>
 
-  <!-- Modal Detallado de Sucursales en Villahermosa -->
-  <div id="branches-modal" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Sucursales en Villahermosa, Tabasco</h3>
-        <button id="btn-close-branches-modal" class="btn-close-drawer" style="color: #fff;">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="margin-bottom: 16px; font-size: 0.85rem; color: #5e6c84;">
-          Elige la sucursal más cercana para consultar existencias físicas, cotizar o retirar tus pedidos:
-        </p>
+  <!-- 10. Botón Flotante de WhatsApp para Asistencia Rápida -->
+  <a id="floating-wa-btn" href="https://wa.me/529932892935" target="_blank" class="floating-whatsapp-btn" title="Contactar por WhatsApp">
+    <span>💬</span>
+    <span class="floating-tooltip">¿Dudas o existencias? ¡Escríbenos!</span>
+  </a>
 
-        <div class="branches-grid">
-          
-          <!-- Sucursal 1: Las Delicias (Matriz) -->
-          <div class="branch-detail-card active-branch" data-branch-id="delicias">
-            <span class="branch-badge badge-matriz">Matriz Central</span>
-            <h4 class="branch-detail-title">Sucursal Las Delicias</h4>
-            <div class="branch-detail-info">
-              <p>📍 <strong>Dirección:</strong> Calle Revolución No. 1203, Col. Las Delicias (a un lado del Centro de Salud San Joaquín), Villahermosa, Tabasco.</p>
-              <p>🕒 <strong>Horario:</strong> Lunes a Sábado: 7:30 - 18:30 | Domingo: 8:00 - 14:00</p>
-            </div>
-            <div class="branch-contact-links">
-              <a href="tel:9932892935" class="btn-branch-phone">📞 993 289 2935</a>
-              <a href="https://wa.me/529932892935" target="_blank" class="btn-branch-wa">💬 WhatsApp</a>
-              <button class="btn-reset-filter" onclick="selectBranchFromModal('delicias')" style="margin-left: auto; font-weight: 700;">Seleccionar</button>
-            </div>
-          </div>
-
-          <!-- Sucursal 2: 18 de Marzo -->
-          <div class="branch-detail-card" data-branch-id="marzo">
-            <span class="branch-badge badge-sucursal">Sucursal</span>
-            <h4 class="branch-detail-title">Sucursal 18 de Marzo</h4>
-            <div class="branch-detail-info">
-              <p>📍 <strong>Dirección:</strong> Revolución 1350, Local G, Cuadrante II, Col. 18 de Marzo, Villahermosa, Tabasco.</p>
-              <p>🕒 <strong>Horario:</strong> Lunes a Sábado: 7:30 - 18:30</p>
-            </div>
-            <div class="branch-contact-links">
-              <a href="tel:9931612163" class="btn-branch-phone">📞 993 161 2163</a>
-              <a href="https://wa.me/529931612163" target="_blank" class="btn-branch-wa">💬 WhatsApp</a>
-              <button class="btn-reset-filter" onclick="selectBranchFromModal('marzo')" style="margin-left: auto; font-weight: 700;">Seleccionar</button>
-            </div>
-          </div>
-
-          <!-- Sucursal 3: Gaviotas Norte -->
-          <div class="branch-detail-card" data-branch-id="gaviotas">
-            <span class="branch-badge badge-sucursal">Sucursal</span>
-            <h4 class="branch-detail-title">Sucursal Gaviotas Norte</h4>
-            <div class="branch-detail-info">
-              <p>📍 <strong>Dirección:</strong> Aquiles Calderón Marchena 120, Col. Gaviotas Norte, Villahermosa, Tabasco.</p>
-              <p>🕒 <strong>Horario:</strong> Lunes a Sábado: 7:30 - 18:00</p>
-            </div>
-            <div class="branch-contact-links">
-              <a href="tel:9932892935" class="btn-branch-phone">📞 993 289 2935</a>
-              <a href="https://wa.me/529932892935" target="_blank" class="btn-branch-wa">💬 WhatsApp</a>
-              <button class="btn-reset-filter" onclick="selectBranchFromModal('gaviotas')" style="margin-left: auto; font-weight: 700;">Seleccionar</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lógica de Catálogo y Cotizador -->
+  <!-- Script Principal -->
   <script src="assets/js/app.js"></script>
 </body>
 </html>
