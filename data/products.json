@@ -1,0 +1,741 @@
+[
+  {
+    "sku": "EAG-TORN-001",
+    "manufacturer_code": "TG5-1220",
+    "name": "Tornillo Hexagonal Galvanizado Grado 5 NC 1/2\" x 2\"",
+    "slug": "tornillo-hexagonal-galvanizado-g5-nc-12-x-2",
+    "base_price": 14.50,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Grado": "Grado 5 (SAE J429)",
+      "Material": "Acero al medio carbono templado",
+      "Acabado": "Galvanizado electrolítico",
+      "Diámetro": "1/2 pulgada",
+      "Longitud": "2 pulgadas",
+      "Paso de Rosca": "13 hilos (NC - Cuerda estándar)"
+    },
+    "description": "Tornillo hexagonal de media tensión Grado 5 con recubrimiento galvanizado anticorrosivo para ensamble estructural, carrocerías y maquinaria."
+  },
+  {
+    "sku": "EAG-TORN-002",
+    "manufacturer_code": "TG5-3815NF",
+    "name": "Tornillo Hexagonal Galvanizado Grado 5 NF 3/8\" x 1-1/2\"",
+    "slug": "tornillo-hexagonal-galvanizado-g5-nf-38-x-1-12",
+    "base_price": 9.80,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Grado": "Grado 5 (SAE J429)",
+      "Material": "Acero templado y revenido",
+      "Acabado": "Galvanizado",
+      "Diámetro": "3/8 pulgada",
+      "Longitud": "1-1/2 pulgadas",
+      "Paso de Rosca": "24 hilos (NF - Cuerda fina automotriz)"
+    },
+    "description": "Tornillo hexagonal grado 5 de rosca fina (NF), recomendado para uniones sujetas a alta vibración en talleres mecánicos y montajes industriales."
+  },
+  {
+    "sku": "EAG-TORN-003",
+    "manufacturer_code": "TMM-880840",
+    "name": "Tornillo Métrico Hexagonal Clase 8.8 Galvanizado M8 x 40mm",
+    "slug": "tornillo-metrico-hexagonal-clase-88-galvanizado-m8-40mm",
+    "base_price": 7.20,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Fischer"
+    },
+    "attributes": {
+      "Norma": "DIN 933 / ISO 4017",
+      "Clase de Resistencia": "8.8",
+      "Diámetro": "M8 (8 mm)",
+      "Paso": "1.25 mm",
+      "Longitud": "40 mm",
+      "Acabado": "Cincado brillante"
+    },
+    "description": "Tornillo métrico de rosca corrida grado 8.8 conforme a norma ISO para ensamble automotriz, electrodomésticos e instalaciones industriales."
+  },
+  {
+    "sku": "EAG-TORN-004",
+    "manufacturer_code": "TCC-51625",
+    "name": "Tornillo Cabeza de Coche Galvanizado con Tuerca 5/16\" x 2-1/2\"",
+    "slug": "tornillo-cabeza-coche-galvanizado-516-x-2-12",
+    "base_price": 8.50,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Tipo": "Carriage Bolt (Cuello cuadrado)",
+      "Material": "Acero de bajo carbono",
+      "Acabado": "Galvanizado electrolítico",
+      "Medida": "5/16\" x 2-1/2\"",
+      "Incluye": "Tuerca hexagonal galvanizada"
+    },
+    "description": "Perno de carruaje con cuello cuadrado antigiros, ideal para fijación de madera a metal, portones, tarimas y carrocerías de camión."
+  },
+  {
+    "sku": "EAG-TORN-005",
+    "manufacturer_code": "PIJ-1415NEO",
+    "name": "Pija Fijadora Hexagonal Autocentrable para Lámina con Rondana #14 x 1-1/2\"",
+    "slug": "pija-fijadora-hexagonal-autocentrable-con-rondana-14-x-1-12",
+    "base_price": 2.40,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Fiero"
+    },
+    "attributes": {
+      "Calibre/Número": "#14",
+      "Longitud": "1-1/2 pulgada",
+      "Cabeza": "Hexagonal con arandela de neopreno EPDM",
+      "Punta": "Punta de broca autoperforante",
+      "Aplicación": "Techumbres de lámina galvanizada y panel aislante"
+    },
+    "description": "Tornillo autoperforante con arandela vulcanizada de EPDM que sella herméticamente contra filtraciones de agua en techos y naves industriales."
+  },
+  {
+    "sku": "EAG-TORN-006",
+    "manufacturer_code": "VAR-3803G2",
+    "name": "Varilla Roscada Galvanizada 3/8\" x 3 Metros",
+    "slug": "varilla-roscada-galvanizada-38-x-3m",
+    "base_price": 85.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Diámetro": "3/8 pulgada",
+      "Largo Total": "3.00 metros",
+      "Paso": "16 hilos por pulgada (NC)",
+      "Recubrimiento": "Cincado electrolítico",
+      "Uso": "Soportería de tuberías conduit, hidrosanitarias y plafones"
+    },
+    "description": "Varilla totalmente roscada de acero con protección cincada contra corrosión para anclaje aéreo y sujeción de instalaciones electromecánicas."
+  },
+  {
+    "sku": "EAG-TORN-007",
+    "manufacturer_code": "VAR-1203G5",
+    "name": "Varilla Roscada Grado 5 Alta Resistencia 1/2\" x 3 Metros",
+    "slug": "varilla-roscada-grado-5-alta-resistencia-12-x-3m",
+    "base_price": 195.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Diámetro": "1/2 pulgada",
+      "Largo": "3.00 metros",
+      "Grado": "Grado 5 / B7 equivalente",
+      "Carga de Tensión": "Alta resistencia estructural",
+      "Paso de Rosca": "13 hilos (NC)"
+    },
+    "description": "Tirante roscado de alta tenacidad para cargas pesadas en cimentación, anclaje de columnas metálicas y obra industrial."
+  },
+  {
+    "sku": "EAG-TORN-008",
+    "manufacturer_code": "ARN-PL38",
+    "name": "Arandela Plana Galvanizada SAE 3/8\"",
+    "slug": "arandela-plana-galvanizada-sae-38",
+    "base_price": 0.85,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Medida Nominal": "3/8 pulgada",
+      "Diámetro Exterior": "13/16 pulgada",
+      "Material": "Lámina de acero rolada en frío",
+      "Acabado": "Galvanizado"
+    },
+    "description": "Rondana plana diseñada para distribuir uniformemente la presión de apriete bajo la cabeza del tornillo o tuerca."
+  },
+  {
+    "sku": "EAG-TORN-009",
+    "manufacturer_code": "ARN-PR12",
+    "name": "Arandela de Presión Galvanizada (Split Lock) 1/2\"",
+    "slug": "arandela-de-presion-galvanizada-12",
+    "base_price": 1.40,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Medida": "1/2 pulgada",
+      "Tipo": "Helicoidal con corte seccionado",
+      "Efecto": "Resorte tensor antiaflojamiento por vibración",
+      "Acabado": "Galvanizado"
+    },
+    "description": "Arandela elástica seccionada de presión para asegurar ensambles sujetos a choque mecánico constante o vibraciones motrices."
+  },
+  {
+    "sku": "EAG-TORN-010",
+    "manufacturer_code": "TUE-HX38G5",
+    "name": "Tuerca Hexagonal Galvanizada Grado 5 - 3/8\" NC",
+    "slug": "tuerca-hexagonal-galvanizada-grado-5-38-nc",
+    "base_price": 2.10,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Fijación y Tornillería",
+      "slug": "fijacion-tornilleria"
+    },
+    "brands": {
+      "name": "Cresco"
+    },
+    "attributes": {
+      "Rosca": "3/8\" - 16 hilos (NC)",
+      "Grado": "Grado 5",
+      "Acabado": "Cincado electrolítico",
+      "Ancho entre Caras": "9/16\""
+    },
+    "description": "Tuerca de acero templado grado 5 para tornillería estándar y varilla roscada con resistencia probada a tracción."
+  },
+  {
+    "sku": "EAG-PLOM-001",
+    "manufacturer_code": "TUB-PVCH10",
+    "name": "Tubo PVC Hidráulico Cédula 40 Cementar 1\" x 6m",
+    "slug": "tubo-pvc-hidraulico-cedula-40-cementar-1-x-6m",
+    "base_price": 245.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Amanco Wavin"
+    },
+    "attributes": {
+      "Diámetro Nominal": "1 pulgada (25 mm)",
+      "Longitud": "6.00 metros",
+      "Cédula": "Cédula 40 (ASTM D-1785)",
+      "Presión de Trabajo": "450 PSI a 23°C",
+      "Sistema de Unión": "Espiga-Campana o cementar liso"
+    },
+    "description": "Tubería hidráulica rígida de policloruro de vinilo atóxico para redes presurizadas de agua potable, bombas y cisternas."
+  },
+  {
+    "sku": "EAG-PLOM-002",
+    "manufacturer_code": "TUB-CPVC05",
+    "name": "Tubo CPVC para Agua Caliente CTS SDR 11 - 1/2\" x 6m",
+    "slug": "tubo-cpvc-agua-caliente-cts-sdr-11-12-x-6m",
+    "base_price": 185.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "FlowGuard Gold"
+    },
+    "attributes": {
+      "Diámetro Nominal": "1/2 pulgada (13 mm)",
+      "Longitud": "6.00 metros",
+      "Relación Dimensional": "SDR 11",
+      "Temperatura Máxima": "82°C (180°F) a 100 PSI",
+      "Certificación": "NOM-015-CONAGUA"
+    },
+    "description": "Tubo de CPVC clorado de alta resistencia térmica para distribución de agua fría y caliente en casas, hoteles y comercios."
+  },
+  {
+    "sku": "EAG-PLOM-003",
+    "manufacturer_code": "TUB-COBM12",
+    "name": "Tubo de Cobre Rígido Tipo M 1/2\" x 6m",
+    "slug": "tubo-cobre-rigido-tipo-m-12-x-6m",
+    "base_price": 420.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Nacobre"
+    },
+    "attributes": {
+      "Tipo de Tubería": "Tipo M (Pared estándar para interiores)",
+      "Diámetro": "1/2 pulgada",
+      "Longitud": "6.00 metros",
+      "Pureza": "99.9% Cobre desoxidado",
+      "Presión Máxima": "500 PSI"
+    },
+    "description": "Tubería de cobre puro de grado sanitario para instalaciones hidráulicas residenciales y comerciales de larga durabilidad."
+  },
+  {
+    "sku": "EAG-PLOM-004",
+    "manufacturer_code": "TUB-GAL34",
+    "name": "Tubo de Acero Galvanizado Cédula 40 Roscado 3/4\" x 6m",
+    "slug": "tubo-acero-galvanizado-c40-34-x-6m",
+    "base_price": 680.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Tupy"
+    },
+    "attributes": {
+      "Diámetro": "3/4 pulgada",
+      "Largo": "6.00 metros",
+      "Extremos": "Roscados NPT con cople incluido",
+      "Recubrimiento": "Galvanizado por inmersión en caliente (HDG)",
+      "Presión de Prueba": "700 PSI"
+    },
+    "description": "Tubo galvanizado de alta resistencia mecánica para conducciones de agua, aire comprimido y redes contra incendio."
+  },
+  {
+    "sku": "EAG-PLOM-005",
+    "manufacturer_code": "VAL-ESF100",
+    "name": "Válvula de Esfera de Latón Roscada 1\" Paso Completo 600 WOG",
+    "slug": "valvula-esfera-laton-roscada-1-600-wog",
+    "base_price": 195.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Urrea"
+    },
+    "attributes": {
+      "Material": "Cuerpo de latón forjado niquelado",
+      "Paso": "Paso completo (Full Port)",
+      "Presión": "600 WOG / 150 WSP",
+      "Rosca": "1\" Hembra NPT",
+      "Asientos": "PTFE virgen"
+    },
+    "description": "Llave de paso esférica de 1/4 de vuelta para control de flujo de agua, aceite y gas no corrosivo sin pérdidas de carga hidráulica."
+  },
+  {
+    "sku": "EAG-PLOM-006",
+    "manufacturer_code": "PEG-TAN250P",
+    "name": "Pegamento para PVC Hidráulico Transparente 250ml",
+    "slug": "pegamento-pvc-hidraulico-transparente-250ml",
+    "base_price": 85.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Tangit"
+    },
+    "attributes": {
+      "Contenido": "250 ml con brocha aplicadora",
+      "Viscosidad": "Media para tuberías de hasta 4\"",
+      "Tiempo de Fragüe": "Rápido (2 minutos en caliente)",
+      "Resistencia Química": "Suelda molecularmente el PVC"
+    },
+    "description": "Soldadura líquida para tubería y conexiones de PVC rígido bajo presión conforme a especificaciones ASTM D-2564."
+  },
+  {
+    "sku": "EAG-PLOM-007",
+    "manufacturer_code": "PEG-CPVC250",
+    "name": "Cemento para CPVC Amarillo Alta Presión 250ml",
+    "slug": "cemento-para-cpvc-amarillo-alta-presion-250ml",
+    "base_price": 110.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Plomería y Conducción",
+      "slug": "plomeria-conduccion"
+    },
+    "brands": {
+      "name": "Tangit"
+    },
+    "attributes": {
+      "Contenido": "250 ml",
+      "Color": "Amarillo para fácil inspección visual",
+      "Temperatura de Servicio": "Hasta 93°C continuo",
+      "Aplicación": "Sistemas de agua caliente y fría en CPVC"
+    },
+    "description": "Cemento solvente formulado para fusionar tubería de CPVC en instalaciones sometidas a altas temperaturas y choque térmico."
+  },
+  {
+    "sku": "EAG-ELEC-001",
+    "manufacturer_code": "CAB-THW12R",
+    "name": "Cable de Cobre THW-2-LS / THHN Calibre 12 AWG (Caja 100m)",
+    "slug": "cable-cobre-thw-2-ls-calibre-12-awg-100m",
+    "base_price": 980.00,
+    "unit_measure": "ROLLO",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Material Eléctrico",
+      "slug": "material-electrico"
+    },
+    "brands": {
+      "name": "Condumex"
+    },
+    "attributes": {
+      "Calibre": "12 AWG (3.31 mm²)",
+      "Conductor": "100% Cobre electrolítico suave",
+      "Aislamiento": "PVC antiflama de baja emisión de humos (LS)",
+      "Tensión Máxima": "600 V",
+      "Capacidad de Corriente": "20 Amperes a 75°C",
+      "Longitud": "100 metros"
+    },
+    "description": "Conductor eléctrico certificado para circuitos derivados de alumbrado y contactos residenciales y comerciales según NOM-001-SEDE."
+  },
+  {
+    "sku": "EAG-ELEC-002",
+    "manufacturer_code": "CAB-THW10R",
+    "name": "Cable de Cobre THW-2-LS Calibre 10 AWG (Caja 100m)",
+    "slug": "cable-cobre-thw-2-ls-calibre-10-awg-100m",
+    "base_price": 1540.00,
+    "unit_measure": "ROLLO",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Material Eléctrico",
+      "slug": "material-electrico"
+    },
+    "brands": {
+      "name": "IUSA"
+    },
+    "attributes": {
+      "Calibre": "10 AWG (5.26 mm²)",
+      "Conductor": "Cobre puro 100%",
+      "Aislamiento": "PVC resistente al calor 90°C y humedad",
+      "Amperaje": "30 Amperes nominales",
+      "Uso": "Alimentación de aires acondicionados, bombas y centros de carga"
+    },
+    "description": "Cable eléctrico de alto rendimiento para cargas pesadas como equipos minisplit e instalaciones motrices en climas tropicales."
+  },
+  {
+    "sku": "EAG-ELEC-003",
+    "manufacturer_code": "TUB-CON34",
+    "name": "Tubería Conduit Galvanizada Pared Delgada 3/4\" x 3m",
+    "slug": "tuberia-conduit-galvanizada-pared-delgada-34-x-3m",
+    "base_price": 145.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Material Eléctrico",
+      "slug": "material-electrico"
+    },
+    "brands": {
+      "name": "Omega Conduit"
+    },
+    "attributes": {
+      "Tipo": "EMT (Pared delgada)",
+      "Diámetro": "3/4 pulgada",
+      "Longitud": "3.00 metros",
+      "Recubrimiento": "Cincado interior y exterior anticorrosión",
+      "Norma": "UL 797 / NMX-J-534"
+    },
+    "description": "Tubo conduit de acero para canalización y protección mecánica de cableado eléctrico en muros falsos, losas y naves comerciales."
+  },
+  {
+    "sku": "EAG-ELEC-004",
+    "manufacturer_code": "TER-SQD120",
+    "name": "Interruptor Termomagnético 1 Polo 20A Enchufable QO",
+    "slug": "interruptor-termomagnetico-1-polo-20a-enchufable-qo",
+    "base_price": 185.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Material Eléctrico",
+      "slug": "material-electrico"
+    },
+    "brands": {
+      "name": "Square D"
+    },
+    "attributes": {
+      "Corriente Nominal": "20 Amperes",
+      "Polos": "1 Polo",
+      "Tipo": "Enchufable (Plug-in) línea QO",
+      "Poder de Corte": "10 kA a 120/240 VAC",
+      "Indicador": "Visi-Trip rojo ante disparo por falla"
+    },
+    "description": "Pastilla termomagnética original Square D Schneider Electric para protección contra sobrecargas y cortocircuitos en centros de carga."
+  },
+  {
+    "sku": "EAG-ELEC-005",
+    "manufacturer_code": "LAM-HB100W",
+    "name": "Campana LED Industrial High Bay 100W 6500K 10,000 lm",
+    "slug": "campana-led-industrial-high-bay-100w-6500k",
+    "base_price": 790.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Material Eléctrico",
+      "slug": "material-electrico"
+    },
+    "brands": {
+      "name": "Tecno Lite"
+    },
+    "attributes": {
+      "Potencia": "100 Watts",
+      "Flujo Luminoso": "10,000 Lúmenes",
+      "Temperatura de Color": "6500K (Blanco Frío Industrial)",
+      "Protección": "IP65 (Hermética contra polvo y chorro de agua)",
+      "Voltaje": "100 - 277 V~ Multivoltaje",
+      "Vida Útil": "50,000 horas"
+    },
+    "description": "Luminario industrial tipo campana UFO con cuerpo disipador de aluminio para bodegas, talleres, gimnasios y áreas comerciales."
+  },
+  {
+    "sku": "EAG-ABRA-001",
+    "manufacturer_code": "LIJ-FAN220A",
+    "name": "Lija de Agua Carburo de Silicio Grado 220 Fandeli (Pliego)",
+    "slug": "lija-de-agua-carburo-silicio-grado-220-fandeli",
+    "base_price": 12.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Abrasivos y Pintura",
+      "slug": "abrasivos-pintura"
+    },
+    "brands": {
+      "name": "Fandeli"
+    },
+    "attributes": {
+      "Grano": "220 (Fino)",
+      "Mineral": "Carburo de Silicio",
+      "Dorso": "Papel impermeable impermeable grado A flexible",
+      "Medida": "9\" x 11\" (230 x 280 mm)",
+      "Aplicación": "Acabados automotrices, primarios y metales en húmedo"
+    },
+    "description": "Lija de agua profesional Fandeli con grano de alta retención que no raya la superficie durante el asentado de barnices y pinturas."
+  },
+  {
+    "sku": "EAG-ABRA-002",
+    "manufacturer_code": "LIJ-FAN080E",
+    "name": "Lija de Esmeril Tela Grado 80 Fandeli para Metal (Pliego)",
+    "slug": "lija-de-esmeril-tela-grado-80-fandeli",
+    "base_price": 18.50,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Abrasivos y Pintura",
+      "slug": "abrasivos-pintura"
+    },
+    "brands": {
+      "name": "Fandeli"
+    },
+    "attributes": {
+      "Grano": "80 (Medio/Grueso para desbaste)",
+      "Mineral": "Óxido de Aluminio café",
+      "Dorso": "Tela pesada de algodón de gran elasticidad",
+      "Medida": "9\" x 11\"",
+      "Uso": "Eliminación de óxido, rebarbas de soldadura y perfiles de hierro"
+    },
+    "description": "Lija de tela esmeril de máxima durabilidad que soporta doblado en esquinas de piezas metálicas y herrería pesada sin desgranar."
+  },
+  {
+    "sku": "EAG-ABRA-003",
+    "manufacturer_code": "LIJ-FAN120M",
+    "name": "Lija Roja para Madera Grado 120 Fandeli (Pliego)",
+    "slug": "lija-roja-para-madera-grado-120-fandeli",
+    "base_price": 11.50,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Abrasivos y Pintura",
+      "slug": "abrasivos-pintura"
+    },
+    "brands": {
+      "name": "Fandeli"
+    },
+    "attributes": {
+      "Grano": "120 (Medio)",
+      "Mineral": "Óxido de Aluminio recubierto de estearato",
+      "Dorso": "Papel pesado resistente al rasgado",
+      "Estructura": "Cerrada anti-empaste de resina"
+    },
+    "description": "Lija especial para carpintería y ebanistería, tratada con lubricante seco que evita el taponamiento por resinas y polvillo."
+  },
+  {
+    "sku": "EAG-HERR-001",
+    "manufacturer_code": "SEG-TRU12T",
+    "name": "Arco de Segueta Profesional Tubular 12\" con Segueta Truper",
+    "slug": "arco-de-segueta-profesional-tubular-12-truper",
+    "base_price": 165.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Manuales",
+      "slug": "herramientas-manuales"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Longitud": "12 pulgadas (300 mm)",
+      "Material del Arco": "Tubo de acero con mango ergonómico inyectado",
+      "Posiciones de Corte": "45° y 90° para cortes al ras",
+      "Tensión de Hoja": "Perilla tensora de mariposa de alto par"
+    },
+    "description": "Arco de segueta industrial para cortes rectos de metales, PVC y canaletas conduit con hoja bimetálica incluida."
+  },
+  {
+    "sku": "EAG-HERR-002",
+    "manufacturer_code": "PIN-PRE10T",
+    "name": "Pinza de Presión Mordaza Curva 10\" Truper Expert",
+    "slug": "pinza-de-presion-mordaza-curva-10-truper-expert",
+    "base_price": 198.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Manuales",
+      "slug": "herramientas-manuales"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Largo": "10\" (254 mm)",
+      "Material": "Acero Cr-V (Cromo Vanadio) forjado",
+      "Tipo de Mordaza": "Curva con cortador de alambre integrado",
+      "Mecanismo": "Gatillo de liberación suave recubierto"
+    },
+    "description": "Herramienta de sujeción pesada para tubos, tornillos barridos y perfiles en talleres mecánicos e instalaciones de fontanería."
+  },
+  {
+    "sku": "EAG-HERR-003",
+    "manufacturer_code": "FLE-GRP825",
+    "name": "Flexómetro de Impacto Gripper 8m x 25mm Truper",
+    "slug": "flexometro-impacto-gripper-8m-x-25mm-truper",
+    "base_price": 145.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Manuales",
+      "slug": "herramientas-manuales"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Largo de Cinta": "8.00 metros (26 pies)",
+      "Ancho de Cinta": "25 mm (1 pulgada)",
+      "Carcasa": "Plástico ABS antichoque con cubierta de caucho TPR",
+      "Gancho": "Doble remache magnético con holgura para medición interior/exterior"
+    },
+    "description": "Cinta métrica resistente a caídas en obra, con escala métrica y fraccional de alta legibilidad y freno frontal firme."
+  },
+  {
+    "sku": "EAG-HERR-004",
+    "manufacturer_code": "MAR-FIB16",
+    "name": "Martillo de Uña Curva 16 oz con Mango Fibra de Vidrio Truper",
+    "slug": "martillo-una-curva-16-oz-mango-fibra-vidrio-truper",
+    "base_price": 180.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Manuales",
+      "slug": "herramientas-manuales"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Peso de Cabeza": "16 oz (450 g)",
+      "Material de Cabeza": "Acero forjado de alto carbono pulido",
+      "Mango": "Fibra de vidrio con grip ergonómico antivibración",
+      "Fijación": "Resina epóxica indestructible"
+    },
+    "description": "Martillo de carpintero con uña extractora de clavos y mango amortiguador de impacto que previene la fatiga articular."
+  },
+  {
+    "sku": "EAG-POW-001",
+    "manufacturer_code": "ROT-PRO650",
+    "name": "Rotomartillo Taladro Percutor 1/2\" 650W Truper Profesional",
+    "slug": "rotomartillo-taladro-percutor-12-650w-truper-profesional",
+    "base_price": 795.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Eléctricas",
+      "slug": "herramientas-electricas"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Potencia": "650 Watts",
+      "Broquero": "1/2\" (13 mm) con llave metálica",
+      "Velocidad": "0 - 3,100 RPM variable reversible",
+      "Impactos": "0 - 50,000 GPM",
+      "Capacidad": "Concreto 1/2\", Acero 1/2\", Madera 1-3/16\""
+    },
+    "description": "Taladro percutor de velocidad variable y reversa para perforación en losas, mampostería, metales y atornillado continuo."
+  },
+  {
+    "sku": "EAG-POW-002",
+    "manufacturer_code": "ESM-ANG850",
+    "name": "Esmeriladora Angular 4-1/2\" 850W Truper Profesional",
+    "slug": "esmeriladora-angular-4-12-850w-truper-profesional",
+    "base_price": 890.00,
+    "unit_measure": "PIEZA",
+    "stock_status": "in_stock",
+    "categories": {
+      "name": "Herramientas Eléctricas",
+      "slug": "herramientas-electricas"
+    },
+    "brands": {
+      "name": "Truper"
+    },
+    "attributes": {
+      "Potencia": "850 Watts",
+      "Diámetro de Disco": "4-1/2\" (115 mm)",
+      "Velocidad en Vacío": "11,000 RPM",
+      "Eje": "5/8\" - 11 con seguro de flecha",
+      "Incluye": "Guarda de ajuste rápido, mango auxiliar 2 posiciones y llave"
+    },
+    "description": "Amoladora angular compacta con motor montado sobre baleros de bolas sellados para corte de varilla, perfiles y desbaste de soldadura."
+  }
+]
