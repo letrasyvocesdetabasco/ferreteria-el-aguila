@@ -1,7 +1,7 @@
 \documentclass[10pt,letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
-\usepackage[margin=1.8cm, top=1.4cm, bottom=1.4cm]{geometry}
+\usepackage[margin=1.5cm, top=1.1cm, bottom=1.1cm]{geometry}
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage{tabularx}
@@ -33,15 +33,15 @@
 }
 
 % Configuración de Títulos
-\titleformat{\section}{\color{NavyBlue}\large\bfseries}{\thesection}{1em}{}[{\color{AmberGold}\titlerule[1.5pt]}]
-\titlespacing*{\section}{0pt}{9pt}{5pt}
+\titleformat{\section}{\color{NavyBlue}\normalsize\bfseries}{\thesection}{1em}{}[{\color{AmberGold}\titlerule[1.2pt]}]
+\titlespacing*{\section}{0pt}{6pt}{4pt}
 
 \tcbset{
     colback=SoftGray,
     colframe=BorderGray,
     arc=2.5mm,
     boxrule=1pt,
-    left=9pt,right=9pt,top=7pt,bottom=7pt
+    left=8pt,right=8pt,top=5pt,bottom=5pt
 }
 
 \pagestyle{empty}
@@ -51,37 +51,37 @@
 % ==============================================================================
 % CABECERA EJECUTIVA DE LA PROPUESTA
 % ==============================================================================
-\begin{tcolorbox}[colback=NavyBlue, colframe=AmberGold, boxrule=2pt, arc=3mm]
+\begin{tcolorbox}[colback=NavyBlue, colframe=AmberGold, boxrule=1.5pt, arc=2.5mm, top=5pt, bottom=5pt]
     \begin{minipage}[c]{0.70\textwidth}
-        {\color{white}\Large\textbf{PROPUESTA COMERCIAL Y PRESUPUESTO}}\\[2pt]
-        {\color{AmberGold}\normalsize\textbf{Plataforma Web y Cotizador WhatsApp para 2 Sucursales}}\\[4pt]
-        {\color{white}\small\faUserTie\ \textbf{Cliente:} Don Timoteo Méndez $\bullet$ \textbf{Negocio:} Ferretería El Águila}\\
-        {\color{white}\footnotesize\faMapPin\ \textbf{Sucursal 1 (Matriz):} Las Delicias (Av. Revolución 1203 $\bullet$ 993 289 2935)}\\
-        {\color{white}\footnotesize\faMapPin\ \textbf{Sucursal 2:} Estrellas de Buena Vista (Carr. La Isla Km 5.300 $\bullet$ 993 192 8313)}
+        {\color{white}\large\textbf{PROPUESTA COMERCIAL Y PRESUPUESTO}}\\[1pt]
+        {\color{AmberGold}\small\textbf{Plataforma Web y Cotizador WhatsApp para 2 Sucursales}}\\[3pt]
+        {\color{white}\footnotesize\faUserTie\ \textbf{Cliente:} Don Timoteo Méndez $\bullet$ \textbf{Negocio:} Ferretería El Águila}\\
+        {\color{white}\scriptsize\faMapPin\ \textbf{Sucursal 1 (Matriz):} Las Delicias (Av. Revolución 1203 $\bullet$ 993 289 2935)}\\
+        {\color{white}\scriptsize\faMapPin\ \textbf{Sucursal 2:} Estrellas de Buena Vista (Carr. La Isla Km 5.300 $\bullet$ 993 192 8313)}
     \end{minipage}
     \hfill
     \begin{minipage}[c]{0.27\textwidth}
         \flushright
-        {\color{white}\footnotesize\textbf{Fecha:} Septiembre 2026}\\
-        {\color{AmberGold}\footnotesize\textbf{Dominio de Ejemplo:}}\\
-        {\color{white}\scriptsize\texttt{ferreteriaytlapaleria-aguila.com}}\\[4pt]
-        {\color{EmeraldGreen}\footnotesize\textbf{Demo en Vivo Lista}}
+        {\color{white}\scriptsize\textbf{Fecha:} Septiembre 2026}\\
+        {\color{AmberGold}\scriptsize\textbf{Dominio de Ejemplo:}}\\
+        {\color{white}\tiny\texttt{ferreteriaytlapaleria-aguila.com}}\\[3pt]
+        {\color{EmeraldGreen}\scriptsize\textbf{Demo en Vivo Lista}}
     \end{minipage}
 \end{tcolorbox}
 
-\vspace{0.1cm}
+\vspace{0.05cm}
 
 % ==============================================================================
 % 1. DIAGNÓSTICO COMERCIAL Y OPORTUNIDAD
 % ==============================================================================
 \section*{1. Diagnóstico Comercial y Oportunidad en Villahermosa}
 En la zona urbana y conurbada de Villahermosa, contratistas, maestros de obra, plomeros y talleres compran materiales desde su \textbf{teléfono celular directo en la obra}.
-\begin{itemize}[leftmargin=*,itemsep=1pt]
+\begin{itemize}[leftmargin=*,itemsep=0.5pt]
     \item \textbf{Problema Actual:} Pedir material por audios o llamadas genera confusiones costosas en medidas (tornillería G5 NC/NF, cédulas de tubería, calibres THW), pérdidas de tiempo en el mostrador y cotizaciones que no se concretan.
-    \item \textbf{Solución Digital:} Un mostrador virtual ultra-rápido donde el cliente consulta el catálogo con fotos, armas su lista y en un solo clic \textbf{manda su pedido formal al WhatsApp de la sucursal que le quede más cerca (Delicias o Buena Vista)}.
+    \item \textbf{Solución Digital:} Un mostrador virtual ultra-rápido donde el cliente consulta el catálogo con fotos, arma su lista y en un solo clic \textbf{manda su pedido formal al WhatsApp de la sucursal que le quede más cerca (Delicias o Buena Vista)}.
 \end{itemize}
 
-\vspace{0.1cm}
+\vspace{0.05cm}
 
 % ==============================================================================
 % 2. MÓDULOS DE LA PLATAFORMA
@@ -93,20 +93,20 @@ En la zona urbana y conurbada de Villahermosa, contratistas, maestros de obra, p
     \textbf{Módulo} & \textbf{Beneficio Real para tus Dos Sucursales} \\
     \midrule
     \textbf{1. Catálogo con Fotos Reales} & Fotografías comerciales de tornillería G5, conexiones PVC/CPVC, cable THW, lijas Fandeli y herramientas Truper. \\
-    \addlinespace[2pt]
+    \addlinespace[1.5pt]
     \textbf{2. Selector de Sucursal en Cotizador} & El cliente elige fácilmente si retira en \textbf{Las Delicias} o en \textbf{Estrellas de Buena Vista}, enrutando el pedido al WhatsApp correspondiente. \\
-    \addlinespace[2pt]
+    \addlinespace[1.5pt]
     \textbf{3. Buscador Instantáneo} & Búsqueda inmediata por medidas, clave o nombre sin recargar la página. \\
-    \addlinespace[2pt]
+    \addlinespace[1.5pt]
     \textbf{4. Cotizador WhatsApp en 1 Clic} & Arma la lista con subtotales, datos de la obra y solicitud formal sin errores. \\
-    \addlinespace[2pt]
+    \addlinespace[1.5pt]
     \textbf{5. Optimizado para Teléfono Móvil} & Barra inferior estilo aplicación táctil, cómoda para usar con una sola mano en obra. \\
-    \addlinespace[2pt]
+    \addlinespace[1.5pt]
     \textbf{6. Dominio Propio y Seguridad SSL} & Dirección oficial (\texttt{ferreteriaytlapaleria-aguila.com}) con candado HTTPS de seguridad. \\
     \bottomrule
 \end{tabularx}
 
-\vspace{0.15cm}
+\vspace{0.1cm}
 
 % ==============================================================================
 % 3. MODELOS DE INVERSIÓN (COTA BAJA DEL MERCADO)
@@ -126,11 +126,12 @@ En la zona urbana y conurbada de Villahermosa, contratistas, maestros de obra, p
 \vspace{0.1cm}
 
 \begin{tcolorbox}[colback=white, colframe=NavyBlue, boxrule=1pt]
-    {\color{NavyBlue}\textbf{\normalsize OPCIÓN 2: Renta Mensual Todo Incluido (Cero Desembolso Inicial)}} \\
-    \textit{Para empezar a vender por internet de inmediato sin descapitalizarse.}
+    {\color{NavyBlue}\textbf{\normalsize OPCIÓN 2: Renta Mensual Todo Incluido (Cero Costo de Desarrollo)}} \\
+    \textit{Para empezar a vender por internet de inmediato sin desembolsar una inversión fuerte.}
     \begin{itemize}[leftmargin=*,itemsep=1.5pt]
-        \item \textbf{Anticipo de Activación y Dominio:} \textbf{\$500 MXN} $\bullet$ \textbf{Renta Mensual:} \textbf{\$550 MXN / mes} (compromiso mínimo de 6 meses).
-        \item \textbf{Incluye:} Todo el sistema activo al 100\%, hosting en la nube, soporte y 1 actualización mensual de precios. Si no le convence al término, no pierde inversión en desarrollo.
+        \item \textbf{Pago Inicial de Activación:} \textbf{\$1,100 MXN} (desglosado en: \textbf{\$500 MXN} de compra de dominio oficial anual + \textbf{\$600 MXN} de tu primer mes de servicio por adelantado).
+        \item \textbf{Renta Mensual Subsecuente:} \textbf{\$600 MXN / mes} (a partir del mes 2, cubriendo ambas sucursales = solo \textbf{\$300 MXN / mes por sucursal}; compromiso mínimo de 6 meses).
+        \item \textbf{Incluye:} Plataforma 100\% activa en la nube, soporte técnico, cambios de números y 1 actualización mensual de precios. Si al término de los 6 meses no le convence, no pierde dinero en desarrollo.
     \end{itemize}
 \end{tcolorbox}
 
