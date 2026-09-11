@@ -1,0 +1,238 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[margin=1.8cm, top=1.4cm, bottom=1.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{fontawesome5}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Paleta de Colores Corporativa
+\definecolor{NavyBlue}{HTML}{0C1C2E}
+\definecolor{SlateNavy}{HTML}{162A42}
+\definecolor{AmberGold}{HTML}{F59E0B}
+\definecolor{DarkAmber}{HTML}{D97706}
+\definecolor{EmeraldGreen}{HTML}{10B981}
+\definecolor{DarkGreen}{HTML}{059669}
+\definecolor{SoftGray}{HTML}{F8FAFC}
+\definecolor{BorderGray}{HTML}{CBD5E1}
+\definecolor{TextDark}{HTML}{0F172A}
+\definecolor{TextMuted}{HTML}{475569}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=DarkAmber,
+    urlcolor=DarkAmber,
+    pdftitle={Propuesta Comercial - Plataforma Web Ferretería El Águila}
+}
+
+% Configuración de Títulos
+\titleformat{\section}{\color{NavyBlue}\large\bfseries}{\thesection}{1em}{}[{\color{AmberGold}\titlerule[1.5pt]}]
+\titlespacing*{\section}{0pt}{9pt}{5pt}
+
+\tcbset{
+    colback=SoftGray,
+    colframe=BorderGray,
+    arc=2.5mm,
+    boxrule=1pt,
+    left=9pt,right=9pt,top=7pt,bottom=7pt
+}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% ==============================================================================
+% CABECERA EJECUTIVA DE LA PROPUESTA
+% ==============================================================================
+\begin{tcolorbox}[colback=NavyBlue, colframe=AmberGold, boxrule=2pt, arc=3mm]
+    \begin{minipage}[c]{0.70\textwidth}
+        {\color{white}\Large\textbf{PROPUESTA COMERCIAL Y PRESUPUESTO}}\\[2pt]
+        {\color{AmberGold}\normalsize\textbf{Plataforma Web y Cotizador WhatsApp para 2 Sucursales}}\\[4pt]
+        {\color{white}\small\faUserTie\ \textbf{Cliente:} Don Timoteo Méndez $\bullet$ \textbf{Negocio:} Ferretería El Águila}\\
+        {\color{white}\footnotesize\faMapPin\ \textbf{Sucursal 1 (Matriz):} Las Delicias (Av. Revolución 1203 $\bullet$ 993 289 2935)}\\
+        {\color{white}\footnotesize\faMapPin\ \textbf{Sucursal 2:} Estrellas de Buena Vista (Carr. La Isla Km 5.300 $\bullet$ 993 192 8313)}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.27\textwidth}
+        \flushright
+        {\color{white}\footnotesize\textbf{Fecha:} Septiembre 2026}\\
+        {\color{AmberGold}\footnotesize\textbf{Dominio de Ejemplo:}}\\
+        {\color{white}\scriptsize\texttt{ferreteriaytlapaleria-aguila.com}}\\[4pt]
+        {\color{EmeraldGreen}\footnotesize\textbf{Demo en Vivo Lista}}
+    \end{minipage}
+\end{tcolorbox}
+
+\vspace{0.1cm}
+
+% ==============================================================================
+% 1. DIAGNÓSTICO COMERCIAL Y OPORTUNIDAD
+% ==============================================================================
+\section*{1. Diagnóstico Comercial y Oportunidad en Villahermosa}
+En la zona urbana y conurbada de Villahermosa, contratistas, maestros de obra, plomeros y talleres compran materiales desde su \textbf{teléfono celular directo en la obra}.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+    \item \textbf{Problema Actual:} Pedir material por audios o llamadas genera confusiones costosas en medidas (tornillería G5 NC/NF, cédulas de tubería, calibres THW), pérdidas de tiempo en el mostrador y cotizaciones que no se concretan.
+    \item \textbf{Solución Digital:} Un mostrador virtual ultra-rápido donde el cliente consulta el catálogo con fotos, armas su lista y en un solo clic \textbf{manda su pedido formal al WhatsApp de la sucursal que le quede más cerca (Delicias o Buena Vista)}.
+\end{itemize}
+
+\vspace{0.1cm}
+
+% ==============================================================================
+% 2. MÓDULOS DE LA PLATAFORMA
+% ==============================================================================
+\section*{2. Módulos y Funcionalidades Incluidas en la Plataforma}
+
+\noindent\begin{tabularx}{\textwidth}{@{}l X@{}}
+    \toprule
+    \textbf{Módulo} & \textbf{Beneficio Real para tus Dos Sucursales} \\
+    \midrule
+    \textbf{1. Catálogo con Fotos Reales} & Fotografías comerciales de tornillería G5, conexiones PVC/CPVC, cable THW, lijas Fandeli y herramientas Truper. \\
+    \addlinespace[2pt]
+    \textbf{2. Selector de Sucursal en Cotizador} & El cliente elige fácilmente si retira en \textbf{Las Delicias} o en \textbf{Estrellas de Buena Vista}, enrutando el pedido al WhatsApp correspondiente. \\
+    \addlinespace[2pt]
+    \textbf{3. Buscador Instantáneo} & Búsqueda inmediata por medidas, clave o nombre sin recargar la página. \\
+    \addlinespace[2pt]
+    \textbf{4. Cotizador WhatsApp en 1 Clic} & Arma la lista con subtotales, datos de la obra y solicitud formal sin errores. \\
+    \addlinespace[2pt]
+    \textbf{5. Optimizado para Teléfono Móvil} & Barra inferior estilo aplicación táctil, cómoda para usar con una sola mano en obra. \\
+    \addlinespace[2pt]
+    \textbf{6. Dominio Propio y Seguridad SSL} & Dirección oficial (\texttt{ferreteriaytlapaleria-aguila.com}) con candado HTTPS de seguridad. \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{0.15cm}
+
+% ==============================================================================
+% 3. MODELOS DE INVERSIÓN (COTA BAJA DEL MERCADO)
+% ==============================================================================
+\section*{3. Modelos de Inversión Accesibles (Cota Baja del Mercado)}
+
+\begin{tcolorbox}[colback=white, colframe=DarkAmber, boxrule=1.5pt]
+    {\color{DarkAmber}\textbf{\normalsize OPCIÓN 1: Paquete Doble Sucursal Llave en Mano}} \hfill \textbf{\color{EmeraldGreen}\faStar\ RECOMENDADA}\\
+    \textit{Puesta en marcha completa de tus 2 sucursales con un costo inicial mínimo y póliza muy económica.}
+    \begin{itemize}[leftmargin=*,itemsep=1.5pt]
+        \item \textbf{Inversión Inicial de Configuración:} \textbf{\$2,800 MXN} (pago único; puede dividirse en 2 partes: \$1,400 de anticipo y \$1,400 al entregar en producción con tu dominio).
+        \item \textbf{Póliza Mensual de Mantenimiento y Alojamiento:} \textbf{\$450 MXN / mes} en total por ambas sucursales (solo \textbf{\$225 MXN / mes por sucursal}).
+        \item \textbf{Incluye:} Compra y configuración de tu dominio anual (\texttt{.com}), hosting de alta velocidad, vinculación de tus 2 números de WhatsApp, 1 actualización mensual de precios/productos y soporte técnico continuo.
+    \end{itemize}
+\end{tcolorbox}
+
+\vspace{0.1cm}
+
+\begin{tcolorbox}[colback=white, colframe=NavyBlue, boxrule=1pt]
+    {\color{NavyBlue}\textbf{\normalsize OPCIÓN 2: Renta Mensual Todo Incluido (Cero Desembolso Inicial)}} \\
+    \textit{Para empezar a vender por internet de inmediato sin descapitalizarse.}
+    \begin{itemize}[leftmargin=*,itemsep=1.5pt]
+        \item \textbf{Anticipo de Activación y Dominio:} \textbf{\$500 MXN} $\bullet$ \textbf{Renta Mensual:} \textbf{\$550 MXN / mes} (compromiso mínimo de 6 meses).
+        \item \textbf{Incluye:} Todo el sistema activo al 100\%, hosting en la nube, soporte y 1 actualización mensual de precios. Si no le convence al término, no pierde inversión en desarrollo.
+    \end{itemize}
+\end{tcolorbox}
+
+\newpage
+
+\begin{tcolorbox}[colback=white, colframe=SlateNavy, boxrule=1pt]
+    {\color{SlateNavy}\textbf{\normalsize OPCIÓN 3: Pago Único Definitivo Sin Mensualidad Fija}} \\
+    \textit{Para ser dueño total del desarrollo y solicitar cambios únicamente cuando los necesite.}
+    \begin{itemize}[leftmargin=*,itemsep=1.5pt]
+        \item \textbf{Inversión Única:} \textbf{\$3,800 MXN} (pago único). Incluye dominio propio por 1 año y alojamiento en la nube.
+        \item \textbf{Sin mensualidad fija:} Si meses después requieres actualizar precios o subir nuevos productos, se cobra una cuota simbólica de \textbf{\$200 MXN} por lote de actualización bajo demanda.
+    \end{itemize}
+\end{tcolorbox}
+
+\vspace{0.1cm}
+
+% ==============================================================================
+% 4. DELIMITACIÓN CLARA DE FUNCIONES (QUIÉN HACE QUÉ)
+% ==============================================================================
+\section*{4. Delimitación de Funciones y Responsabilidades Operativas}
+Para garantizar una operación ordenada, transparente y sin malentendidos, las funciones quedan delimitadas así:
+
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{\color{NavyBlue}\faLaptopCode\ Mis Funciones (Administrador Web):}
+    \begin{itemize}[leftmargin=*,itemsep=2.5pt,label={\color{EmeraldGreen}\faCheckCircle}]
+        \item \textbf{Disponibilidad 24/7:} Garantizar que la página web esté siempre en línea, rápida y segura.
+        \item \textbf{Gestión de Dominio:} Configuración técnica y renovación de \texttt{ferreteriaytlapaleria-aguila.com}.
+        \item \textbf{Actualizaciones Mensuales:} Aplicar cambios de precios o altas de productos cuando me envíes la lista.
+        \item \textbf{Soporte Técnico:} Modificar números de WhatsApp o datos de sucursal si hay rotación de personal.
+        \item \textbf{Código QR:} Entrega de archivo listo para imprimir en lonas o notas de mostrador.
+    \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{\color{NavyBlue}\faStore\ Funciones de Don Timoteo / Mostrador:}
+    \begin{itemize}[leftmargin=*,itemsep=2.5pt,label={\color{DarkAmber}\faCheck}]
+        \item \textbf{Atención de WhatsApp:} Responder oportunamente los mensajes que envíen los clientes a cada tienda.
+        \item \textbf{Existencias y Precio Final:} Confirmar inventario físico en bodega y acordar forma de pago.
+        \item \textbf{Cobro y Entrega:} Despachar el material en mostrador o coordinar el flete a obra.
+        \item \textbf{Envío de Cambios:} Proporcionar por WhatsApp o lista física los cambios de precios cuando ocurran.
+    \end{itemize}
+    \vspace{2pt}
+    {\footnotesize\color{TextMuted}\textit{* El administrador no atiende llamadas de clientes de mostrador ni realiza cobros; su función es tecnológica.}}
+\end{minipage}
+
+\vspace{0.2cm}
+
+% ==============================================================================
+% 5. PLAN DE PUESTA EN MARCHA (48 HORAS)
+% ==============================================================================
+\section*{5. Plan de Puesta en Marcha en 3 Pasos (Entrega en 48 Horas)}
+
+\noindent\begin{tabularx}{\textwidth}{@{}c l X@{}}
+    \toprule
+    \textbf{Paso} & \textbf{Acción Inmediata} & \textbf{Detalle Operativo} \\
+    \midrule
+    \textbf{1} & \textbf{Selección de Paquete y Dominio} & Confirmación del paquete y compra del dominio oficial \texttt{.com}. \\
+    \addlinespace[3pt]
+    \textbf{2} & \textbf{Prueba de Enlace WhatsApp} & Envío de cotizaciones de prueba a Delicias (993 289 2935) y Buena Vista (993 192 8313). \\
+    \addlinespace[3pt]
+    \textbf{3} & \textbf{Lanzamiento y Material Gráfico} & Portal en vivo en internet y entrega de Código QR para colocar en mostradores. \\
+    \bottomrule
+\end{tabularx}
+
+\vspace{0.2cm}
+
+% ==============================================================================
+% 6. DEMO EN VIVO Y ACEPTACIÓN
+% ==============================================================================
+\begin{tcolorbox}[colback=SoftGray, colframe=NavyBlue, boxrule=1.5pt]
+    \begin{minipage}[c]{0.70\textwidth}
+        \textbf{\large Demostración en Vivo Lista en tu Teléfono:}\\
+        {\footnotesize Puedes ingresar y probar tú mismo cotizando al WhatsApp de ambas tiendas:}\\
+        \textbf{\url{https://letrasyvocesdetabasco.github.io/ferreteria-el-aguila/}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.26\textwidth}
+        \centering
+        \textbf{\color{DarkGreen}\faBolt\ Sistema Validado}\\
+        {\footnotesize Listo para conectar tu dominio propio en 48 hrs.}
+    \end{minipage}
+\end{tcolorbox}
+
+\vspace{0.25cm}
+
+% Espacio de Firma / Aceptación
+\noindent\begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \vspace{0.7cm}
+    \rule{0.85\textwidth}{0.6pt}\\
+    \footnotesize\textbf{Don Timoteo Méndez}\\
+    Ferretería y Tlapalería El Águila\\
+    {\scriptsize (Suc. Las Delicias y Suc. Estrellas de Buena Vista)}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \vspace{0.7cm}
+    \rule{0.85\textwidth}{0.6pt}\\
+    \footnotesize\textbf{Administrador y Desarrollador Web}\\
+    Soluciones Digitales Villahermosa, Tabasco\\
+    {\scriptsize Gestión Tecnológica y Soporte Continuo}
+\end{minipage}
+
+\end{document}

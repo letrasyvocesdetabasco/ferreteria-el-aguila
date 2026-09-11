@@ -15,49 +15,27 @@ const CONFIG = {
 };
 
 const BRANCHES = {
-  tamulte: {
-    id: "tamulte",
-    name: "Sucursal Tamulté de las Sabanas",
-    address: "Zona Principal / Centro, Tamulté de las Sabanas, Centro, Tabasco",
+  delicias: {
+    id: "delicias",
+    name: "Sucursal Las Delicias",
+    address: "Av. Revolución 1203, Cuadrante II, Las Delicias, C.P. 86140, Villahermosa, Tab.",
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
-    badge: "Mostrador Tamulté",
+    badge: "Matriz / Mostrador Delicias",
     isMatriz: true,
     schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: 8:00 a 14:00 hrs"
   },
   buenavista: {
     id: "buenavista",
-    name: "Sucursal Estrellas de Buenavista",
-    address: "Fracc. Estrellas de Buenavista, Centro, Tabasco",
+    name: "Sucursal Estrellas de Buena Vista",
+    address: "Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc, C.P. 86280, Villahermosa, Tab.",
     city: "Villahermosa, Tabasco",
-    phone: "993 289 2935",
-    whatsapp: "529932892935",
-    badge: "Mostrador Buenavista",
+    phone: "993 192 8313",
+    whatsapp: "529931928313",
+    badge: "Sucursal Buena Vista",
     isMatriz: false,
-    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs"
-  },
-  gaviotas: {
-    id: "gaviotas",
-    name: "Sucursal Gaviotas",
-    address: "Aquiles Calderón Marchena, Col. Gaviotas, Villahermosa, Tabasco",
-    city: "Villahermosa, Tabasco",
-    phone: "993 289 2935",
-    whatsapp: "529932892935",
-    badge: "Mostrador Gaviotas",
-    isMatriz: false,
-    schedule: "Lunes a Sábado: 7:30 a 18:00 hrs"
-  },
-  hidalgo: {
-    id: "hidalgo",
-    name: "Sucursal Miguel Hidalgo",
-    address: "Carretera Villahermosa - La Isla, Col. Miguel Hidalgo, Villahermosa, Tabasco",
-    city: "Villahermosa, Tabasco",
-    phone: "993 141 2755",
-    whatsapp: "529931412755",
-    badge: "Mostrador La Isla / Hidalgo",
-    isMatriz: false,
-    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs"
+    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: Cerrado"
   }
 };
 
@@ -67,7 +45,7 @@ const BRANCHES = {
 const AppState = {
   masterCatalog: [],
   filteredCatalog: [],
-  selectedBranch: localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) || "tamulte",
+  selectedBranch: (localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) === "buenavista") ? "buenavista" : "delicias",
   filterCategory: "all",
   filterBrand: "all",
   searchTerm: "",
@@ -160,11 +138,26 @@ function updateBranchUI(branchId) {
   const select = document.getElementById("branch-select");
   if (select) select.value = branchId;
 
+  // Actualizar tarjetas selectoras dentro del cajón de cotización
+  document.querySelectorAll(".drawer-branch-card").forEach((card) => {
+    if (card.dataset.branchId === branchId) {
+      card.classList.add("active");
+    } else {
+      card.classList.remove("active");
+    }
+  });
+
   const drawerBranchName = document.getElementById("drawer-selected-branch-name");
   if (drawerBranchName) drawerBranchName.textContent = branch.name;
 
   const drawerBranchPhone = document.getElementById("drawer-selected-branch-phone");
   if (drawerBranchPhone) drawerBranchPhone.textContent = branch.phone;
+
+  // Actualizar texto del botón de despacho en el cajón de cotización
+  const sendWhatsAppBtn = document.getElementById("whatsapp-order-btn");
+  if (sendWhatsAppBtn) {
+    sendWhatsAppBtn.innerHTML = `<span>💬 Enviar Presupuesto a ${branch.name} (WhatsApp)</span>`;
+  }
 
   // Actualizar botón flotante de WhatsApp y barra fija móvil
   const floatingWa = document.getElementById("floating-wa-btn");
@@ -582,7 +575,7 @@ function updateCartUI() {
 // ==========================================================================
 function dispatchToWhatsApp() {
   if (AppState.quoteCart.size === 0) {
-    alert("El presupuesto no tiene productos agregados.");
+    alert("Tu presupuesto está vacío. Agrega productos del catálogo para poder cotizar.");
     return;
   }
 
@@ -607,12 +600,13 @@ function dispatchToWhatsApp() {
   let msg = `*SOLICITUD DE COTIZACIÓN DE MATERIALES*\n`;
   msg += `*FERRETERÍA Y TLAPALERÍA EL ÁGUILA*\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `📍 *Sucursal Destino:* ${branch.name}\n`;
-  msg += `🏢 *Dirección:* ${branch.address}\n`;
+  msg += `📍 *Sucursal Seleccionada:* ${branch.name}\n`;
+  msg += `🏢 *Ubicación:* ${branch.address}\n`;
+  msg += `📱 *Teléfono / WhatsApp Mostrador:* ${branch.phone}\n`;
   msg += `📅 *Fecha:* ${dateStr}\n\n`;
 
-  msg += `*DATOS DEL SOLICITANTE / OBRA:*\n`;
-  msg += `• *Cliente / Empresa:* ${clientName || "Mostrador / Contratista"}\n`;
+  msg += `*DATOS DEL CLIENTE / OBRA:*\n`;
+  msg += `• *Cliente / Empresa:* ${clientName || "Cliente Particular / Mostrador"}\n`;
   msg += `• *Lugar de Entrega / Obra:* ${siteLocation || "Recolección en Mostrador Villahermosa"}\n`;
   if (notes) {
     msg += `• *Notas:* ${notes}\n`;
@@ -634,7 +628,7 @@ function dispatchToWhatsApp() {
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `*TOTAL ESTIMADO:* *$${totalEstimado.toFixed(2)} MXN*\n\n`;
-  msg += `_Solicito amablemente confirmar existencias en sucursal, descuentos por volumen y tiempo de entrega. Saludos cordiales._`;
+  msg += `_Solicito amablemente confirmar existencias en ${branch.name}, descuentos por volumen y tiempo de entrega. Saludos cordiales._`;
 
   const encodedMsg = encodeURIComponent(msg);
   const targetNumber = branch.whatsapp;
