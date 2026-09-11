@@ -84,28 +84,58 @@
   <!-- 3. Sección Hero Visual y Comercial -->
   <section class="hero-showcase">
     <div class="hero-inner">
-      <div class="hero-badge-tag">
-        <span>🦅 FERRETERÍA Y TLAPALERÍA EL ÁGUILA</span>
-      </div>
-      
-      <h1 class="hero-title">
-        Todo para tu Obra, Taller e Instalación al Mejor Precio en <span>Villahermosa</span>
-      </h1>
-      
-      <p class="hero-description">
-        Especialistas en <strong>tornillería hexagonal Grado 5 (NF y NC)</strong>, varilla roscada, plomería hidráulica (PVC, CPVC y cobre), conductores eléctricos THW, <strong>lijas Fandeli</strong> y herramientas profesionales Truper. Cotiza directamente con tu mostrador de confianza y recibe en tu obra.
-      </p>
+      <div class="hero-content">
+        <div class="hero-badge-tag">
+          <span>🦅 FERRETERÍA Y TLAPALERÍA EL ÁGUILA</span>
+        </div>
+        
+        <h1 class="hero-title">
+          ¡Todo lo que necesitas para tu hogar o trabajo, <span>en un solo lugar!</span>
+        </h1>
+        
+        <p class="hero-description">
+          Surtido técnico inmediato en Villahermosa: <strong>tornillería hexagonal Grado 5 (NF y NC)</strong>, varilla roscada, plomería hidráulica (PVC, CPVC y cobre), conductores eléctricos THW, <strong>lijas Fandeli</strong> y herramientas profesionales. Más de 11,500 productos de inventario real a precio de mostrador y mayoreo.
+        </p>
 
-      <div class="hero-cta-group">
-        <a href="#catalog-section" class="btn-hero-primary" onclick="scrollToCatalog()">
-          <span>🔍 Explorar Catálogo de Productos</span>
-        </a>
-        <a href="javascript:void(0)" class="btn-hero-whatsapp" onclick="openQuoteDrawer()">
-          <span>💬 Cotizar Materiales por WhatsApp</span>
-        </a>
-        <button class="btn-hero-outline" onclick="scrollToBranches()">
-          <span>📍 Ubicación de Sucursales</span>
-        </button>
+        <!-- Referencias y Ubicaciones Físicas Reales de las 2 Sucursales -->
+        <div class="hero-landmarks">
+          <div class="landmark-pill">
+            <span>📍 <strong>Sucursal Las Delicias (Matriz):</strong> Av. Revolución 1203 <em>(A un lado del Centro de Salud San Joaquín)</em> &bull; 📞 993 289 2935</span>
+          </div>
+          <div class="landmark-pill">
+            <span>📍 <strong>Sucursal Estrellas de Buena Vista:</strong> Carr. Villahermosa a La Isla Km 5.300 <em>(Buena Vista 1ra Secc)</em> &bull; 📞 993 192 8313</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#catalog-section" class="btn-hero-primary" onclick="scrollToCatalog()">
+            <span>🔍 Explorar 11,529 Productos</span>
+          </a>
+          <a href="javascript:void(0)" class="btn-hero-whatsapp" onclick="openQuoteDrawer()">
+            <span>💬 Cotizar por WhatsApp</span>
+          </a>
+          <button class="btn-hero-outline" onclick="scrollToBranches()">
+            <span>📍 Nuestras 2 Sucursales</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjeta Destacada de la Fachada y Lona Oficial del Cliente -->
+      <div class="hero-banner-card-wrapper">
+        <div class="hero-banner-card">
+          <div class="hero-banner-badge">
+            <span>📸 Mostrador Oficial Villahermosa</span>
+          </div>
+          <img 
+            src="assets/images/lona-oficial-el-aguila.jpg" 
+            alt="Fachada y Lona Oficial de Ferretería y Tlapalería El Águila - Av. Revolución Las Delicias"
+            loading="eager"
+          >
+          <div class="hero-banner-caption">
+            <span>Ferretería y Tlapalería El Águila</span>
+            <small>Av. Revolución 1203, Col. Las Delicias &bull; A un lado del C.S. San Joaquín</small>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -153,49 +183,58 @@
   <section class="categories-visual-section">
     <div class="section-header-row">
       <div>
-        <h2>Líneas de Producto Principales</h2>
-        <p>Selecciona una categoría para ver los productos y especificaciones disponibles:</p>
+        <h2>5 Departamentos Oficiales en Mostrador</h2>
+        <p>Selecciona una línea de producto para explorar el catálogo técnico y cotizar:</p>
       </div>
       <button class="btn-reset-filter" onclick="resetAllFilters()" style="font-size: 0.85rem;">
-        Ver Todo el Catálogo &rarr;
+        Ver Todo el Catálogo (11,529) &rarr;
       </button>
     </div>
 
     <div class="categories-visual-grid">
       
-      <!-- Tarjeta 1: Tornillería y Fijación -->
-      <div class="category-banner-card" onclick="filterByCategoryBanner('Fijación y Tornillería')">
+      <!-- Tarjeta 1: Tlapalería y Construcción -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Tlapalería y Construcción')">
+        <img src="assets/images/cat-tlapaleria.jpg" alt="Tlapalería y Construcción, Lijas Fandeli, Pinturas y Selladores" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">🎨 Tlapalería y Construcción</h3>
+          <p class="category-banner-desc">4,325 artículos: Lijas Fandeli, pinturas, brochas, impermeabilizantes y selladores.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2: Tornillería y Fijación -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Tornillería y Fijación')">
         <img src="assets/images/cat-tornilleria.jpg" alt="Tornillería Grado 5, Varilla Roscada y Arandelas" loading="lazy">
         <div class="category-banner-overlay">
-          <h3 class="category-banner-title">🔩 Fijación y Tornillería</h3>
-          <p class="category-banner-desc">Hexagonal G5 (NC y NF), métricos, varilla roscada, pijas y rondanas.</p>
+          <h3 class="category-banner-title">🔩 Tornillería y Fijación</h3>
+          <p class="category-banner-desc">2,355 artículos: Hexagonal G5 (NC y NF), métricos, varilla roscada, pijas y rondanas.</p>
         </div>
       </div>
 
-      <!-- Tarjeta 2: Plomería y Conducción -->
-      <div class="category-banner-card" onclick="filterByCategoryBanner('Plomería y Conducción')">
+      <!-- Tarjeta 3: Plomería y Conexiones -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Plomería y Conexiones')">
         <img src="assets/images/cat-plomeria.jpg" alt="Tubería PVC, CPVC, Cobre y Válvulas" loading="lazy">
         <div class="category-banner-overlay">
-          <h3 class="category-banner-title">🚰 Plomería y Fluidos</h3>
-          <p class="category-banner-desc">PVC C40, CPVC caliente, cobre Nacobre, galvanizado y válvulas.</p>
+          <h3 class="category-banner-title">🚰 Plomería y Conexiones</h3>
+          <p class="category-banner-desc">1,951 artículos: PVC hidráulico/sanitario, CPVC caliente, cobre Nacobre y grifería.</p>
         </div>
       </div>
 
-      <!-- Tarjeta 3: Material Eléctrico -->
+      <!-- Tarjeta 4: Herramientas en General -->
+      <div class="category-banner-card" onclick="filterByCategoryBanner('Herramientas en General')">
+        <img src="assets/images/cat-herramientas.jpg" alt="Herramientas Manuales y Eléctricas Truper" loading="lazy">
+        <div class="category-banner-overlay">
+          <h3 class="category-banner-title">🛠️ Herramientas en General</h3>
+          <p class="category-banner-desc">1,877 artículos: Herramientas manuales Truper/Pretul, dados, martillos y esmeriles.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 5: Material Eléctrico -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Material Eléctrico')">
         <img src="assets/images/cat-electrico.jpg" alt="Cables de Cobre THW, Conduit y Centros de Carga" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">⚡ Material Eléctrico</h3>
-          <p class="category-banner-desc">Cable THW 10/12 Condumex/IUSA, pastillas Square D y campanas LED.</p>
-        </div>
-      </div>
-
-      <!-- Tarjeta 4: Herramientas y Abrasivos -->
-      <div class="category-banner-card" onclick="filterByCategoryBanner('Herramientas Manuales')">
-        <img src="assets/images/cat-herramientas.jpg" alt="Herramientas Truper y Lijas Fandeli" loading="lazy">
-        <div class="category-banner-overlay">
-          <h3 class="category-banner-title">🛠️ Herramientas y Abrasivos</h3>
-          <p class="category-banner-desc">Taladros y esmeriladoras Truper, pinzas y lijas de agua Fandeli.</p>
+          <p class="category-banner-desc">1,021 artículos: Cable THW 10/12 Condumex/IUSA, centros de carga y pastillas.</p>
         </div>
       </div>
 
@@ -270,11 +309,14 @@
         <!-- Generado dinámicamente con fotos reales por app.js -->
       </div>
 
+      <!-- Contenedor de Paginación y Carga de Más Productos -->
+      <div id="pagination-container" class="pagination-wrapper"></div>
+
     </section>
 
   </main>
 
-  <!-- 7. Sección Destacada de las 4 Sucursales Familiares -->
+  <!-- 7. Sección Destacada de las 2 Sucursales Familiares -->
   <section id="branches-section" class="branches-showcase-section">
     <div class="branches-section-inner">
       <div class="section-header-row">
@@ -292,7 +334,7 @@
             <span class="branch-type-pill pill-matriz">Matriz / Mostrador Central</span>
             <h3>Sucursal Las Delicias</h3>
             <p class="branch-address-text">
-              📍 <strong>Av. Revolución 1203, Cuadrante II</strong>, Col. Las Delicias, C.P. 86140, Villahermosa, Tabasco.
+              📍 <strong>Av. Revolución 1203, Cuadrante II</strong>, Col. Las Delicias <em>(A un lado del Centro de Salud San Joaquín)</em>, C.P. 86140, Villahermosa, Tabasco.
             </p>
             <p class="branch-hours-text">
               🕒 <strong>Lunes a Sábado:</strong> 7:30 a 18:30 hrs<br>

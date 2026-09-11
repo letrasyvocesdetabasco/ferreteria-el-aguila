@@ -310,9 +310,110 @@ body {
 .hero-inner {
   max-width: 1440px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 36px;
+}
+
+@media (max-width: 960px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.hero-landmarks {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.landmark-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--accent-gold);
+  padding: 8px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+
+.landmark-pill strong {
+  color: #ffffff;
+}
+
+.landmark-pill em {
+  color: #fbbf24;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.hero-banner-card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-banner-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(245, 158, 11, 0.35);
+  background: #0f172a;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 520px;
+}
+
+.hero-banner-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(245, 158, 11, 0.25), 0 0 0 2px var(--accent-gold);
+}
+
+.hero-banner-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 16 / 10;
+}
+
+.hero-banner-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(12, 28, 46, 0.9);
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 800;
+  border: 1px solid var(--accent-gold);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.hero-banner-caption {
+  padding: 12px 16px;
+  background: rgba(12, 28, 46, 0.96);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-banner-caption span {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #ffffff;
+}
+
+.hero-banner-caption small {
+  font-size: 0.76rem;
+  color: var(--accent-gold);
+  font-weight: 600;
 }
 
 .hero-badge-tag {
@@ -494,7 +595,7 @@ body {
 
 .categories-visual-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
@@ -991,7 +1092,48 @@ body {
 }
 
 /* ==========================================================================
-   Sección Destacada de las 3 Sucursales en Villahermosa
+   Controles de Paginación y Carga de Artículos
+   ========================================================================== */
+.pagination-wrapper {
+  margin: 36px 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-load-more {
+  background: linear-gradient(135deg, #0f4c9c 0%, #0c1c2e 100%);
+  color: #ffffff;
+  border: 2px solid var(--accent-gold);
+  padding: 13px 32px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 76, 156, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-load-more:hover {
+  background: linear-gradient(135deg, #1d64c2 0%, #0f4c9c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+}
+
+.pagination-stats {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Sección Destacada de las 2 Sucursales en Villahermosa
    ========================================================================== */
 .branches-showcase-section {
   background: #ffffff;

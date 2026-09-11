@@ -19,6 +19,7 @@ const BRANCHES = {
     id: "delicias",
     name: "Sucursal Las Delicias",
     address: "Av. Revolución 1203, Cuadrante II, Las Delicias, C.P. 86140, Villahermosa, Tab.",
+    landmark: "A un lado del Centro de Salud San Joaquín",
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
@@ -30,6 +31,7 @@ const BRANCHES = {
     id: "buenavista",
     name: "Sucursal Estrellas de Buena Vista",
     address: "Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc, C.P. 86280, Villahermosa, Tab.",
+    landmark: "Buena Vista 1ra Secc",
     city: "Villahermosa, Tabasco",
     phone: "993 192 8313",
     whatsapp: "529931928313",
@@ -45,6 +47,8 @@ const BRANCHES = {
 const AppState = {
   masterCatalog: [],
   filteredCatalog: [],
+  displayedCount: 36,
+  pageSize: 36,
   selectedBranch: (localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) === "buenavista") ? "buenavista" : "delicias",
   filterCategory: "all",
   filterBrand: "all",
@@ -188,10 +192,10 @@ function generateFacetFilters() {
   const brandMap = new Map();
 
   AppState.masterCatalog.forEach((prod) => {
-    const catName = prod.categories?.name || "General";
+    const catName = prod.category || prod.categories?.name || "General";
     categoryMap.set(catName, (categoryMap.get(catName) || 0) + 1);
 
-    const brandName = prod.brands?.name || "Homologado";
+    const brandName = prod.brand || prod.brands?.name || "Homologado";
     brandMap.set(brandName, (brandMap.get(brandName) || 0) + 1);
   });
 
@@ -200,14 +204,15 @@ function generateFacetFilters() {
     catList.innerHTML = `
       <li class="facet-item ${AppState.filterCategory === "all" ? "active" : ""}" data-category="all">
         <span>Todos los Departamentos</span>
-        <span class="facet-count">${AppState.masterCatalog.length}</span>
+        <span class="facet-count">${AppState.masterCatalog.length.toLocaleString('es-MX')}</span>
       </li>
     `;
-    categoryMap.forEach((count, name) => {
+    const sortedCats = Array.from(categoryMap.entries()).sort((a, b) => b[1] - a[1]);
+    sortedCats.forEach(([name, count]) => {
       const li = document.createElement("li");
       li.className = `facet-item ${AppState.filterCategory === name ? "active" : ""}`;
       li.dataset.category = name;
-      li.innerHTML = `<span>${name}</span><span class="facet-count">${count}</span>`;
+      li.innerHTML = `<span>${escapeHtml(name)}</span><span class="facet-count">${count.toLocaleString('es-MX')}</span>`;
       li.onclick = () => {
         AppState.filterCategory = name;
         updateFacetSelection();
@@ -230,14 +235,15 @@ function generateFacetFilters() {
     brandList.innerHTML = `
       <li class="facet-item ${AppState.filterBrand === "all" ? "active" : ""}" data-brand="all">
         <span>Todas las Marcas</span>
-        <span class="facet-count">${AppState.masterCatalog.length}</span>
+        <span class="facet-count">${AppState.masterCatalog.length.toLocaleString('es-MX')}</span>
       </li>
     `;
-    brandMap.forEach((count, name) => {
+    const sortedBrands = Array.from(brandMap.entries()).sort((a, b) => b[1] - a[1]);
+    sortedBrands.forEach(([name, count]) => {
       const li = document.createElement("li");
       li.className = `facet-item ${AppState.filterBrand === name ? "active" : ""}`;
       li.dataset.brand = name;
-      li.innerHTML = `<span>${name}</span><span class="facet-count">${count}</span>`;
+      li.innerHTML = `<span>${escapeHtml(name)}</span><span class="facet-count">${count.toLocaleString('es-MX')}</span>`;
       li.onclick = () => {
         AppState.filterBrand = name;
         updateFacetSelection();
@@ -269,21 +275,24 @@ function applyFilterPipeline() {
   const query = AppState.searchTerm.toLowerCase().trim();
 
   AppState.filteredCatalog = AppState.masterCatalog.filter((item) => {
+    const catName = item.category || item.categories?.name || "";
     const passCat =
       AppState.filterCategory === "all" ||
-      (item.categories?.name && item.categories.name === AppState.filterCategory);
+      catName.toLowerCase() === AppState.filterCategory.toLowerCase();
 
+    const brandName = item.brand || item.brands?.name || "";
     const passBrand =
       AppState.filterBrand === "all" ||
-      (item.brands?.name && item.brands.name === AppState.filterBrand);
+      brandName.toLowerCase() === AppState.filterBrand.toLowerCase();
 
     let passSearch = true;
     if (query) {
-      const nameMatch = item.name?.toLowerCase().includes(query);
-      const skuMatch = item.sku?.toLowerCase().includes(query);
-      const codeMatch = item.manufacturer_code?.toLowerCase().includes(query);
-      const brandMatch = item.brands?.name?.toLowerCase().includes(query);
-      const descMatch = item.description?.toLowerCase().includes(query);
+      const nameMatch = item.name && item.name.toLowerCase().includes(query);
+      const skuMatch = item.sku && item.sku.toLowerCase().includes(query);
+      const codeMatch = item.manufacturer_code && item.manufacturer_code.toLowerCase().includes(query);
+      const brandMatch = brandName && brandName.toLowerCase().includes(query);
+      const catMatch = catName && catName.toLowerCase().includes(query);
+      const descMatch = item.description && item.description.toLowerCase().includes(query);
 
       let attrMatch = false;
       if (item.attributes && typeof item.attributes === "object") {
@@ -295,12 +304,13 @@ function applyFilterPipeline() {
         }
       }
 
-      passSearch = nameMatch || skuMatch || codeMatch || brandMatch || descMatch || attrMatch;
+      passSearch = nameMatch || skuMatch || codeMatch || brandMatch || catMatch || descMatch || attrMatch;
     }
 
     return passCat && passBrand && passSearch;
   });
 
+  AppState.displayedCount = AppState.pageSize;
   sortCatalog();
   renderCatalogGrid();
 }
@@ -324,109 +334,196 @@ function sortCatalog() {
 }
 
 // ==========================================================================
-// 6. Renderizado de Productos Modernos y Comerciales
+// 6. Renderizado de Productos con Paginación y Carga Progresiva
 // ==========================================================================
 function renderCatalogGrid() {
   const grid = document.getElementById("products-container");
   const counter = document.getElementById("counter-display");
+  const paginationBox = document.getElementById("pagination-container");
   if (!grid) return;
 
   grid.innerHTML = "";
-  const count = AppState.filteredCatalog.length;
+  const totalCount = AppState.filteredCatalog.length;
+  const currentShowing = Math.min(AppState.displayedCount, totalCount);
+
   if (counter) {
-    counter.textContent = `Mostrando ${count} de ${AppState.masterCatalog.length} artículos técnicos`;
+    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
   }
 
-  if (count === 0) {
+  if (totalCount === 0) {
     grid.innerHTML = `
       <div class="empty-catalog-state" style="grid-column: 1/-1; background:#fff; padding:40px; text-align:center; border-radius:12px; border:1px solid #e2e8f0;">
         <h3 style="font-size:1.2rem; margin-bottom:8px; color:#0f172a;">Sin resultados para "${escapeHtml(AppState.searchTerm)}"</h3>
-        <p style="color:#64748b; margin-bottom:14px;">Prueba buscando por término general como <em>"tornillo", "cobre", "cpvc", "cable", "fandeli"</em> o limpia los filtros.</p>
+        <p style="color:#64748b; margin-bottom:14px;">Prueba buscando por término general como <em>"tornillo", "cobre", "cpvc", "cable", "fandeli", "broca"</em> o limpia los filtros.</p>
         <button class="btn-hero-primary" onclick="resetAllFilters()">Restablecer Filtros</button>
+      </div>
+    `;
+    if (paginationBox) paginationBox.innerHTML = "";
+    return;
+  }
+
+  const itemsToRender = AppState.filteredCatalog.slice(0, AppState.displayedCount);
+  appendCardsToGrid(grid, itemsToRender);
+  updatePaginationUI();
+}
+
+function appendCardsToGrid(container, items) {
+  const fragment = document.createDocumentFragment();
+
+  items.forEach((prod) => {
+    const card = createProductCardElement(prod);
+    fragment.appendChild(card);
+  });
+
+  container.appendChild(fragment);
+}
+
+function createProductCardElement(prod) {
+  const card = document.createElement("article");
+  card.className = "product-card";
+  card.dataset.sku = prod.sku;
+
+  const catName = prod.category || prod.categories?.name || "General";
+  const brandName = prod.brand || prod.brands?.name || "Homologado";
+  const priceFormatted = parseFloat(prod.base_price).toFixed(2);
+  const featureBadge = prod.badge || "En Existencia";
+  const imgUrl = prod.image || prod.image_url || "assets/images/cat-tlapaleria.jpg";
+  const descText = prod.description || `${prod.name} - Calidad garantizada para obra y mantenimiento.`;
+
+  // Chips de Atributos Técnicos
+  let chipsHtml = "";
+  if (prod.attributes && typeof prod.attributes === "object") {
+    chipsHtml = Object.entries(prod.attributes)
+      .slice(0, 3)
+      .map(([k, v]) => `<span class="spec-chip"><strong>${escapeHtml(k)}:</strong> ${escapeHtml(String(v))}</span>`)
+      .join("");
+  } else {
+    chipsHtml = `<span class="spec-chip"><strong>Línea:</strong> ${escapeHtml(catName)}</span>`;
+  }
+
+  card.innerHTML = `
+    <div class="product-image-container">
+      <img 
+        src="${escapeHtml(imgUrl)}" 
+        alt="${escapeHtml(prod.name)}" 
+        class="product-thumb-img" 
+        loading="lazy"
+        onerror="this.src='assets/images/hero-storefront.jpg'"
+      >
+      <div class="card-badge-stock">
+        <span class="stock-pulsing-dot"></span>
+        <span>En Mostrador</span>
+      </div>
+      <div class="card-badge-feature">${escapeHtml(featureBadge)}</div>
+    </div>
+
+    <div class="product-card-body">
+      <div class="product-brand-line">
+        <span class="brand-name-pill">${escapeHtml(brandName)}</span>
+        <span class="sku-pill">SKU: ${escapeHtml(prod.sku)}</span>
+      </div>
+
+      <h3 class="product-title" title="${escapeHtml(prod.name)}">${escapeHtml(prod.name)}</h3>
+      <p class="product-description">${escapeHtml(descText)}</p>
+
+      <div class="specs-chips-container">
+        ${chipsHtml}
+      </div>
+    </div>
+
+    <div class="product-card-footer">
+      <div class="price-row">
+        <span class="price-val">$${priceFormatted}</span>
+        <span class="unit-val">x ${escapeHtml(prod.unit_measure || "PZA")}</span>
+      </div>
+
+      <div class="card-actions-bar">
+        <div class="stepper-container">
+          <button class="stepper-btn" onclick="stepQuantity(this, -1)">-</button>
+          <input type="number" class="qty-input" min="1" max="999" value="1">
+          <button class="stepper-btn" onclick="stepQuantity(this, 1)">+</button>
+        </div>
+
+        <button class="btn-add-to-quote" onclick="handleAddProductFromCard(this)">
+          <span>🛒 + Cotizar</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  return card;
+}
+
+function updatePaginationUI() {
+  const paginationBox = document.getElementById("pagination-container");
+  const counter = document.getElementById("counter-display");
+  if (!paginationBox) return;
+
+  const totalCount = AppState.filteredCatalog.length;
+  const currentShowing = Math.min(AppState.displayedCount, totalCount);
+
+  if (counter) {
+    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
+  }
+
+  if (AppState.displayedCount >= totalCount) {
+    paginationBox.innerHTML = `
+      <div class="pagination-stats">
+        ✓ Mostrando todos los ${totalCount.toLocaleString('es-MX')} artículos técnicos encontrados.
       </div>
     `;
     return;
   }
 
-  AppState.filteredCatalog.forEach((prod) => {
-    const card = document.createElement("article");
-    card.className = "product-card";
+  const remaining = totalCount - AppState.displayedCount;
+  const nextBatch = Math.min(AppState.pageSize, remaining);
 
-    // Chips de Atributos Técnicos
-    let chipsHtml = "";
-    if (prod.attributes && typeof prod.attributes === "object") {
-      chipsHtml = Object.entries(prod.attributes)
-        .slice(0, 3)
-        .map(([k, v]) => `<span class="spec-chip"><strong>${escapeHtml(k)}:</strong> ${escapeHtml(String(v))}</span>`)
-        .join("");
-    }
-
-    const brandName = prod.brands?.name || "Homologado";
-    const priceFormatted = parseFloat(prod.base_price).toFixed(2);
-    const mfgCodeStr = prod.manufacturer_code ? ` | Clave: ${escapeHtml(prod.manufacturer_code)}` : "";
-    const featureBadge = prod.badge || "Garantizado";
-    const imgUrl = prod.image || "assets/images/hero-storefront.jpg";
-
-    card.innerHTML = `
-      <div class="product-image-container">
-        <img 
-          src="${escapeHtml(imgUrl)}" 
-          alt="${escapeHtml(prod.name)}" 
-          class="product-thumb-img" 
-          loading="lazy"
-          onerror="this.src='assets/images/hero-storefront.jpg'"
-        >
-        <div class="card-badge-stock">
-          <span class="stock-pulsing-dot"></span>
-          <span>En Mostrador</span>
-        </div>
-        <div class="card-badge-feature">${escapeHtml(featureBadge)}</div>
-      </div>
-
-      <div class="product-card-body">
-        <div class="product-brand-line">
-          <span class="brand-name-pill">${escapeHtml(brandName)}</span>
-          <span class="sku-pill">SKU: ${escapeHtml(prod.sku)}</span>
-        </div>
-
-        <h3 class="product-title">${escapeHtml(prod.name)}</h3>
-        <p class="product-description">${escapeHtml(prod.description || "")}</p>
-
-        <div class="specs-chips-container">
-          ${chipsHtml}
-        </div>
-      </div>
-
-      <div class="product-card-footer">
-        <div class="price-row">
-          <span class="price-val">$${priceFormatted}</span>
-          <span class="unit-val">x ${escapeHtml(prod.unit_measure || "PZA")}</span>
-        </div>
-
-        <div class="card-actions-bar">
-          <div class="stepper-container">
-            <button class="stepper-btn" onclick="stepQuantity('${prod.sku}', -1)">-</button>
-            <input type="number" id="qty-${prod.sku}" class="qty-input" min="1" max="999" value="1">
-            <button class="stepper-btn" onclick="stepQuantity('${prod.sku}', 1)">+</button>
-          </div>
-
-          <button class="btn-add-to-quote" id="btn-add-${prod.sku}" onclick="handleAddProduct('${prod.sku}')">
-            <span>🛒 + Cotizar</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
+  paginationBox.innerHTML = `
+    <button class="btn-load-more" onclick="loadMoreProducts()">
+      <span>📥 Cargar ${nextBatch.toLocaleString('es-MX')} productos más (${remaining.toLocaleString('es-MX')} restantes)</span>
+    </button>
+    <div class="pagination-stats">
+      Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} resultados disponibles
+    </div>
+  `;
 }
 
-window.stepQuantity = function(sku, delta) {
-  const input = document.getElementById(`qty-${sku}`);
+window.loadMoreProducts = function () {
+  const grid = document.getElementById("products-container");
+  if (!grid) return;
+
+  const prevCount = AppState.displayedCount;
+  AppState.displayedCount += AppState.pageSize;
+
+  const nextItems = AppState.filteredCatalog.slice(prevCount, AppState.displayedCount);
+  appendCardsToGrid(grid, nextItems);
+  updatePaginationUI();
+};
+
+window.stepQuantity = function (target, delta) {
+  if (typeof target === "string") {
+    const input = document.getElementById(`qty-${target}`);
+    if (input) {
+      let val = parseInt(input.value, 10) || 1;
+      input.value = Math.max(1, Math.min(999, val + delta));
+    }
+    return;
+  }
+  const card = target.closest(".product-card") || target.closest(".card-actions-bar");
+  if (!card) return;
+  const input = card.querySelector(".qty-input");
   if (!input) return;
   let val = parseInt(input.value, 10) || 1;
-  val = Math.max(1, Math.min(999, val + delta));
-  input.value = val;
+  input.value = Math.max(1, Math.min(999, val + delta));
+};
+
+window.handleAddProductFromCard = function (btn) {
+  const card = btn.closest(".product-card");
+  if (!card) return;
+  const sku = card.dataset.sku;
+  const input = card.querySelector(".qty-input");
+  const quantityToAdd = input ? parseInt(input.value, 10) || 1 : 1;
+  addProductToCart(sku, quantityToAdd, btn);
 };
 
 // ==========================================================================
@@ -460,12 +557,9 @@ function saveCartToStorage() {
   }
 }
 
-window.handleAddProduct = function (sku) {
+function addProductToCart(sku, quantityToAdd, btn) {
   const product = AppState.masterCatalog.find((p) => p.sku === sku);
   if (!product) return;
-
-  const qtyInput = document.getElementById(`qty-${sku}`);
-  const quantityToAdd = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
 
   if (AppState.quoteCart.has(sku)) {
     AppState.quoteCart.get(sku).quantity += quantityToAdd;
@@ -476,7 +570,6 @@ window.handleAddProduct = function (sku) {
   saveCartToStorage();
   updateCartUI();
 
-  const btn = document.getElementById(`btn-add-${sku}`);
   if (btn) {
     const originalText = btn.innerHTML;
     btn.classList.add("added");
@@ -486,6 +579,13 @@ window.handleAddProduct = function (sku) {
       btn.innerHTML = originalText;
     }, 1200);
   }
+}
+
+window.handleAddProduct = function (sku) {
+  const qtyInput = document.getElementById(`qty-${sku}`);
+  const quantityToAdd = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+  const btn = document.getElementById(`btn-add-${sku}`);
+  addProductToCart(sku, quantityToAdd, btn);
 };
 
 window.handleUpdateCartQty = function (sku, newQtyVal) {
@@ -597,11 +697,16 @@ function dispatchToWhatsApp() {
     minute: "2-digit"
   });
 
+  const branchAddress = branch.id === "delicias"
+    ? `${branch.address} (A un lado del Centro de Salud San Joaquín)`
+    : branch.address;
+
   let msg = `*SOLICITUD DE COTIZACIÓN DE MATERIALES*\n`;
   msg += `*FERRETERÍA Y TLAPALERÍA EL ÁGUILA*\n`;
+  msg += `_¡Todo lo que necesitas para tu hogar o trabajo, en un solo lugar!_\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `📍 *Sucursal Seleccionada:* ${branch.name}\n`;
-  msg += `🏢 *Ubicación:* ${branch.address}\n`;
+  msg += `🏢 *Ubicación:* ${branchAddress}\n`;
   msg += `📱 *Teléfono / WhatsApp Mostrador:* ${branch.phone}\n`;
   msg += `📅 *Fecha:* ${dateStr}\n\n`;
 
