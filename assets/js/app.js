@@ -15,38 +15,49 @@ const CONFIG = {
 };
 
 const BRANCHES = {
-  delicias: {
-    id: "delicias",
-    name: "Sucursal Las Delicias (Matriz)",
-    address: "Calle Revolución No. 1203, Col. Las Delicias (junto al Centro de Salud San Joaquín)",
+  tamulte: {
+    id: "tamulte",
+    name: "Sucursal Tamulté de las Sabanas",
+    address: "Zona Principal / Centro, Tamulté de las Sabanas, Centro, Tabasco",
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
-    badge: "Matriz Principal",
+    badge: "Mostrador Tamulté",
     isMatriz: true,
     schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: 8:00 a 14:00 hrs"
   },
-  marzo: {
-    id: "marzo",
-    name: "Sucursal 18 de Marzo",
-    address: "Revolución 1350, Local G, Cuadrante II, Col. 18 de Marzo",
+  buenavista: {
+    id: "buenavista",
+    name: "Sucursal Estrellas de Buenavista",
+    address: "Fracc. Estrellas de Buenavista, Centro, Tabasco",
     city: "Villahermosa, Tabasco",
-    phone: "993 161 2163",
-    whatsapp: "529931612163",
-    badge: "Sucursal Cuadrante II",
+    phone: "993 289 2935",
+    whatsapp: "529932892935",
+    badge: "Mostrador Buenavista",
     isMatriz: false,
     schedule: "Lunes a Sábado: 7:30 a 18:30 hrs"
   },
   gaviotas: {
     id: "gaviotas",
-    name: "Sucursal Gaviotas Norte",
-    address: "Aquiles Calderón Marchena 120, Col. Gaviotas Norte",
+    name: "Sucursal Gaviotas",
+    address: "Aquiles Calderón Marchena, Col. Gaviotas, Villahermosa, Tabasco",
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
-    badge: "Sucursal Gaviotas",
+    badge: "Mostrador Gaviotas",
     isMatriz: false,
     schedule: "Lunes a Sábado: 7:30 a 18:00 hrs"
+  },
+  hidalgo: {
+    id: "hidalgo",
+    name: "Sucursal Miguel Hidalgo",
+    address: "Carretera Villahermosa - La Isla, Col. Miguel Hidalgo, Villahermosa, Tabasco",
+    city: "Villahermosa, Tabasco",
+    phone: "993 141 2755",
+    whatsapp: "529931412755",
+    badge: "Mostrador La Isla / Hidalgo",
+    isMatriz: false,
+    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs"
   }
 };
 
@@ -56,7 +67,7 @@ const BRANCHES = {
 const AppState = {
   masterCatalog: [],
   filteredCatalog: [],
-  selectedBranch: localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) || "delicias",
+  selectedBranch: localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) || "tamulte",
   filterCategory: "all",
   filterBrand: "all",
   searchTerm: "",
