@@ -155,11 +155,12 @@ function updateBranchUI(branchId) {
   const drawerBranchPhone = document.getElementById("drawer-selected-branch-phone");
   if (drawerBranchPhone) drawerBranchPhone.textContent = branch.phone;
 
-  // Actualizar botón flotante de WhatsApp
+  // Actualizar botón flotante de WhatsApp y barra fija móvil
   const floatingWa = document.getElementById("floating-wa-btn");
-  if (floatingWa) {
-    floatingWa.href = `https://wa.me/${branch.whatsapp}?text=${encodeURIComponent("Hola Ferretería El Águila (" + branch.name + "), me gustaría consultar existencias y cotizar un material.")}`;
-  }
+  const mobileNavWa = document.getElementById("mobile-nav-wa");
+  const waUrl = `https://wa.me/${branch.whatsapp}?text=${encodeURIComponent("Hola Ferretería El Águila (" + branch.name + "), me gustaría consultar existencias y cotizar un material.")}`;
+  if (floatingWa) floatingWa.href = waUrl;
+  if (mobileNavWa) mobileNavWa.href = waUrl;
 
   // Actualizar tarjetas de sucursal destacadas
   document.querySelectorAll(".branch-feature-card").forEach((card) => {
@@ -560,6 +561,8 @@ function updateCartUI() {
   }
 
   if (countPill) countPill.textContent = totalItemsCount;
+  const mobileCountPill = document.getElementById("mobile-cart-count");
+  if (mobileCountPill) mobileCountPill.textContent = totalItemsCount;
   if (totalElem) totalElem.textContent = `$${totalMoney.toFixed(2)}`;
 }
 
