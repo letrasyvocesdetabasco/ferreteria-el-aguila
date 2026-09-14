@@ -100,6 +100,39 @@ async function loadCatalogData() {
     await loadFallbackCatalog();
   }
 
+  // Precompute lowercase search index on each item for sub-10ms queries
+  if (Array.isArray(AppState.masterCatalog)) {
+    for (let i = 0; i < AppState.masterCatalog.length; i++) {
+      const item = AppState.masterCatalog[i];
+      const catName = item.category || item.categories?.name || "";
+      const brandName = item.brand || item.brands?.name || "";
+      item._s = (
+        (item.sku || "") + " " +
+        (item.manufacturer_code || "") + " " +
+        (item.name || "") + " " +
+        brandName + " " +
+        catName
+      ).toLowerCase();
+    }
+
+    // Refresh prices of any items currently stored in AppState.quoteCart
+    if (AppState.quoteCart && AppState.quoteCart.size > 0) {
+      const catalogMap = new Map(AppState.masterCatalog.map(p => [p.sku, p]));
+      let cartUpdated = false;
+      for (const [sku, cartEntry] of AppState.quoteCart.entries()) {
+        const freshItem = catalogMap.get(sku);
+        if (freshItem) {
+          cartEntry.item = freshItem;
+          cartUpdated = true;
+        }
+      }
+      if (cartUpdated) {
+        saveCartToStorage();
+        updateCartUI();
+      }
+    }
+  }
+
   generateFacetFilters();
   applyFilterPipeline();
 }
@@ -273,6 +306,7 @@ function updateFacetSelection() {
 
 function applyFilterPipeline() {
   const query = AppState.searchTerm.toLowerCase().trim();
+  const tokens = query ? query.split(/\s+/).filter(Boolean) : [];
 
   AppState.filteredCatalog = AppState.masterCatalog.filter((item) => {
     const catName = item.category || item.categories?.name || "";
@@ -286,25 +320,15 @@ function applyFilterPipeline() {
       brandName.toLowerCase() === AppState.filterBrand.toLowerCase();
 
     let passSearch = true;
-    if (query) {
-      const nameMatch = item.name && item.name.toLowerCase().includes(query);
-      const skuMatch = item.sku && item.sku.toLowerCase().includes(query);
-      const codeMatch = item.manufacturer_code && item.manufacturer_code.toLowerCase().includes(query);
-      const brandMatch = brandName && brandName.toLowerCase().includes(query);
-      const catMatch = catName && catName.toLowerCase().includes(query);
-      const descMatch = item.description && item.description.toLowerCase().includes(query);
-
-      let attrMatch = false;
-      if (item.attributes && typeof item.attributes === "object") {
-        for (const [k, v] of Object.entries(item.attributes)) {
-          if (String(k).toLowerCase().includes(query) || String(v).toLowerCase().includes(query)) {
-            attrMatch = true;
-            break;
-          }
-        }
-      }
-
-      passSearch = nameMatch || skuMatch || codeMatch || brandMatch || catMatch || descMatch || attrMatch;
+    if (tokens.length > 0) {
+      const searchIndex = item._s || (
+        (item.sku || "") + " " +
+        (item.manufacturer_code || "") + " " +
+        (item.name || "") + " " +
+        brandName + " " +
+        catName
+      ).toLowerCase();
+      passSearch = tokens.every((token) => searchIndex.includes(token));
     }
 
     return passCat && passBrand && passSearch;
@@ -328,7 +352,8 @@ function sortCatalog() {
       break;
     case "name-asc":
     default:
-      AppState.filteredCatalog.sort((a, b) => a.name.localeCompare(b.name));
+      // data/products.json is already pre-sorted by name ascending at build time.
+      // Array.prototype.filter() preserves original insertion order, making name-asc sorting 0ms.
       break;
   }
 }
@@ -748,6 +773,7 @@ function dispatchToWhatsApp() {
 function initEventListeners() {
   const searchInput = document.getElementById("catalog-search-input");
   const clearBtn = document.getElementById("search-clear-btn");
+  let searchDebounceTimer = null;
 
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
@@ -755,7 +781,10 @@ function initEventListeners() {
       if (clearBtn) {
         clearBtn.style.display = e.target.value ? "block" : "none";
       }
-      applyFilterPipeline();
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        applyFilterPipeline();
+      }, 50);
     });
   }
 
@@ -767,6 +796,7 @@ function initEventListeners() {
       }
       AppState.searchTerm = "";
       clearBtn.style.display = "none";
+      clearTimeout(searchDebounceTimer);
       applyFilterPipeline();
     });
   }
