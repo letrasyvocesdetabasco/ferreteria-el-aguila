@@ -698,33 +698,25 @@ function updateCartUI() {
 // ==========================================================================
 // 8. Cierre de Cotización y Despacho WhatsApp
 // ==========================================================================
-function dispatchToWhatsApp() {
-  if (AppState.quoteCart.size === 0) {
-    alert("Tu presupuesto está vacío. Agrega productos del catálogo para poder cotizar.");
-    return;
-  }
-
-  const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
-  const clientNameInput = document.getElementById("quote-client-name");
-  const siteInput = document.getElementById("quote-client-site");
-  const notesInput = document.getElementById("quote-client-notes");
-
-  const clientName = clientNameInput ? clientNameInput.value.trim() : "";
-  const siteLocation = siteInput ? siteInput.value.trim() : "";
-  const notes = notesInput ? notesInput.value.trim() : "";
-
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("es-MX", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
+function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = null) {
   const branchAddress = branch.id === "delicias"
     ? `${branch.address} (A un lado del Centro de Salud San Joaquín)`
     : branch.address;
+
+  if (!dateStr) {
+    const now = new Date();
+    dateStr = now.toLocaleDateString("es-MX", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  const clientName = clientData.clientName ? clientData.clientName.trim() : "";
+  const siteLocation = clientData.siteLocation ? clientData.siteLocation.trim() : "";
+  const notes = clientData.notes ? clientData.notes.trim() : "";
 
   let msg = `*SOLICITUD DE COTIZACIÓN DE MATERIALES*\n`;
   msg += `*FERRETERÍA Y TLAPALERÍA EL ÁGUILA*\n`;
@@ -746,7 +738,7 @@ function dispatchToWhatsApp() {
   let idx = 1;
   let totalEstimado = 0;
 
-  AppState.quoteCart.forEach(({ item, quantity }, sku) => {
+  quoteCart.forEach(({ item, quantity }, sku) => {
     const itemSubtotal = item.base_price * quantity;
     totalEstimado += itemSubtotal;
     const refCode = item.manufacturer_code ? `[Clave: ${item.manufacturer_code}]` : `[SKU: ${sku}]`;
@@ -764,7 +756,34 @@ function dispatchToWhatsApp() {
   const targetNumber = branch.whatsapp;
   const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodedMsg}`;
 
-  window.open(whatsappUrl, "_blank");
+  return {
+    rawMessage: msg,
+    encodedMessage: encodedMsg,
+    targetNumber: targetNumber,
+    totalEstimado: totalEstimado,
+    whatsappUrl: whatsappUrl
+  };
+}
+
+function dispatchToWhatsApp() {
+  if (AppState.quoteCart.size === 0) {
+    alert("Tu presupuesto está vacío. Agrega productos del catálogo para poder cotizar.");
+    return;
+  }
+
+  const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
+  const clientNameInput = document.getElementById("quote-client-name");
+  const siteInput = document.getElementById("quote-client-site");
+  const notesInput = document.getElementById("quote-client-notes");
+
+  const clientData = {
+    clientName: clientNameInput ? clientNameInput.value.trim() : "",
+    siteLocation: siteInput ? siteInput.value.trim() : "",
+    notes: notesInput ? notesInput.value.trim() : ""
+  };
+
+  const quoteResult = formatWhatsAppMessage(AppState.quoteCart, branch, clientData);
+  window.open(quoteResult.whatsappUrl, "_blank");
 }
 
 // ==========================================================================
@@ -884,3 +903,27 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+// Window & Environment Bindings
+window.setBranch = setBranch;
+window.dispatchToWhatsApp = dispatchToWhatsApp;
+window.formatWhatsAppMessage = formatWhatsAppMessage;
+window.BRANCHES = BRANCHES;
+window.AppState = AppState;
+window.addProductToCart = addProductToCart;
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    CONFIG,
+    BRANCHES,
+    AppState,
+    setBranch,
+    updateBranchUI,
+    addProductToCart,
+    updateCartUI,
+    formatWhatsAppMessage,
+    dispatchToWhatsApp,
+    escapeHtml
+  };
+}
+
