@@ -10,9 +10,8 @@ Inspirada en los estándares de interfaces técnicas de alta densidad (McMaster-
 
 | Sucursal | Dirección | Teléfono | WhatsApp | Horario |
 |---|---|---|---|---|
-| **1. Las Delicias (Matriz)** | Calle Revolución No. 1203, Col. Las Delicias (junto al Centro de Salud San Joaquín) | 993 289 2935 | [Enviar WhatsApp](https://wa.me/529932892935) | Lun - Sáb: 7:30 - 18:30 <br> Dom: 8:00 - 14:00 |
-| **2. 18 de Marzo** | Revolución 1350, Local G, Cuadrante II, Col. 18 de Marzo | 993 161 2163 | [Enviar WhatsApp](https://wa.me/529931612163) | Lun - Sáb: 7:30 - 18:30 |
-| **3. Gaviotas Norte** | Aquiles Calderón Marchena 120, Col. Gaviotas Norte | 993 289 2935 | [Enviar WhatsApp](https://wa.me/529932892935) | Lun - Sáb: 7:30 - 18:00 |
+| **1. Las Delicias (Matriz)** | Av. Revolución 1203, Cuadrante II (junto al Centro de Salud San Joaquín) | 993 289 2935 | [Enviar WhatsApp](https://wa.me/529932892935) | Lun - Sáb: 7:30 - 18:30 <br> Dom: 8:00 - 14:00 |
+| **2. Estrellas de Buena Vista** | Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc | 993 192 8313 | [Enviar WhatsApp](https://wa.me/529931928313) | Lun - Sáb: 7:30 - 18:30 <br> Dom: Cerrado |
 
 ---
 
@@ -41,7 +40,7 @@ ferreteria_el_aguila/
 │   └── js/
 │       └── app.js              # Lógica de filtrado, carrito y WhatsApp
 ├── data/
-│   └── products.json           # Catálogo maestro local (30 partidas base)
+│   └── products.json           # Catálogo maestro local (17,641 artículos con IVA 16%)
 ├── database/
 │   └── schema.sql              # Esquema PostgreSQL con JSONB, GIN y RLS
 ├── scripts/

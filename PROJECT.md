@@ -33,11 +33,11 @@ The application is hosted as a Jamstack static site on GitHub Pages with custom 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| 1 | M1: Catalog Replacement & Search Optimization | Convert 17,641 items, apply +16% IVA formula, classify 5 departments & brands, pre-compute search index, pre-sort JSON | none | IN_PROGRESS |
-| 2 | M2: Hero Banner Visual Clearing | Remove overlay badge and caption in HTML, set 3:2 aspect ratio in CSS, smooth shadow and borders | none | PLANNED |
-| 3 | M3: Eagle Logo & Brand Harmonization | Extract transparent `assets/images/logo-aguila.png`, replace 🦅 emoji, add favicon, update CSS palette to #004b97 and #ffcb05 | none | PLANNED |
-| 4 | M4: WhatsApp Checkout, Test Harness & Security Audit | Verify WhatsApp pricing & branches, build automated test suite (Tiers 1-4), execute osvScanner audit, publish TEST_READY.md | M1, M2, M3 | PLANNED |
-| 5 | M5: Final E2E Pass & Git Deployment | Verify 100% E2E tests pass, adversarial test hardening, git commit and push to GitHub Pages | M4 | PLANNED |
+| 1 | M1: Catalog Replacement & Search Optimization | Convert 17,641 items, apply +16% IVA formula, classify 5 departments & brands, pre-compute search index, pre-sort JSON | none | COMPLETED |
+| 2 | M2: Hero Banner Visual Clearing | Remove overlay badge and caption in HTML, set 3:2 aspect ratio in CSS, smooth shadow and borders | none | COMPLETED |
+| 3 | M3: Eagle Logo & Brand Harmonization | Extract transparent `assets/images/logo-aguila.png`, replace 🦅 emoji, add favicon, update CSS palette to #004b97 and #ffcb05 | none | COMPLETED |
+| 4 | M4: WhatsApp Checkout, Test Harness & Security Audit | Verify WhatsApp pricing & branches, build automated test suite (Tiers 1-4), execute osvScanner audit, publish TEST_READY.md | M1, M2, M3 | COMPLETED |
+| 5 | M5: Final E2E Pass & Git Deployment | Verify 100% E2E tests pass, adversarial test hardening, git commit and push to GitHub Pages | M4 | COMPLETED |
 
 ## Interface Contracts
 ### Catalog Generator (`scripts/convert_catalog.py`) ↔ Client App (`assets/js/app.js`)
