@@ -41,6 +41,25 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
         self.assertIn("AVISO DE DISPONIBILIDAD", html)
         self.assertIn("search-senior-alert", html)
 
+    def test_store_schedules_accuracy(self):
+        """Verify correct store hours across index.html and app.js."""
+        with open(INDEX_PATH, "r", encoding="utf-8") as f:
+            html = f.read()
+        with open(APP_JS_PATH, "r", encoding="utf-8") as f:
+            js = f.read()
+
+        # Lun a Vie: 8:00 a 18:00 (8 am a 6 pm)
+        self.assertIn("8:00", html)
+        self.assertIn("18:00", html)
+        # Sábados: 8:00 a 15:00 (8 am a 3 pm)
+        self.assertIn("15:00", html)
+        # Domingos: 9:00 a 14:00 (9 am a 2 pm)
+        self.assertIn("9:00", html)
+        self.assertIn("14:00", html)
+
+        # In app.js BRANCHES
+        self.assertIn("Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs", js)
+
     def test_google_maps_urls_in_html_and_js(self):
         """Verify Google Maps links for both branches in HTML and JS."""
         with open(INDEX_PATH, "r", encoding="utf-8") as f:

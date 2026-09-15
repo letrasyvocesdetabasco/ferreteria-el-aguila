@@ -10,8 +10,8 @@ Inspirada en los estándares de interfaces técnicas de alta densidad (McMaster-
 
 | Sucursal | Dirección | Teléfono | WhatsApp | Horario |
 |---|---|---|---|---|
-| **1. Las Delicias (Matriz)** | Av. Revolución 1203, Cuadrante II (junto al Centro de Salud San Joaquín) | 993 289 2935 | [Enviar WhatsApp](https://wa.me/529932892935) | Lun - Sáb: 7:30 - 18:30 <br> Dom: 8:00 - 14:00 |
-| **2. Estrellas de Buena Vista** | Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc | 993 192 8313 | [Enviar WhatsApp](https://wa.me/529931928313) | Lun - Sáb: 7:30 - 18:30 <br> Dom: Cerrado |
+| **1. Las Delicias (Matriz)** | Av. Revolución 1203, Cuadrante II (junto al Centro de Salud San Joaquín) | 993 289 2935 | [Enviar WhatsApp](https://wa.me/529932892935) | Lun - Vie: 8:00 - 18:00 <br> Sáb: 8:00 - 15:00 <br> Dom: 9:00 - 14:00 |
+| **2. Estrellas de Buena Vista** | Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc | 993 192 8313 | [Enviar WhatsApp](https://wa.me/529931928313) | Lun - Vie: 8:00 - 18:00 <br> Sáb: 8:00 - 15:00 <br> Dom: 9:00 - 14:00 |
 
 ---
 

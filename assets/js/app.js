@@ -26,7 +26,7 @@ const BRANCHES = {
     mapsUrl: "https://share.google/8vWx3J0Dt1MylLO1p",
     badge: "Matriz / Mostrador Delicias",
     isMatriz: true,
-    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: 8:00 a 14:00 hrs"
+    schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs"
   },
   buenavista: {
     id: "buenavista",
@@ -39,7 +39,7 @@ const BRANCHES = {
     mapsUrl: "https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5",
     badge: "Sucursal Buena Vista",
     isMatriz: false,
-    schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: Cerrado"
+    schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs"
   }
 };
 
