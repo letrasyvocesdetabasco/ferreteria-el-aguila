@@ -23,6 +23,7 @@ const BRANCHES = {
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
+    mapsUrl: "https://share.google/8vWx3J0Dt1MylLO1p",
     badge: "Matriz / Mostrador Delicias",
     isMatriz: true,
     schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: 8:00 a 14:00 hrs"
@@ -35,6 +36,7 @@ const BRANCHES = {
     city: "Villahermosa, Tabasco",
     phone: "993 192 8313",
     whatsapp: "529931928313",
+    mapsUrl: "https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5",
     badge: "Sucursal Buena Vista",
     isMatriz: false,
     schedule: "Lunes a Sábado: 7:30 a 18:30 hrs | Domingo: Cerrado"
@@ -55,7 +57,9 @@ const AppState = {
   searchTerm: "",
   sortMode: "name-asc",
   quoteCart: new Map(), // SKU -> { item, quantity }
-  isSupabaseActive: false
+  isSupabaseActive: false,
+  autoExpandedToAll: false,
+  autoExpandedOrigin: null
 };
 
 let supabaseClient = null;
@@ -307,8 +311,24 @@ function updateFacetSelection() {
 function applyFilterPipeline() {
   const query = AppState.searchTerm.toLowerCase().trim();
   const tokens = query ? query.split(/\s+/).filter(Boolean) : [];
+  const hasActiveFilters = AppState.filterCategory !== "all" || AppState.filterBrand !== "all";
 
-  AppState.filteredCatalog = AppState.masterCatalog.filter((item) => {
+  const matchSearch = (item) => {
+    if (tokens.length === 0) return true;
+    const brandName = item.brand || item.brands?.name || "";
+    const catName = item.category || item.categories?.name || "";
+    const searchIndex = item._s || (
+      (item.sku || "") + " " +
+      (item.manufacturer_code || "") + " " +
+      (item.name || "") + " " +
+      brandName + " " +
+      catName
+    ).toLowerCase();
+    return tokens.every((token) => searchIndex.includes(token));
+  };
+
+  // 1. Filtrado normal con departamento y marca actualmente seleccionados
+  let filtered = AppState.masterCatalog.filter((item) => {
     const catName = item.category || item.categories?.name || "";
     const passCat =
       AppState.filterCategory === "all" ||
@@ -319,24 +339,64 @@ function applyFilterPipeline() {
       AppState.filterBrand === "all" ||
       brandName.toLowerCase() === AppState.filterBrand.toLowerCase();
 
-    let passSearch = true;
-    if (tokens.length > 0) {
-      const searchIndex = item._s || (
-        (item.sku || "") + " " +
-        (item.manufacturer_code || "") + " " +
-        (item.name || "") + " " +
-        brandName + " " +
-        catName
-      ).toLowerCase();
-      passSearch = tokens.every((token) => searchIndex.includes(token));
-    }
-
-    return passCat && passBrand && passSearch;
+    return passCat && passBrand && matchSearch(item);
   });
 
+  // 2. LÓGICA SENIOR-FRIENDLY (Adultos Mayores):
+  // Si el usuario escribió una búsqueda y arrojó 0 resultados bajo el filtro activo,
+  // pero el producto SÍ existe en el inventario general de la tienda:
+  let autoExpanded = false;
+  let autoExpandedOrigin = null;
+
+  if (filtered.length === 0 && tokens.length > 0 && hasActiveFilters) {
+    const globalMatches = AppState.masterCatalog.filter(matchSearch);
+    if (globalMatches.length > 0) {
+      filtered = globalMatches;
+      autoExpanded = true;
+      autoExpandedOrigin = {
+        category: AppState.filterCategory,
+        brand: AppState.filterBrand
+      };
+    }
+  }
+
+  AppState.filteredCatalog = filtered;
+  AppState.autoExpandedToAll = autoExpanded;
+  AppState.autoExpandedOrigin = autoExpandedOrigin;
   AppState.displayedCount = AppState.pageSize;
+
+  updateSeniorAlertBanner();
   sortCatalog();
   renderCatalogGrid();
+}
+
+function updateSeniorAlertBanner() {
+  const alertBox = document.getElementById("search-senior-alert");
+  if (!alertBox) return;
+
+  if (AppState.autoExpandedToAll && AppState.autoExpandedOrigin) {
+    const origCat = AppState.autoExpandedOrigin.category !== "all" ? AppState.autoExpandedOrigin.category : "";
+    const origBrand = AppState.autoExpandedOrigin.brand !== "all" ? AppState.autoExpandedOrigin.brand : "";
+    const originLabel = [origCat, origBrand].filter(Boolean).join(" / ");
+
+    alertBox.style.display = "flex";
+    alertBox.className = "search-senior-alert";
+    alertBox.innerHTML = `
+      <div class="search-senior-alert-content">
+        <span class="search-senior-alert-icon">💡</span>
+        <div>
+          <div class="search-senior-alert-title">¡Buscamos en toda la ferretería para ti!</div>
+          <div class="search-senior-alert-desc">
+            No había resultados para <strong>"${escapeHtml(AppState.searchTerm)}"</strong> dentro de <em>${escapeHtml(originLabel)}</em>, pero <strong>encontramos ${AppState.filteredCatalog.length.toLocaleString('es-MX')} productos</strong> en otros departamentos de la tienda.
+          </div>
+        </div>
+      </div>
+      <button class="search-senior-alert-btn" onclick="resetAllFiltersKeepSearch()">Limpiar filtro y ver todo</button>
+    `;
+  } else {
+    alertBox.style.display = "none";
+    alertBox.innerHTML = "";
+  }
 }
 
 function sortCatalog() {
@@ -372,15 +432,43 @@ function renderCatalogGrid() {
   const currentShowing = Math.min(AppState.displayedCount, totalCount);
 
   if (counter) {
-    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
+    const scopeLabel = AppState.autoExpandedToAll ? " (búsqueda ampliada a todo el inventario)" : "";
+    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos${scopeLabel} (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
   }
 
   if (totalCount === 0) {
+    const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
+    const waQueryUrl = `https://wa.me/${branch.whatsapp}?text=${encodeURIComponent("Hola Ferretería El Águila (" + branch.name + "), busco en la página web y no encontré: " + AppState.searchTerm + ". ¿Tienen disponible o me pueden cotizar un equivalente?")}`;
+
     grid.innerHTML = `
-      <div class="empty-catalog-state" style="grid-column: 1/-1; background:#fff; padding:40px; text-align:center; border-radius:12px; border:1px solid #e2e8f0;">
-        <h3 style="font-size:1.2rem; margin-bottom:8px; color:#0f172a;">Sin resultados para "${escapeHtml(AppState.searchTerm)}"</h3>
-        <p style="color:#64748b; margin-bottom:14px;">Prueba buscando por término general como <em>"tornillo", "cobre", "cpvc", "cable", "fandeli", "broca"</em> o limpia los filtros.</p>
-        <button class="btn-hero-primary" onclick="resetAllFilters()">Restablecer Filtros</button>
+      <div class="senior-empty-card">
+        <div class="senior-empty-icon">🔍</div>
+        <h3 class="senior-empty-title">No encontramos resultados exactos para "${escapeHtml(AppState.searchTerm)}"</h3>
+        <p class="senior-empty-desc">
+          En ferretería, muchas piezas tienen diferentes medidas o nombres técnicos. <strong>Pregúntanos por WhatsApp</strong> y un encargado del mostrador te confirma existencias de inmediato.
+        </p>
+        
+        <div class="senior-empty-actions">
+          <a href="${waQueryUrl}" target="_blank" rel="noopener" class="btn-senior-wa">
+            <span>💬 Preguntar en Mostrador (${branch.name})</span>
+          </a>
+          <button class="btn-senior-reset" onclick="resetAllFilters()">
+            <span>🔄 Ver los 17,641 Productos</span>
+          </button>
+        </div>
+
+        <div class="senior-quick-suggestions">
+          <span>Búsquedas frecuentes en 1 clic:</span>
+          <div class="senior-quick-pills">
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Tornillo')">🔩 Tornillos</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('PVC')">🚰 Tubo PVC</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Cable THW')">⚡ Cable THW</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Fandeli')">🎨 Lijas Fandeli</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Cobre')">🚰 Tubo Cobre</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Broca')">🛠️ Brocas</button>
+            <button type="button" class="senior-pill-btn" onclick="quickSearch('Mezcladora')">🚿 Mezcladoras</button>
+          </div>
+        </div>
       </div>
     `;
     if (paginationBox) paginationBox.innerHTML = "";
@@ -724,14 +812,17 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `📍 *Sucursal Seleccionada:* ${branch.name}\n`;
   msg += `🏢 *Ubicación:* ${branchAddress}\n`;
+  if (branch.mapsUrl) {
+    msg += `🗺️ *Google Maps:* ${branch.mapsUrl}\n`;
+  }
   msg += `📱 *Teléfono / WhatsApp Mostrador:* ${branch.phone}\n`;
   msg += `📅 *Fecha:* ${dateStr}\n\n`;
 
-  msg += `*DATOS DEL CLIENTE / OBRA:*\n`;
-  msg += `• *Cliente / Empresa:* ${clientName || "Cliente Particular / Mostrador"}\n`;
-  msg += `• *Lugar de Entrega / Obra:* ${siteLocation || "Recolección en Mostrador Villahermosa"}\n`;
+  msg += `*DATOS DEL CLIENTE / RECOLECCIÓN:*\n`;
+  msg += `• *Solicitante / Empresa:* ${clientName || "Cliente Particular / Mostrador"}\n`;
+  msg += `• *Modalidad:* ${siteLocation || "Recolección en Mostrador"}\n`;
   if (notes) {
-    msg += `• *Notas:* ${notes}\n`;
+    msg += `• *Notas / Preguntas:* ${notes}\n`;
   }
   msg += `\n*RELACIÓN DE MATERIALES SOLICITADOS:*\n`;
 
@@ -750,7 +841,7 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `*TOTAL ESTIMADO:* *$${totalEstimado.toFixed(2)} MXN*\n\n`;
-  msg += `_Solicito amablemente confirmar existencias en ${branch.name}, descuentos por volumen y tiempo de entrega. Saludos cordiales._`;
+  msg += `_Solicito amablemente confirmar existencias en ${branch.name} para recolección en mostrador y descuentos por volumen. Saludos cordiales._`;
 
   const encodedMsg = encodeURIComponent(msg);
   const targetNumber = branch.whatsapp;
@@ -890,6 +981,29 @@ window.resetAllFilters = function () {
   applyFilterPipeline();
 };
 
+window.resetAllFiltersKeepSearch = function () {
+  AppState.filterCategory = "all";
+  AppState.filterBrand = "all";
+  updateFacetSelection();
+  applyFilterPipeline();
+};
+
+window.quickSearch = function (term) {
+  AppState.filterCategory = "all";
+  AppState.filterBrand = "all";
+  AppState.searchTerm = term;
+  const searchInput = document.getElementById("catalog-search-input");
+  if (searchInput) {
+    searchInput.value = term;
+    searchInput.focus();
+  }
+  const clearBtn = document.getElementById("search-clear-btn");
+  if (clearBtn) clearBtn.style.display = "block";
+  updateFacetSelection();
+  applyFilterPipeline();
+  scrollToCatalog();
+};
+
 window.selectBranchFromCard = function (branchId) {
   setBranch(branchId);
 };
@@ -911,6 +1025,8 @@ window.formatWhatsAppMessage = formatWhatsAppMessage;
 window.BRANCHES = BRANCHES;
 window.AppState = AppState;
 window.addProductToCart = addProductToCart;
+window.quickSearch = quickSearch;
+window.resetAllFiltersKeepSearch = resetAllFiltersKeepSearch;
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
@@ -923,7 +1039,10 @@ if (typeof module !== "undefined" && module.exports) {
     updateCartUI,
     formatWhatsAppMessage,
     dispatchToWhatsApp,
+    quickSearch,
+    resetAllFiltersKeepSearch,
     escapeHtml
   };
 }
+
 

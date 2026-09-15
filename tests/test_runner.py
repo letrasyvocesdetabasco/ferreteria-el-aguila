@@ -20,6 +20,7 @@ from tests.test_milestone_1 import TestMilestone1CatalogAndCounters
 from tests.test_milestone_2 import TestMilestone2HeroBanner
 from tests.test_milestone_3 import TestMilestone3
 from tests.test_milestone_4 import TestMilestone4WhatsAppAndTiers
+from tests.test_senior_search_and_maps import TestSeniorSearchAndMaps
 
 
 def build_suite():
@@ -29,6 +30,7 @@ def build_suite():
     suite.addTests(loader.loadTestsFromTestCase(TestMilestone2HeroBanner))
     suite.addTests(loader.loadTestsFromTestCase(TestMilestone3))
     suite.addTests(loader.loadTestsFromTestCase(TestMilestone4WhatsAppAndTiers))
+    suite.addTests(loader.loadTestsFromTestCase(TestSeniorSearchAndMaps))
     return suite
 
 

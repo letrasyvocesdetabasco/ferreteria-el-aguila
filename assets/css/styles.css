@@ -1995,3 +1995,232 @@ body {
   }
 }
 
+/* ==========================================================================
+   Botón de Google Maps en Tarjetas de Sucursal
+   ========================================================================== */
+.btn-branch-maps {
+  background: #004b97;
+  color: #ffffff;
+}
+
+.btn-branch-maps:hover {
+  background: #003366;
+}
+
+/* ==========================================================================
+   Aviso de Disponibilidad en Mostrador
+   ========================================================================== */
+.store-availability-banner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 5px solid var(--emerald-green);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #166534;
+  box-shadow: var(--shadow-sm);
+}
+
+.availability-badge {
+  background: var(--emerald-green);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  letter-spacing: 0.4px;
+}
+
+.availability-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Alertas Senior-Friendly de Búsqueda y Auto-Expansión
+   ========================================================================== */
+.search-senior-alert {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-left: 5px solid #2563eb;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-senior-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-senior-alert-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.search-senior-alert-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 2px;
+}
+
+.search-senior-alert-desc {
+  font-size: 0.84rem;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+.search-senior-alert-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.search-senior-alert-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Estado Vacío Senior-Friendly */
+.senior-empty-card {
+  grid-column: 1 / -1;
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+  text-align: center;
+  max-width: 720px;
+  margin: 20px auto;
+  box-shadow: var(--shadow-md);
+}
+
+.senior-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.senior-empty-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.senior-empty-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin: 0 auto 24px auto;
+  line-height: 1.5;
+}
+
+.senior-empty-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.btn-senior-wa {
+  background: var(--whatsapp-green);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-senior-wa:hover {
+  background: var(--whatsapp-dark);
+  transform: translateY(-2px);
+}
+
+.btn-senior-reset {
+  background: #004b97;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 75, 151, 0.35);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-senior-reset:hover {
+  background: #003366;
+  transform: translateY(-2px);
+}
+
+.senior-quick-suggestions {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: inline-block;
+  text-align: center;
+}
+
+.senior-quick-suggestions span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-subtle);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.senior-quick-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.senior-pill-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.senior-pill-btn:hover {
+  background: var(--accent-gold-light);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold-hover);
+  transform: scale(1.04);
+}
+
+
