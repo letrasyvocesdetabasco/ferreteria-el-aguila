@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit Publicitario y Códigos QR Oficiales | Ferretería y Tlapalería El Águila</title>
+  <meta name="description" content="Descarga los códigos QR oficiales de Ferretería y Tlapalería El Águila en alta resolución (300 DPI) para lonas, volantes, acrílicos de mostrador y tarjetas de presentación.">
+  <meta name="theme-color" content="#004b97">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    .qr-page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+    }
+    .qr-hero-header {
+      background: linear-gradient(135deg, var(--brand-blue-dark) 0%, var(--brand-blue) 100%);
+      color: #fff;
+      padding: 40px 24px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      margin-bottom: 40px;
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .qr-hero-header h1 {
+      font-family: var(--font-heading);
+      font-size: 2.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      margin: 12px 0 8px;
+    }
+    .qr-hero-header h1 span {
+      color: var(--accent-gold);
+    }
+    .qr-hero-header p {
+      font-size: 1.1rem;
+      max-width: 780px;
+      margin: 0 auto 20px;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+    .qr-badge-bar {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .qr-badge-pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,203,5,0.4);
+      color: var(--accent-gold);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .qr-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .qr-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .qr-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+    .qr-card-preview-box {
+      background: #f1f5f9;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .qr-card-preview-box img {
+      max-width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .qr-card-preview-box img:hover {
+      transform: scale(1.02);
+    }
+    .qr-card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .qr-card-tag {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--brand-blue-dark);
+      color: var(--accent-gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .qr-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--brand-blue-dark);
+      margin: 0 0 8px;
+    }
+    .qr-card-specs {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-family: monospace;
+    }
+    .qr-card-desc {
+      font-size: 0.92rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .qr-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-qr-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--brand-blue);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-qr-download:hover {
+      background: var(--brand-blue-dark);
+      color: #fff;
+    }
+    .btn-qr-wa-share {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #25d366;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-qr-wa-share:hover {
+      background: #128c7e;
+      color: #fff;
+    }
+    .qr-info-guide {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--accent-gold);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+    .qr-info-guide h3 {
+      font-size: 1.3rem;
+      color: var(--brand-blue-dark);
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+    .qr-info-guide ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    .qr-info-guide li {
+      margin-bottom: 8px;
+    }
+    .qr-bottom-nav {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .btn-back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand-blue-dark);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      border: 2px solid var(--accent-gold);
+      transition: all 0.2s;
+    }
+    .btn-back-home:hover {
+      background: var(--brand-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,75,151,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior Oficial -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-left">
+        <a href="index.html" style="display:flex; align-items:center; gap:8px; color:#fff; text-decoration:none;">
+          <img src="assets/images/logo-aguila-gold.png" alt="Logo Águila" style="height:28px; width:auto;">
+          <span style="font-weight:800; letter-spacing:0.5px;">FERRETERÍA EL ÁGUILA</span>
+        </a>
+      </div>
+      <div class="top-bar-right">
+        <a href="index.html" class="btn-top-order">⬅️ Volver al Catálogo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="qr-page-container">
+    
+    <!-- Hero Header -->
+    <div class="qr-hero-header">
+      <img src="assets/images/logo-aguila-gold.png" alt="Águila Oficial" style="height:65px; width:auto; margin-bottom:10px;">
+      <h1>Kit Publicitario & <span>Códigos QR</span></h1>
+      <p>
+        Diseños y códigos QR oficiales de alta resolución (300 DPI) para <strong>Ferretería y Tlapalería El Águila</strong>. Listos para mandar a imprenta, rotular en lonas de fachada, colocar en acrílicos de mostrador o compartir en WhatsApp.
+      </p>
+      <div class="qr-badge-bar">
+        <span class="qr-badge-pill">✓ Destino: ferreteriaytlapaleria-elaguila.com</span>
+        <span class="qr-badge-pill">✓ Alta Resolución 300 DPI</span>
+        <span class="qr-badge-pill">✓ 17,641 Artículos Disponibles</span>
+        <span class="qr-badge-pill">✓ Corrección de Error Alta (Nivel H)</span>
+      </div>
+    </div>
+
+    <!-- Guía para Imprenta y Rotulación -->
+    <div class="qr-info-guide">
+      <h3>📋 Recomendaciones para el Cliente e Imprenta:</h3>
+      <ul>
+        <li><strong>Lonas de Fachada y Banqueta:</strong> Utiliza el <strong>Formato 3</strong> (Gran Formato 1800x2400). Su código QR de gran escala permite a los transeúntes y conductores escanearlo fácilmente desde 3 a 5 metros de distancia.</li>
+        <li><strong>Exhibidores en el Mostrador de Tienda:</strong> Imprime el <strong>Formato 2</strong> (Dorado Premium) o <strong>Formato 1</strong> (Azul Corporativo) en papel couché de 300g o colócalo dentro de un portaretratos/acrílico junto a la caja registradora.</li>
+        <li><strong>Tarjetas de Bolsillo:</strong> El <strong>Formato 4</strong> tiene la proporción exacta de una tarjeta de presentación estándar (3.5 x 2 pulgadas). Es ideal para entregar a contratistas, plomeros y maestros de obra.</li>
+        <li><strong>Volantes de Mano:</strong> El <strong>Formato 5</strong> está optimizado en tamaño A5 para repartir en colonias cercanas o entregar a cada cliente con su ticket de compra.</li>
+      </ul>
+    </div>
+
+    <!-- Galería de los 5 Formatos -->
+    <div class="qr-gallery-grid">
+
+      <!-- Formato 1: Azul Corporativo -->
+      <article class="qr-card">
+        <div class="qr-card-preview-box">
+          <img src="assets/images/qr/qr-01-azul-corporativo.png" alt="Código QR Azul Corporativo" loading="lazy">
+        </div>
+        <div class="qr-card-body">
+          <span class="qr-card-tag">Redes Sociales & Web</span>
+          <h2 class="qr-card-title">1. Azul Corporativo Oficial</h2>
+          <div class="qr-card-specs">1200 x 1200 px &bull; 300 DPI &bull; PNG</div>
+          <p class="qr-card-desc">
+            Diseño cuadrado con marco institucional en Azul Rey Mostrador (#004b97), filete dorado y el águila en el centro. Perfecto para compartir en estados de WhatsApp, Facebook y papelería comercial.
+          </p>
+          <div class="qr-card-actions">
+            <a href="assets/images/qr/qr-01-azul-corporativo.png" download="QR-01-Azul-Corporativo-El-Aguila.png" class="btn-qr-download">
+              📥 Descargar en Alta Calidad
+            </a>
+            <a href="https://wa.me/?text=Descarga%20el%20c%C3%B3digo%20QR%20oficial%20de%20Ferreter%C3%ADa%20El%20%C3%81guila:%20https://ferreteriaytlapaleria-elaguila.com/assets/images/qr/qr-01-azul-corporativo.png" target="_blank" rel="noopener" class="btn-qr-wa-share">
+              💬 Enviar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Formato 2: Dorado Premium -->
+      <article class="qr-card">
+        <div class="qr-card-preview-box">
+          <img src="assets/images/qr/qr-02-dorado-premium.png" alt="Código QR Dorado Premium" loading="lazy">
+        </div>
+        <div class="qr-card-body">
+          <span class="qr-card-tag" style="background:#d97706; color:#fff;">Acrílicos de Mostrador</span>
+          <h2 class="qr-card-title">2. Dorado Premium</h2>
+          <div class="qr-card-specs">1200 x 1200 px &bull; 300 DPI &bull; PNG</div>
+          <p class="qr-card-desc">
+            Fondo azul profundo de alto contraste con marco de oro vibrante (#ffcb05) y botón verde de WhatsApp. Diseñado especialmente para captar la mirada del cliente en la barra de atención de la tienda.
+          </p>
+          <div class="qr-card-actions">
+            <a href="assets/images/qr/qr-02-dorado-premium.png" download="QR-02-Dorado-Premium-El-Aguila.png" class="btn-qr-download">
+              📥 Descargar en Alta Calidad
+            </a>
+            <a href="https://wa.me/?text=Descarga%20el%20QR%20Dorado%20de%20Ferreter%C3%ADa%20El%20%C3%81guila:%20https://ferreteriaytlapaleria-elaguila.com/assets/images/qr/qr-02-dorado-premium.png" target="_blank" rel="noopener" class="btn-qr-wa-share">
+              💬 Enviar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Formato 3: Lona Exterior Gran Formato -->
+      <article class="qr-card">
+        <div class="qr-card-preview-box">
+          <img src="assets/images/qr/qr-03-lona-exterior-gran-formato.png" alt="Lona Publicitaria Gran Formato" loading="lazy">
+        </div>
+        <div class="qr-card-body">
+          <span class="qr-card-tag" style="background:#b91c1c; color:#fff;">Lona Exterior / Fachada</span>
+          <h2 class="qr-card-title">3. Lona Exterior Gran Formato</h2>
+          <div class="qr-card-specs">1800 x 2400 px &bull; Proporción 3:4 &bull; PNG</div>
+          <p class="qr-card-desc">
+            Póster publicitario completo con cabecera de tienda, código QR gigante de fácil lectura a distancia, aviso de recolección en mostrador y fichas de contacto completas de Las Delicias y Buena Vista.
+          </p>
+          <div class="qr-card-actions">
+            <a href="assets/images/qr/qr-03-lona-exterior-gran-formato.png" download="QR-03-Lona-Gran-Formato-El-Aguila.png" class="btn-qr-download">
+              📥 Descargar en Alta Calidad
+            </a>
+            <a href="https://wa.me/?text=Descarga%20el%20arte%20para%20la%20lona%20de%20Ferreter%C3%ADa%20El%20%C3%81guila:%20https://ferreteriaytlapaleria-elaguila.com/assets/images/qr/qr-03-lona-exterior-gran-formato.png" target="_blank" rel="noopener" class="btn-qr-wa-share">
+              💬 Enviar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Formato 4: Tarjeta Minimalista -->
+      <article class="qr-card">
+        <div class="qr-card-preview-box">
+          <img src="assets/images/qr/qr-04-tarjeta-minimalista.png" alt="Tarjeta de Presentación Minimalista" loading="lazy">
+        </div>
+        <div class="qr-card-body">
+          <span class="qr-card-tag" style="background:#047857; color:#fff;">Tarjetas de Presentación</span>
+          <h2 class="qr-card-title">4. Tarjeta Minimalista</h2>
+          <div class="qr-card-specs">1050 x 600 px &bull; 3.5" x 2" (300 DPI) &bull; PNG</div>
+          <p class="qr-card-desc">
+            Medida reglamentaria para tarjetas de visita comerciales. Incluye el nombre de atención Timoteo Méndez, teléfonos de ambas sucursales y QR para que los clientes lleven el catálogo en su bolsillo.
+          </p>
+          <div class="qr-card-actions">
+            <a href="assets/images/qr/qr-04-tarjeta-minimalista.png" download="QR-04-Tarjeta-Presentacion-El-Aguila.png" class="btn-qr-download">
+              📥 Descargar en Alta Calidad
+            </a>
+            <a href="https://wa.me/?text=Descarga%20la%20tarjeta%20de%20presentaci%C3%B3n%20con%20QR:%20https://ferreteriaytlapaleria-elaguila.com/assets/images/qr/qr-04-tarjeta-minimalista.png" target="_blank" rel="noopener" class="btn-qr-wa-share">
+              💬 Enviar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Formato 5: Flyer / Volante de Mostrador -->
+      <article class="qr-card">
+        <div class="qr-card-preview-box">
+          <img src="assets/images/qr/qr-05-flyer-publicitario-mostrador.png" alt="Volante Flyer Publicitario A5" loading="lazy">
+        </div>
+        <div class="qr-card-body">
+          <span class="qr-card-tag" style="background:#4338ca; color:#fff;">Volantes Impresos (A5)</span>
+          <h2 class="qr-card-title">5. Flyer Volante Publicitario</h2>
+          <div class="qr-card-specs">1240 x 1754 px &bull; Tamaño A5 (300 DPI) &bull; PNG</div>
+          <p class="qr-card-desc">
+            Volante promocional completo con beneficios para el cliente (17,641 productos, precios con IVA, apartado por WhatsApp y recolección sin filas) más las dos sucursales y horarios.
+          </p>
+          <div class="qr-card-actions">
+            <a href="assets/images/qr/qr-05-flyer-publicitario-mostrador.png" download="QR-05-Flyer-Mostrador-El-Aguila.png" class="btn-qr-download">
+              📥 Descargar en Alta Calidad
+            </a>
+            <a href="https://wa.me/?text=Descarga%20el%20volante%20A5%20de%20Ferreter%C3%ADa%20El%20%C3%81guila:%20https://ferreteriaytlapaleria-elaguila.com/assets/images/qr/qr-05-flyer-publicitario-mostrador.png" target="_blank" rel="noopener" class="btn-qr-wa-share">
+              💬 Enviar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Navegación Inferior -->
+    <div class="qr-bottom-nav">
+      <a href="index.html" class="btn-back-home">
+        🦅 Volver al Catálogo y Cotizador de la Ferretería
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Pie de Página Institucional -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="assets/images/logo-aguila-gold.png" alt="Logo Águila" style="height:36px; width:auto; vertical-align:middle; margin-right:8px;">
+          <span>Ferretería y Tlapalería El Águila</span>
+        </div>
+        <p>Tu aliado confiable para obra, taller y hogar en Villahermosa, Tabasco.</p>
+        <p style="font-size:0.85rem; color:#94a3b8; margin-top:8px;">
+          Atención: Timoteo Méndez &bull; Web: <a href="https://ferreteriaytlapaleria-elaguila.com" style="color:var(--accent-gold);">ferreteriaytlapaleria-elaguila.com</a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Material Publicitario</h4>
+        <p>Todos los archivos QR están generados en formato PNG a 300 DPI y enlazan al catálogo digital oficial de la tienda.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Ferretería y Tlapalería El Águila. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

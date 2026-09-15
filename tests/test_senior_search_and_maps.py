@@ -102,5 +102,21 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
         except ImportError:
             self.skipTest("OpenCV no disponible para decodificación")
 
+    def test_qr_showcase_page_exists_and_links(self):
+        """Verify that qr.html exists and is linked in index.html footer."""
+        qr_page = os.path.join(PROJECT_ROOT, "qr.html")
+        self.assertTrue(os.path.isfile(qr_page), "Falta el archivo qr.html")
+        with open(qr_page, "r", encoding="utf-8") as f:
+            content = f.read()
+        self.assertIn("qr-01-azul-corporativo.png", content)
+        self.assertIn("qr-02-dorado-premium.png", content)
+        self.assertIn("qr-03-lona-exterior-gran-formato.png", content)
+        self.assertIn("qr-04-tarjeta-minimalista.png", content)
+        self.assertIn("qr-05-flyer-publicitario-mostrador.png", content)
+
+        with open(INDEX_PATH, "r", encoding="utf-8") as f:
+            index_content = f.read()
+        self.assertIn('href="qr.html"', index_content)
+
 if __name__ == "__main__":
     unittest.main()
