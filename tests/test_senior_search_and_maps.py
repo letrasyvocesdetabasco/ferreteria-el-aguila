@@ -82,28 +82,33 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
         self.assertIn(MAPS_GAVIOTAS, js)
         self.assertIn(MAPS_HIDALGO, js)
 
-    def test_five_branches_and_owners_in_js_and_html(self):
-        """Verify all 5 branches and their respective owners (Timoteo, Miguel, Salomón) are present."""
+    def test_four_branches_and_owners_in_js_and_html(self):
+        """Verify all 4 branches and their respective owners (Timoteo, Miguel, Salomón) are present and Tamulte is absent."""
         with open(APP_JS_PATH, "r", encoding="utf-8") as f:
             js = f.read()
         with open(INDEX_PATH, "r", encoding="utf-8") as f:
             html = f.read()
 
-        for branch_key in ["delicias:", "buenavista:", "gaviotas:", "hidalgo:", "tamulte:"]:
+        for branch_key in ["delicias:", "buenavista:", "gaviotas:", "hidalgo:"]:
             self.assertIn(branch_key, js)
+
+        # Confirm tamulte is completely absent
+        self.assertNotIn("tamulte", js.lower())
+        self.assertNotIn("tamulté", js.lower())
+        self.assertNotIn("tamulte", html.lower())
+        self.assertNotIn("tamulté", html.lower())
 
         for owner in ["Timoteo Méndez", "Miguel Méndez", "Salomón Méndez"]:
             self.assertIn(owner, js)
             self.assertIn(owner, html)
 
     def test_branch_storefront_images_exist_and_optimized(self):
-        """Verify storefront images for all branches exist and are under 250KB."""
+        """Verify storefront images for all 4 branches exist and are under 250KB."""
         expected_images = [
             "fachada-delicias-tito.webp",
             "fachada-buenavista.webp",
             "fachada-gaviotas-miguel.webp",
-            "fachada-hidalgo-salomon.webp",
-            "fachada-tamulte.webp"
+            "fachada-hidalgo-salomon.webp"
         ]
         for img_name in expected_images:
             img_path = os.path.join(BRANCH_IMAGES_DIR, img_name)

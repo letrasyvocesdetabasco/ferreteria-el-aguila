@@ -74,21 +74,6 @@ const BRANCHES = {
     image: "assets/images/branches/fachada-hidalgo-salomon.webp",
     isMatriz: false,
     schedule: "Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs"
-  },
-  tamulte: {
-    id: "tamulte",
-    name: "Sucursal Tamulté de las Sabanas",
-    owner: "Salomón Méndez",
-    address: "Zona Principal / Centro, Tamulté de las Sabanas, Centro, Tabasco",
-    landmark: "Zona Conurbada Norte",
-    city: "Villahermosa, Tabasco",
-    phone: "993 289 2935",
-    whatsapp: "529932892935",
-    mapsUrl: "https://maps.google.com/?q=Tamulte+de+las+Sabanas+Ferreteria+El+Aguila+Tabasco",
-    badge: "Sucursal Tamulté / Zona Norte",
-    image: "assets/images/branches/fachada-tamulte.webp",
-    isMatriz: false,
-    schedule: "Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs"
   }
 };
 

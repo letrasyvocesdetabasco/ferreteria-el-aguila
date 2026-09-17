@@ -1145,6 +1145,7 @@ body {
 }
 
 .branches-grid-three,
+.branches-grid-four,
 .branches-grid-five {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));

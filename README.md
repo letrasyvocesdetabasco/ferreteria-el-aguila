@@ -14,7 +14,6 @@ Inspirada en los estándares de interfaces técnicas de alta densidad (McMaster-
 | **2. Estrellas de Buena Vista** | Timoteo Méndez | Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc | 993 192 8313 | Lun - Vie: 8:00 - 18:00 <br> Sáb: 8:00 - 15:00 <br> Dom: 9:00 - 14:00 |
 | **3. Gaviotas Norte** | Miguel Méndez | Aquiles Calderón Marchena 120, Col. Gaviotas Nte. | 993 289 2935 | Todos los días: 8:00 - 18:00 continuo |
 | **4. Miguel Hidalgo III Etapa** | Salomón Méndez | Carr. Villahermosa a La Isla, Miguel Hidalgo III Etapa | 993 141 2755 | Lun - Vie: 8:00 - 18:30 <br> Sáb: 8:00 - 17:00 <br> Dom: 8:00 - 13:00 |
-| **5. Tamulté de las Sabanas** | Salomón Méndez | Zona Principal / Centro, Tamulté de las Sabanas | 993 289 2935 | Lun - Vie: 8:00 - 18:30 <br> Sáb: 8:00 - 17:00 <br> Dom: 8:00 - 13:00 |
 
 ---
 
