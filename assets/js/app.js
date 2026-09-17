@@ -17,20 +17,23 @@ const CONFIG = {
 const BRANCHES = {
   delicias: {
     id: "delicias",
-    name: "Sucursal Las Delicias",
+    name: "Sucursal Las Delicias (Matriz)",
+    owner: "Timoteo Méndez",
     address: "Av. Revolución 1203, Cuadrante II, Las Delicias, C.P. 86140, Villahermosa, Tab.",
     landmark: "A un lado del Centro de Salud San Joaquín",
     city: "Villahermosa, Tabasco",
     phone: "993 289 2935",
     whatsapp: "529932892935",
-    mapsUrl: "https://share.google/8vWx3J0Dt1MylLO1p",
-    badge: "Matriz / Mostrador Delicias",
+    mapsUrl: "https://maps.app.goo.gl/vkQLYW1u62gbRRDf7",
+    badge: "Matriz / Mostrador Central",
+    image: "assets/images/branches/fachada-delicias-tito.webp",
     isMatriz: true,
     schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs"
   },
   buenavista: {
     id: "buenavista",
     name: "Sucursal Estrellas de Buena Vista",
+    owner: "Timoteo Méndez",
     address: "Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc, C.P. 86280, Villahermosa, Tab.",
     landmark: "Buena Vista 1ra Secc",
     city: "Villahermosa, Tabasco",
@@ -38,20 +41,69 @@ const BRANCHES = {
     whatsapp: "529931928313",
     mapsUrl: "https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5",
     badge: "Sucursal Buena Vista",
+    image: "assets/images/branches/fachada-buenavista.webp",
     isMatriz: false,
     schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs"
+  },
+  gaviotas: {
+    id: "gaviotas",
+    name: "Sucursal Gaviotas Norte",
+    owner: "Miguel Méndez",
+    address: "Aquiles Calderón Marchena 120, Col. Gaviotas Nte., C.P. 86068, Villahermosa, Tab.",
+    landmark: "Aquiles Calderón Marchena",
+    city: "Villahermosa, Tabasco",
+    phone: "993 289 2935",
+    whatsapp: "529932892935",
+    mapsUrl: "https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8",
+    badge: "Sucursal Gaviotas Norte",
+    image: "assets/images/branches/fachada-gaviotas-miguel.webp",
+    isMatriz: false,
+    schedule: "Todos los días: 8:00 a 18:00 hrs (8:00 am a 6:00 pm)"
+  },
+  hidalgo: {
+    id: "hidalgo",
+    name: "Sucursal Miguel Hidalgo III Etapa",
+    owner: "Salomón Méndez",
+    address: "Carr. Villahermosa a La Isla, Miguel Hidalgo III Etapa, C.P. 86126, Villahermosa, Tab.",
+    landmark: "Carretera a La Isla III Etapa",
+    city: "Villahermosa, Tabasco",
+    phone: "993 141 2755",
+    whatsapp: "529931412755",
+    mapsUrl: "https://maps.app.goo.gl/xnaBo218rGoQQvMZ7",
+    badge: "Sucursal Miguel Hidalgo",
+    image: "assets/images/branches/fachada-hidalgo-salomon.webp",
+    isMatriz: false,
+    schedule: "Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs"
+  },
+  tamulte: {
+    id: "tamulte",
+    name: "Sucursal Tamulté de las Sabanas",
+    owner: "Salomón Méndez",
+    address: "Zona Principal / Centro, Tamulté de las Sabanas, Centro, Tabasco",
+    landmark: "Zona Conurbada Norte",
+    city: "Villahermosa, Tabasco",
+    phone: "993 289 2935",
+    whatsapp: "529932892935",
+    mapsUrl: "https://maps.google.com/?q=Tamulte+de+las+Sabanas+Ferreteria+El+Aguila+Tabasco",
+    badge: "Sucursal Tamulté / Zona Norte",
+    image: "assets/images/branches/fachada-tamulte.webp",
+    isMatriz: false,
+    schedule: "Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs"
   }
 };
 
 // ==========================================================================
 // 2. Estado Global de la Aplicación
 // ==========================================================================
+const storedBranchId = localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY);
+const initialBranch = (storedBranchId && BRANCHES[storedBranchId]) ? storedBranchId : "delicias";
+
 const AppState = {
   masterCatalog: [],
   filteredCatalog: [],
   displayedCount: 36,
   pageSize: 36,
-  selectedBranch: (localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY) === "buenavista") ? "buenavista" : "delicias",
+  selectedBranch: initialBranch,
   filterCategory: "all",
   filterBrand: "all",
   searchTerm: "",

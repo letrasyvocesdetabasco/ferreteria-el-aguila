@@ -1144,34 +1144,117 @@ body {
   margin: 0 auto;
 }
 
-.branches-grid-three {
+.branches-grid-three,
+.branches-grid-five {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  gap: 22px;
+  margin-top: 24px;
 }
 
 .branch-feature-card {
   border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 22px;
-  background: #fafbfc;
+  padding: 0;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
 }
 
 .branch-feature-card:hover {
   border-color: var(--accent-gold);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(0, 75, 151, 0.12);
+  transform: translateY(-3px);
 }
 
 .branch-feature-card.selected-branch {
   border-color: var(--accent-gold);
-  background: #fffdfa;
-  box-shadow: 0 0 0 1px var(--accent-gold);
+  background: #fffdf8;
+  box-shadow: 0 0 0 2px var(--accent-gold), 0 8px 20px rgba(255, 203, 5, 0.2);
+}
+
+/* Marca de agua fotográfica sutil de la fachada */
+.branch-card-watermark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.branch-feature-card:hover .branch-card-watermark {
+  opacity: 0.16;
+  transform: scale(1.03);
+}
+
+/* Cabecera fotográfica de fachada real */
+.branch-card-header-photo {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #0f172a;
+  z-index: 2;
+}
+
+.branch-card-header-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.branch-feature-card:hover .branch-card-header-photo img {
+  transform: scale(1.06);
+}
+
+.branch-photo-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 35, 75, 0.88);
+  color: var(--accent-gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,203,5,0.4);
+  text-transform: uppercase;
+}
+
+.branch-owner-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--primary-navy);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.branch-card-content {
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .branch-type-pill {
@@ -1196,7 +1279,7 @@ body {
 }
 
 .branch-feature-card h3 {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 900;
   color: var(--primary-navy);
   margin-bottom: 8px;

@@ -15,8 +15,11 @@ APP_JS_PATH = os.path.join(PROJECT_ROOT, "assets", "js", "app.js")
 STYLES_CSS_PATH = os.path.join(PROJECT_ROOT, "assets", "css", "styles.css")
 QR_DIR = os.path.join(PROJECT_ROOT, "assets", "images", "qr")
 
-MAPS_DELICIAS = "https://share.google/8vWx3J0Dt1MylLO1p"
+MAPS_DELICIAS = "https://maps.app.goo.gl/vkQLYW1u62gbRRDf7"
 MAPS_BUENAVISTA = "https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5"
+MAPS_GAVIOTAS = "https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8"
+MAPS_HIDALGO = "https://maps.app.goo.gl/xnaBo218rGoQQvMZ7"
+BRANCH_IMAGES_DIR = os.path.join(PROJECT_ROOT, "assets", "images", "branches")
 TARGET_URL = "https://ferreteriaytlapaleria-elaguila.com"
 
 class TestSeniorSearchAndMaps(unittest.TestCase):
@@ -59,9 +62,11 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
 
         # In app.js BRANCHES
         self.assertIn("Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs", js)
+        self.assertIn("Todos los días: 8:00 a 18:00 hrs (8:00 am a 6:00 pm)", js)
+        self.assertIn("Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs", js)
 
     def test_google_maps_urls_in_html_and_js(self):
-        """Verify Google Maps links for both branches in HTML and JS."""
+        """Verify Google Maps links for all 5 branches in HTML and JS."""
         with open(INDEX_PATH, "r", encoding="utf-8") as f:
             html = f.read()
         with open(APP_JS_PATH, "r", encoding="utf-8") as f:
@@ -69,8 +74,44 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
 
         self.assertIn(MAPS_DELICIAS, html)
         self.assertIn(MAPS_BUENAVISTA, html)
+        self.assertIn(MAPS_GAVIOTAS, html)
+        self.assertIn(MAPS_HIDALGO, html)
+
         self.assertIn(MAPS_DELICIAS, js)
         self.assertIn(MAPS_BUENAVISTA, js)
+        self.assertIn(MAPS_GAVIOTAS, js)
+        self.assertIn(MAPS_HIDALGO, js)
+
+    def test_five_branches_and_owners_in_js_and_html(self):
+        """Verify all 5 branches and their respective owners (Timoteo, Miguel, Salomón) are present."""
+        with open(APP_JS_PATH, "r", encoding="utf-8") as f:
+            js = f.read()
+        with open(INDEX_PATH, "r", encoding="utf-8") as f:
+            html = f.read()
+
+        for branch_key in ["delicias:", "buenavista:", "gaviotas:", "hidalgo:", "tamulte:"]:
+            self.assertIn(branch_key, js)
+
+        for owner in ["Timoteo Méndez", "Miguel Méndez", "Salomón Méndez"]:
+            self.assertIn(owner, js)
+            self.assertIn(owner, html)
+
+    def test_branch_storefront_images_exist_and_optimized(self):
+        """Verify storefront images for all branches exist and are under 250KB."""
+        expected_images = [
+            "fachada-delicias-tito.webp",
+            "fachada-buenavista.webp",
+            "fachada-gaviotas-miguel.webp",
+            "fachada-hidalgo-salomon.webp",
+            "fachada-tamulte.webp"
+        ]
+        for img_name in expected_images:
+            img_path = os.path.join(BRANCH_IMAGES_DIR, img_name)
+            self.assertTrue(os.path.isfile(img_path), f"Falta imagen de sucursal: {img_name}")
+            size_kb = os.path.getsize(img_path) / 1024
+            self.assertLess(size_kb, 250, f"Imagen {img_name} excede 250KB ({size_kb:.1f}KB)")
+            with Image.open(img_path) as im:
+                self.assertGreaterEqual(im.width, 800)
 
     def test_senior_friendly_search_helpers_in_js(self):
         """Verify senior-friendly search fallback and helpers in app.js."""
