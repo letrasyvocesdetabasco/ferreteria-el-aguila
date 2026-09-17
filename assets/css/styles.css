@@ -1149,25 +1149,35 @@ body {
 .branches-grid-three,
 .branches-grid-five {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  max-width: 1080px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 1440px;
   margin: 24px auto 0;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1120px) {
+  .branches-grid,
+  .branches-grid-four,
+  .branches-grid-three,
+  .branches-grid-five {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
   .branches-grid,
   .branches-grid-four,
   .branches-grid-three,
   .branches-grid-five {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 }
 
 .branch-feature-card {
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 0;
   background: #ffffff;
   display: flex;
@@ -1176,19 +1186,19 @@ body {
   position: relative;
   overflow: hidden;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
-  box-shadow: 0 4px 18px rgba(0, 35, 75, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 35, 75, 0.06);
 }
 
 .branch-feature-card:hover {
   border-color: rgba(255, 203, 5, 0.8);
-  box-shadow: 0 12px 28px rgba(0, 50, 110, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 50, 110, 0.12);
   transform: translateY(-3px);
 }
 
 .branch-feature-card.selected-branch {
-  border: 2px solid var(--brand-blue);
+  border: 2px solid var(--accent-gold);
   background: #ffffff;
-  box-shadow: 0 0 0 2px rgba(0, 75, 151, 0.18), 0 8px 24px rgba(0, 35, 75, 0.12);
+  box-shadow: 0 0 0 2px var(--accent-gold), 0 8px 20px rgba(255, 203, 5, 0.2);
 }
 
 /* Marca de agua oculta para máxima nitidez y legibilidad del texto */
@@ -1200,7 +1210,7 @@ body {
 .branch-card-header-photo {
   position: relative;
   width: 100%;
-  height: 215px;
+  height: 160px;
   overflow: hidden;
   background: #0f172a;
   border-bottom: 3px solid var(--accent-gold);
@@ -1217,7 +1227,7 @@ body {
 
 @media (max-width: 640px) {
   .branch-card-header-photo {
-    height: 185px;
+    height: 180px;
   }
 }
 
@@ -1235,24 +1245,24 @@ body {
 
 .branch-photo-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   background: rgba(0, 25, 55, 0.88);
   color: var(--accent-gold);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255,203,5,0.4);
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.3px;
   z-index: 3;
 }
 
 .branch-card-content {
-  padding: 20px 22px;
+  padding: 16px 14px 18px;
   position: relative;
   z-index: 2;
   display: flex;
@@ -1264,12 +1274,12 @@ body {
 
 .branch-type-pill {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 2px 9px;
+  padding: 2px 8px;
   border-radius: var(--radius-full);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   width: fit-content;
 }
 
@@ -1279,7 +1289,7 @@ body {
 }
 
 .branch-feature-card h3 {
-  font-size: 1.18rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--primary-navy);
   margin-bottom: 6px;
@@ -1287,20 +1297,20 @@ body {
 }
 
 .branch-address-text {
-  font-size: 0.84rem;
+  font-size: 0.81rem;
   color: #4b5563;
-  line-height: 1.45;
-  margin-bottom: 10px;
+  line-height: 1.4;
+  margin-bottom: 8px;
 }
 
 .branch-hours-text {
-  font-size: 0.79rem;
+  font-size: 0.76rem;
   color: #334155;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.4;
   background: #f8fafc;
-  padding: 9px 12px;
+  padding: 8px 10px;
   border-radius: 8px;
   border-left: 3px solid var(--accent-gold);
 }
@@ -1308,7 +1318,7 @@ body {
 .branch-buttons-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 8px;
 }
 
@@ -1319,19 +1329,20 @@ body {
 }
 
 .btn-branch-action {
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 7px 4px;
+  border-radius: 7px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 3px;
   cursor: pointer;
   border: none;
   transition: all 0.2s ease;
   text-align: center;
+  white-space: nowrap;
 }
 
 .btn-branch-phone {

@@ -528,6 +528,36 @@ function appendCardsToGrid(container, items) {
   container.appendChild(fragment);
 }
 
+// ==========================================================================
+// Resolución de Portada para los 15 Productos Más Frecuentes
+// ==========================================================================
+function resolveProductImage(prod) {
+  if (!prod) return "assets/images/cat-tlapaleria.jpg";
+  if (prod.image && prod.image.startsWith("assets/images/products/")) {
+    return prod.image;
+  }
+  if (prod.image_url && prod.image_url.startsWith("assets/images/products/")) {
+    return prod.image_url;
+  }
+  const name = (prod.name || "").toLowerCase();
+  if (/\b(tornillo|tornillos)\b/i.test(name)) return "assets/images/products/prod-tornillo.webp";
+  if (/\b(llave|llaves)\b/i.test(name) && !name.includes("llavero")) return "assets/images/products/prod-llave.webp";
+  if (/\b(dado|dados)\b/i.test(name)) return "assets/images/products/prod-dado.webp";
+  if (/\b(tuerca|tuercas)\b/i.test(name)) return "assets/images/products/prod-tuerca.webp";
+  if (/\b(desarmador|desarmadores)\b/i.test(name)) return "assets/images/products/prod-desarmador.webp";
+  if (/\b(broca|brocas)\b/i.test(name)) return "assets/images/products/prod-broca.webp";
+  if (/\b(foco|focos)\b/i.test(name)) return "assets/images/products/prod-foco.webp";
+  if (/\b(manguera|mangueras)\b/i.test(name)) return "assets/images/products/prod-manguera.webp";
+  if (/\b(pija|pijas)\b/i.test(name)) return "assets/images/products/prod-pija.webp";
+  if (/\b(pinza|pinzas)\b/i.test(name)) return "assets/images/products/prod-pinza.webp";
+  if (/\b(valvula|válvula|valvulas|válvulas)\b/i.test(name)) return "assets/images/products/prod-valvula.webp";
+  if (/\b(extension|extensión|extensiones)\b/i.test(name) && !name.includes("corredera") && !name.includes("escalera")) return "assets/images/products/prod-extension.webp";
+  if (/\b(candado|candados)\b/i.test(name)) return "assets/images/products/prod-candado.webp";
+  if (/\b(cinta|cintas)\b/i.test(name) && !name.includes("sierra")) return "assets/images/products/prod-cinta.webp";
+  if (/\b(niple|niples)\b/i.test(name)) return "assets/images/products/prod-niple.webp";
+  return prod.image || prod.image_url || "assets/images/cat-tlapaleria.jpg";
+}
+
 function createProductCardElement(prod) {
   const card = document.createElement("article");
   card.className = "product-card";
@@ -537,7 +567,7 @@ function createProductCardElement(prod) {
   const brandName = prod.brand || prod.brands?.name || "Homologado";
   const priceFormatted = parseFloat(prod.base_price).toFixed(2);
   const featureBadge = prod.badge || "En Existencia";
-  const imgUrl = prod.image || prod.image_url || "assets/images/cat-tlapaleria.jpg";
+  const imgUrl = resolveProductImage(prod);
   const descText = prod.description || `${prod.name} - Calidad garantizada para obra y mantenimiento.`;
 
   // Chips de Atributos Técnicos
@@ -788,7 +818,7 @@ function updateCartUI() {
       if (drawerList) {
         const row = document.createElement("div");
         row.className = "cart-item-row";
-        const thumb = item.image || "assets/images/hero-storefront.jpg";
+        const thumb = resolveProductImage(item);
 
         row.innerHTML = `
           <img src="${thumb}" alt="${escapeHtml(item.name)}" class="cart-item-thumb" onerror="this.src='assets/images/hero-storefront.jpg'">
