@@ -17,7 +17,7 @@ const CONFIG = {
 const BRANCHES = {
   delicias: {
     id: "delicias",
-    name: "Sucursal Las Delicias (Matriz)",
+    name: "Sucursal Las Delicias",
     owner: "Timoteo Méndez",
     address: "Av. Revolución 1203, Cuadrante II, Las Delicias, C.P. 86140, Villahermosa, Tab.",
     landmark: "A un lado del Centro de Salud San Joaquín",
@@ -25,9 +25,9 @@ const BRANCHES = {
     phone: "993 289 2935",
     whatsapp: "529932892935",
     mapsUrl: "https://maps.app.goo.gl/vkQLYW1u62gbRRDf7",
-    badge: "Matriz / Mostrador Central",
+    badge: "Sucursal Las Delicias",
     image: "assets/images/branches/fachada-delicias-tito.webp",
-    isMatriz: true,
+    isMatriz: false,
     schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs | Domingo: 9:00 a 14:00 hrs"
   },
   buenavista: {

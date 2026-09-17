@@ -1144,17 +1144,28 @@ body {
   margin: 0 auto;
 }
 
-.branches-grid-three,
+.branches-grid,
 .branches-grid-four,
+.branches-grid-three,
 .branches-grid-five {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
   margin-top: 24px;
 }
 
+@media (max-width: 860px) {
+  .branches-grid,
+  .branches-grid-four,
+  .branches-grid-three,
+  .branches-grid-five {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
 .branch-feature-card {
-  border: 2px solid var(--border-color);
+  border: 1px solid #d1d5db;
   border-radius: var(--radius-md);
   padding: 0;
   background: #ffffff;
@@ -1164,98 +1175,94 @@ body {
   position: relative;
   overflow: hidden;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  box-shadow: 0 6px 20px rgba(0, 35, 75, 0.08);
 }
 
 .branch-feature-card:hover {
   border-color: var(--accent-gold);
-  box-shadow: 0 10px 25px rgba(0, 75, 151, 0.12);
-  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(0, 75, 151, 0.16);
+  transform: translateY(-4px);
 }
 
 .branch-feature-card.selected-branch {
-  border-color: var(--accent-gold);
-  background: #fffdf8;
-  box-shadow: 0 0 0 2px var(--accent-gold), 0 8px 20px rgba(255, 203, 5, 0.2);
+  border: 2px solid var(--brand-blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(0, 75, 151, 0.18), 0 8px 24px rgba(0, 35, 75, 0.12);
 }
 
-/* Marca de agua fotográfica sutil de la fachada */
+/* Marca de agua oculta para máxima nitidez y legibilidad del texto */
 .branch-card-watermark {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: none;
 }
 
-.branch-feature-card:hover .branch-card-watermark {
-  opacity: 0.16;
-  transform: scale(1.03);
-}
-
-/* Cabecera fotográfica de fachada real */
+/* Cabecera fotográfica de fachada real proporcional (16:9 natural) */
 .branch-card-header-photo {
   position: relative;
   width: 100%;
-  height: 160px;
+  height: 240px;
   overflow: hidden;
   background: #0f172a;
+  border-bottom: 3px solid var(--accent-gold);
   z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .branch-card-header-photo {
+    height: 200px;
+  }
 }
 
 .branch-card-header-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.4s ease;
 }
 
 .branch-feature-card:hover .branch-card-header-photo img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .branch-photo-badge {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(0, 35, 75, 0.88);
+  background: rgba(0, 35, 75, 0.9);
   color: var(--accent-gold);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-full);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
   border: 1px solid rgba(255,203,5,0.4);
   text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .branch-owner-badge {
   position: absolute;
-  bottom: 10px;
+  bottom: 12px;
   right: 12px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   color: var(--primary-navy);
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 800;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-sm);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  letter-spacing: 0.2px;
 }
 
 .branch-card-content {
-  padding: 20px;
+  padding: 22px;
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
+  background: #ffffff;
 }
 
 .branch-type-pill {
@@ -1301,9 +1308,15 @@ body {
 }
 
 .branch-buttons-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .branch-buttons-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .btn-branch-action {
@@ -2073,7 +2086,10 @@ body {
     padding: 30px 14px;
   }
 
-  .branches-grid-three {
+  .branches-grid,
+  .branches-grid-four,
+  .branches-grid-three,
+  .branches-grid-five {
     grid-template-columns: 1fr;
     gap: 16px;
   }

@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.2">
   
   <!-- Supabase JS Client (v2) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -117,7 +117,7 @@
         <!-- Referencias y Ubicaciones Físicas Reales de las 4 Sucursales con Enlaces a Google Maps -->
         <div class="hero-landmarks">
           <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
-            <span>📍 <strong>Las Delicias (Matriz):</strong> Av. Revolución 1203 <em>(Timoteo)</em> &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
+            <span>📍 <strong>Las Delicias:</strong> Av. Revolución 1203 <em>(Timoteo)</em> &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
           </a>
           <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
             <span>📍 <strong>Buena Vista:</strong> Carr. La Isla Km 5.300 <em>(Timoteo)</em> &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
@@ -357,17 +357,16 @@
 
       <div class="branches-grid-four">
         
-        <!-- Sucursal 1: Las Delicias (Matriz - Timoteo) -->
-        <article class="branch-feature-card selected-branch" data-branch-id="delicias">
-          <div class="branch-card-watermark" style="background-image: url('assets/images/branches/fachada-delicias-tito.webp');"></div>
+        <!-- Sucursal 1: Las Delicias (Timoteo) -->
+        <article class="branch-feature-card" data-branch-id="delicias">
           <div class="branch-card-header-photo">
             <img src="assets/images/branches/fachada-delicias-tito.webp" alt="Fachada Sucursal Las Delicias - El Águila" loading="lazy">
-            <span class="branch-photo-badge">🏢 Matriz Central</span>
+            <span class="branch-photo-badge">🏢 Sucursal Las Delicias</span>
             <span class="branch-owner-badge">Atención: Timoteo Méndez</span>
           </div>
           <div class="branch-card-content">
             <div>
-              <span class="branch-type-pill pill-matriz">Matriz / Mostrador Central</span>
+              <span class="branch-type-pill pill-sucursal">Sucursal</span>
               <h3>Sucursal Las Delicias</h3>
               <p class="branch-address-text">
                 📍 <strong>Av. Revolución 1203, Cuadrante II</strong>, Col. Las Delicias <em>(A un lado del Centro de Salud San Joaquín)</em>, C.P. 86140, Villahermosa, Tabasco.
@@ -380,12 +379,12 @@
             </div>
             <div>
               <div class="branch-buttons-row">
-                <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 993 289 2935</a>
+                <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 Llamar</a>
                 <a href="https://wa.me/529932892935" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver en Google Maps</a>
+                <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
               </div>
               <button class="btn-branch-select-store" onclick="selectBranchFromCard('delicias')">
-                ✓ Sucursal Seleccionada para Cotizar
+                Seleccionar esta Sucursal
               </button>
             </div>
           </div>
@@ -393,10 +392,9 @@
 
         <!-- Sucursal 2: Estrellas de Buena Vista (Timoteo) -->
         <article class="branch-feature-card" data-branch-id="buenavista">
-          <div class="branch-card-watermark" style="background-image: url('assets/images/branches/fachada-buenavista.webp');"></div>
           <div class="branch-card-header-photo">
             <img src="assets/images/branches/fachada-buenavista.webp" alt="Fachada Sucursal Estrellas de Buena Vista - El Águila" loading="lazy">
-            <span class="branch-photo-badge">🏢 Sucursal La Isla</span>
+            <span class="branch-photo-badge">🏢 Sucursal Buena Vista</span>
             <span class="branch-owner-badge">Atención: Timoteo Méndez</span>
           </div>
           <div class="branch-card-content">
@@ -414,9 +412,9 @@
             </div>
             <div>
               <div class="branch-buttons-row">
-                <a href="tel:9931928313" class="btn-branch-action btn-branch-phone">📞 993 192 8313</a>
+                <a href="tel:9931928313" class="btn-branch-action btn-branch-phone">📞 Llamar</a>
                 <a href="https://wa.me/529931928313" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver en Google Maps</a>
+                <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
               </div>
               <button class="btn-branch-select-store" onclick="selectBranchFromCard('buenavista')">
                 Seleccionar esta Sucursal
@@ -427,7 +425,6 @@
 
         <!-- Sucursal 3: Gaviotas Norte (Miguel) -->
         <article class="branch-feature-card" data-branch-id="gaviotas">
-          <div class="branch-card-watermark" style="background-image: url('assets/images/branches/fachada-gaviotas-miguel.webp');"></div>
           <div class="branch-card-header-photo">
             <img src="assets/images/branches/fachada-gaviotas-miguel.webp" alt="Fachada Sucursal Gaviotas Norte - El Águila" loading="lazy">
             <span class="branch-photo-badge">🏢 Sucursal Gaviotas</span>
@@ -446,9 +443,9 @@
             </div>
             <div>
               <div class="branch-buttons-row">
-                <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 993 289 2935</a>
+                <a href="tel:9932892935" class="btn-branch-action btn-branch-phone">📞 Llamar</a>
                 <a href="https://wa.me/529932892935" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver en Google Maps</a>
+                <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
               </div>
               <button class="btn-branch-select-store" onclick="selectBranchFromCard('gaviotas')">
                 Seleccionar esta Sucursal
@@ -457,9 +454,8 @@
           </div>
         </article>
 
-        <!-- Sucursal 4: Miguel Hidalgo III Etapa (Salomón 1) -->
+        <!-- Sucursal 4: Miguel Hidalgo III Etapa (Salomón) -->
         <article class="branch-feature-card" data-branch-id="hidalgo">
-          <div class="branch-card-watermark" style="background-image: url('assets/images/branches/fachada-hidalgo-salomon.webp');"></div>
           <div class="branch-card-header-photo">
             <img src="assets/images/branches/fachada-hidalgo-salomon.webp" alt="Fachada Sucursal Miguel Hidalgo - El Águila" loading="lazy">
             <span class="branch-photo-badge">🏢 Sucursal Miguel Hidalgo</span>
@@ -480,9 +476,9 @@
             </div>
             <div>
               <div class="branch-buttons-row">
-                <a href="tel:9931412755" class="btn-branch-action btn-branch-phone">📞 993 141 2755</a>
+                <a href="tel:9931412755" class="btn-branch-action btn-branch-phone">📞 Llamar</a>
                 <a href="https://wa.me/529931412755" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver en Google Maps</a>
+                <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
               </div>
               <button class="btn-branch-select-store" onclick="selectBranchFromCard('hidalgo')">
                 Seleccionar esta Sucursal
@@ -511,7 +507,7 @@
 
       <div class="footer-col">
         <h4>Nuestras 4 Sucursales y Mostradores</h4>
-        <p>📍 <strong>Las Delicias (Matriz):</strong> <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Av. Revolución 1203 🗺️</a><br>
+        <p>📍 <strong>Las Delicias:</strong> <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Av. Revolución 1203 🗺️</a><br>
            📞 Tel / WA: <a href="https://wa.me/529932892935" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 289 2935</a></p>
         <p style="margin-top: 6px;">📍 <strong>Estrellas de Buena Vista:</strong> <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Carr. La Isla Km 5.300 🗺️</a><br>
            📞 Tel / WA: <a href="https://wa.me/529931928313" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 192 8313</a></p>
@@ -551,7 +547,7 @@
         <div class="drawer-branch-card active" id="drawer-card-delicias" data-branch-id="delicias" onclick="setBranch('delicias')">
           <div class="branch-card-radio-indicator"></div>
           <div class="branch-card-details">
-            <div class="branch-card-name">Sucursal Las Delicias (Matriz)</div>
+            <div class="branch-card-name">Sucursal Las Delicias</div>
             <div class="branch-card-address">Av. Revolución 1203 &bull; <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
             <div class="branch-card-wa">📱 Timoteo: 993 289 2935</div>
           </div>
