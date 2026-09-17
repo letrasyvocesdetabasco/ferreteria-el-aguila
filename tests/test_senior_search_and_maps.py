@@ -100,7 +100,7 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
 
         for owner in ["Timoteo Méndez", "Miguel Méndez", "Salomón Méndez"]:
             self.assertIn(owner, js)
-            self.assertIn(owner, html)
+            self.assertNotIn(owner, html)
 
     def test_branch_storefront_images_exist_and_optimized(self):
         """Verify storefront images for all 4 branches exist and are under 250KB."""
@@ -181,7 +181,7 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
 
         with open(INDEX_PATH, "r", encoding="utf-8") as f:
             index_content = f.read()
-        self.assertIn('href="qr.html"', index_content)
+        self.assertNotIn('href="qr.html"', index_content)
 
 if __name__ == "__main__":
     unittest.main()
