@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Test suite for the 15 most frequent products cover images and 4-column branch layout.
+Includes strict tests against false positives (e.g. plumbing valves/keys getting wrench images).
 """
 
 import json
@@ -35,8 +36,8 @@ class TestFrequentProductsAndBranchGrid(unittest.TestCase):
             size_kb = os.path.getsize(filepath) / 1024
             self.assertLess(size_kb, 100, f"Image {filename} is too large ({size_kb:.1f} KB > 100 KB)")
 
-    def test_products_json_has_updated_product_covers(self):
-        """Verify thousands of products in data/products.json have been updated with real product covers."""
+    def test_strict_and_truthful_product_covers_in_products_json(self):
+        """Verify products_json assigns product covers ONLY to true, verified products (2000+ items)."""
         with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
             products = json.load(f)
 
@@ -49,21 +50,56 @@ class TestFrequentProductsAndBranchGrid(unittest.TestCase):
                 if f"prod-{item}.webp" in img:
                     counts[item] += 1
 
-        total_with_new_covers = sum(counts.values())
-        self.assertGreater(total_with_new_covers, 5000, f"Expected > 5000 updated products, got {total_with_new_covers}")
+        total_with_covers = sum(counts.values())
+        self.assertGreater(total_with_covers, 2500, f"Expected > 2500 strictly matched products, got {total_with_covers}")
 
-        # Ensure every single one of the 15 types has at least 100 products
+        # Ensure every one of the 15 categories has authentic matching products
         for item, count in counts.items():
-            self.assertGreater(count, 100, f"Expected > 100 products for {item}, got {count}")
+            self.assertGreater(count, 10, f"Expected at least 10 products for {item}, got {count}")
+
+    def test_zero_false_positives_on_plumbing_valves_and_accessories(self):
+        """Critical test: Ensure plumbing valves (llave hembra, llave de paso) do NOT have wrench images, clamps do not have bolt images, etc."""
+        with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
+            products = json.load(f)
+
+        for p in products:
+            name = p.get("name", "").lower()
+            img = p.get("image", "")
+            cat = p.get("category", "")
+
+            # 1. No plumbing valve or stopcock should have the mechanic wrench image
+            if "valvula" in name or "llave hembra" in name or "llave de paso" in name or "llave mezcladora" in name or "llave angular" in name or "llave jardinera" in name:
+                self.assertNotIn("prod-llave.webp", img, f"Plumbing valve '{p['name']}' incorrectly received wrench image: {img}")
+
+            # 2. Clamps (abrazaderas) should not have the hex bolt image
+            if "abrazadera" in name:
+                self.assertNotIn("prod-tornillo.webp", img, f"Clamp '{p['name']}' incorrectly received bolt image: {img}")
+                self.assertNotIn("prod-tuerca.webp", img, f"Clamp '{p['name']}' incorrectly received nut image: {img}")
+
+            # 3. Welding machines (soldadoras) should not have the ratchet socket image
+            if "soldadora" in name or "antorcha" in name:
+                self.assertNotIn("prod-dado.webp", img, f"Welding item '{p['name']}' incorrectly received socket image: {img}")
+
+            # 4. Plumbing extensions (p/lav, cespol) should not have the electrical extension cord image
+            if "p/lav" in name or "cespol" in name or "fregadero" in name:
+                self.assertNotIn("prod-extension.webp", img, f"Plumbing extension '{p['name']}' incorrectly received cord image: {img}")
+
+            # 5. Saw blades should not have electrical tape image
+            if "sierra" in name:
+                self.assertNotIn("prod-cinta.webp", img, f"Saw item '{p['name']}' incorrectly received tape image: {img}")
 
     def test_app_js_has_image_resolver(self):
-        """Verify app.js includes resolveProductImage and all 15 product patterns."""
+        """Verify app.js includes resolveProductImage with strict anti-false-positive filtering."""
         with open(APP_JS, "r", encoding="utf-8") as f:
             js = f.read()
 
         self.assertIn("resolveProductImage", js)
         for item in FREQUENT_15:
             self.assertIn(f"prod-{item}.webp", js)
+        # Ensure exclusions exist in app.js
+        self.assertIn("valvula|paso|hembra", js)
+        self.assertIn("abrazadera|extractor", js)
+        self.assertIn("soldadora|antorcha", js)
 
     def test_styles_css_restores_four_column_grid(self):
         """Verify styles.css uses repeat(4, 1fr) for desktop branches grid."""
@@ -78,7 +114,6 @@ class TestFrequentProductsAndBranchGrid(unittest.TestCase):
         with open(INDEX_HTML, "r", encoding="utf-8") as f:
             html = f.read()
 
-        # Extract branches section
         branch_section_match = re.search(r'<section id="branches-section".*?</section>', html, re.DOTALL)
         self.assertIsNotNone(branch_section_match, "branches-section not found in index.html")
         branch_section = branch_section_match.group(0)

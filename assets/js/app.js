@@ -531,30 +531,134 @@ function appendCardsToGrid(container, items) {
 // ==========================================================================
 // Resolución de Portada para los 15 Productos Más Frecuentes
 // ==========================================================================
+// ==========================================================================
+// Resolución de Portada Fidedigna para Productos y Categorías
+// ==========================================================================
 function resolveProductImage(prod) {
   if (!prod) return "assets/images/cat-tlapaleria.jpg";
+
+  // 1. Si el producto ya tiene imagen asignada en base de datos
   if (prod.image && prod.image.startsWith("assets/images/products/")) {
     return prod.image;
   }
   if (prod.image_url && prod.image_url.startsWith("assets/images/products/")) {
     return prod.image_url;
   }
-  const name = (prod.name || "").toLowerCase();
-  if (/\b(tornillo|tornillos)\b/i.test(name)) return "assets/images/products/prod-tornillo.webp";
-  if (/\b(llave|llaves)\b/i.test(name) && !name.includes("llavero")) return "assets/images/products/prod-llave.webp";
-  if (/\b(dado|dados)\b/i.test(name)) return "assets/images/products/prod-dado.webp";
-  if (/\b(tuerca|tuercas)\b/i.test(name)) return "assets/images/products/prod-tuerca.webp";
-  if (/\b(desarmador|desarmadores)\b/i.test(name)) return "assets/images/products/prod-desarmador.webp";
-  if (/\b(broca|brocas)\b/i.test(name)) return "assets/images/products/prod-broca.webp";
-  if (/\b(foco|focos)\b/i.test(name)) return "assets/images/products/prod-foco.webp";
-  if (/\b(manguera|mangueras)\b/i.test(name)) return "assets/images/products/prod-manguera.webp";
-  if (/\b(pija|pijas)\b/i.test(name)) return "assets/images/products/prod-pija.webp";
-  if (/\b(pinza|pinzas)\b/i.test(name)) return "assets/images/products/prod-pinza.webp";
-  if (/\b(valvula|válvula|valvulas|válvulas)\b/i.test(name)) return "assets/images/products/prod-valvula.webp";
-  if (/\b(extension|extensión|extensiones)\b/i.test(name) && !name.includes("corredera") && !name.includes("escalera")) return "assets/images/products/prod-extension.webp";
-  if (/\b(candado|candados)\b/i.test(name)) return "assets/images/products/prod-candado.webp";
-  if (/\b(cinta|cintas)\b/i.test(name) && !name.includes("sierra")) return "assets/images/products/prod-cinta.webp";
-  if (/\b(niple|niples)\b/i.test(name)) return "assets/images/products/prod-niple.webp";
+
+  const name = (prod.name || "").trim().toLowerCase();
+  const cat = prod.category || prod.categories?.name || "";
+
+  // 2. Validación estricta para evitar falsos positivos
+  // LLAVE: ÚNICAMENTE llaves combinadas/españolas mecánicas (NUNCA válvulas, llaves de paso, llaves hembras)
+  if (/^(llave[s]?\s+(combinada[s]?|española[s]?|mixta[s]?)|juego\s+(de\s+)?\d*\s*llaves\s+(combinadas|españolas))/i.test(name)) {
+    if (!/(valvula|paso|hembra|macho|cerradura|duplicadora|llavero|broquero|soquet)/i.test(name)) {
+      return "assets/images/products/prod-llave.webp";
+    }
+  }
+
+  // TORNILLO: ÚNICAMENTE tornillos hexagonales (NUNCA abrazaderas)
+  if (cat === "Tornillería y Fijación" && /^tornillo\s+hex(\.|\b)/i.test(name)) {
+    if (!/(abrazadera|extractor|gato|prensa|coche|tablaroca|madera)/i.test(name)) {
+      return "assets/images/products/prod-tornillo.webp";
+    }
+  }
+
+  // DADO: ÚNICAMENTE dados para matraca (NUNCA soldadoras ni antorchas)
+  if (cat === "Herramientas en General" && /^(dado\s+|juego\s+(de\s+)?dados)/i.test(name)) {
+    if (!/(soldadora|antorcha|barra|matraca|riel|extensi[oó]n|organizador|tarraja|porta)/i.test(name)) {
+      return "assets/images/products/prod-dado.webp";
+    }
+  }
+
+  // VÁLVULA: ÚNICAMENTE válvulas de esfera de latón
+  if (cat === "Plomería y Conexiones" && /v[aá]lvula\s+(de\s+)?esfera/i.test(name)) {
+    if (!/(pvc|cpvc|plastico|plástico|alivio|seguridad|check|pie|pichancha|retenci[oó]n|descarga)/i.test(name)) {
+      return "assets/images/products/prod-valvula.webp";
+    }
+  }
+
+  // DESARMADOR: ÚNICAMENTE desarmadores manuales
+  if (cat === "Herramientas en General" && /^(desarmador\s+|juego\s+(de\s+)?desarmadores|jgo\.?\s+(de\s+)?desarmadores)/i.test(name)) {
+    if (!/(punta|portapunta|rack|gabinete)/i.test(name)) {
+      return "assets/images/products/prod-desarmador.webp";
+    }
+  }
+
+  // BROCA: ÚNICAMENTE brocas para taladro
+  if (cat === "Herramientas en General" && /^(broca\s+|juego\s+(de\s+)?brocas|jgo\.?\s+(de\s+)?brocas)/i.test(name)) {
+    if (!/(afilador|broquero|portabroca|sierra|copa|manita|router|sacabocados|forstner|gusano|autoalimentadora)/i.test(name)) {
+      return "assets/images/products/prod-broca.webp";
+    }
+  }
+
+  // FOCO: ÚNICAMENTE focos para socket
+  if (cat === "Material Eléctrico" && /^foco\s+/i.test(name)) {
+    if (!/(base|soquet|portal[aá]mpara|portafoco|tubo|balastra|reflector|circular|t10|t5)/i.test(name)) {
+      return "assets/images/products/prod-foco.webp";
+    }
+  }
+
+  // CANDADO: ÚNICAMENTE candados de latón o hierro
+  if (/^(candado\s+|bl[ií]ster c\/\d+\s+candados)/i.test(name)) {
+    if (!/(aldaba|cadena|portacandado|porta candado)/i.test(name)) {
+      return "assets/images/products/prod-candado.webp";
+    }
+  }
+
+  // NIPLE: ÚNICAMENTE niples rectos en Plomería
+  if (cat === "Plomería y Conexiones" && /^niple\s+/i.test(name)) {
+    if (!/(codo|tee|grasera|engrase)/i.test(name)) {
+      return "assets/images/products/prod-niple.webp";
+    }
+  }
+
+  // TUERCA: ÚNICAMENTE tuercas hexagonales en Tornillería
+  if (cat === "Tornillería y Fijación" && /^tuerca\s+hex(\.|\b)/i.test(name)) {
+    if (!/(abrazadera|mariposa|ciega|bellota|seguridad|inserto|uni[oó]n|nylon)/i.test(name)) {
+      return "assets/images/products/prod-tuerca.webp";
+    }
+  }
+
+  // EXTENSIÓN: ÚNICAMENTE extensiones eléctricas de uso rudo o domésticas
+  if (cat === "Material Eléctrico" && /^extensi[oó]n(es)?\s+/i.test(name)) {
+    if (/(rudo|el[eé]ctrica|dom[eé]stica|reforzada|power block|banana|polarizada|calibre|cal\.)/i.test(name)) {
+      if (!/(bamb[uú]|rodillo|lavabo|fregadero|cespol|plug|corredera|escalera|p\/lav|dado|cuadro)/i.test(name)) {
+        return "assets/images/products/prod-extension.webp";
+      }
+    }
+  }
+
+  // MANGUERA: ÚNICAMENTE mangueras de riego o jardín armadas/reforzadas
+  if (/^manguera\s+/i.test(name)) {
+    if (/(jard[ií]n|reforzada|armada|capas|10\s*m|15\s*m|20\s*m|25\s*m|30\s*m)/i.test(name)) {
+      if (!/(nivel|compresor|aire|lavabo|fregadero|wc|alimentador|carrete|chiflon|pistola|aspersor|abrazadera|soplete|gas|motobomba|presi[oó]n|corrugado|poliducto|succi[oó]n)/i.test(name)) {
+        return "assets/images/products/prod-manguera.webp";
+      }
+    }
+  }
+
+  // PIJA: ÚNICAMENTE pijas negras para tablaroca / fijación
+  if (cat === "Tornillería y Fijación" && /^pija\s+/i.test(name)) {
+    if (/(tablaroca|negra)/i.test(name) && !/(grapa|clip|taquete)/i.test(name)) {
+      return "assets/images/products/prod-pija.webp";
+    }
+  }
+
+  // PINZA: ÚNICAMENTE pinzas de electricista, chofer o universales
+  if (cat === "Herramientas en General" && /^pinza[s]?\s+(de\s+)?(electricista|chofer|ch[oó]fer|universal)/i.test(name)) {
+    if (!/(soldadora|tierra|presi[oó]n|ropa|depilar|bater[ií]a|cable)/i.test(name)) {
+      return "assets/images/products/prod-pinza.webp";
+    }
+  }
+
+  // CINTA: ÚNICAMENTE cinta de aislar eléctrica
+  if (cat === "Material Eléctrico" && /cinta\s+(de\s+)?aisla(r|nte)/i.test(name)) {
+    if (!/(sierra|m[eé]trica|tefl[oó]n|masking|canela|ducto|delimitadora|barricada)/i.test(name)) {
+      return "assets/images/products/prod-cinta.webp";
+    }
+  }
+
+  // Fallback seguro a imagen de la categoría o genérica
   return prod.image || prod.image_url || "assets/images/cat-tlapaleria.jpg";
 }
 
