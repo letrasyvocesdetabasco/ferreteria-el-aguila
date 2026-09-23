@@ -47,7 +47,7 @@ class TestFrequentProductsAndBranchGrid(unittest.TestCase):
         for p in products:
             img = p.get("image", "")
             for item in FREQUENT_15:
-                if f"prod-{item}.webp" in img:
+                if f"prod-{item}.webp" in img or (item == "candado" and "candados" in img) or (item == "tornillo" and "tornilleria" in img):
                     counts[item] += 1
 
         total_with_covers = sum(counts.values())

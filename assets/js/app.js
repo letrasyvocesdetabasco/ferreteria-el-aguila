@@ -52,8 +52,9 @@ const BRANCHES = {
     address: "Aquiles Calderón Marchena 120, Col. Gaviotas Nte., C.P. 86068, Villahermosa, Tab.",
     landmark: "Aquiles Calderón Marchena",
     city: "Villahermosa, Tabasco",
-    phone: "993 289 2935",
-    whatsapp: "529932892935",
+    phone: "993 200 1178",
+    whatsapp: "529932001178",
+    onlyWhatsApp: true,
     mapsUrl: "https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8",
     badge: "Sucursal Gaviotas Norte",
     image: "assets/images/branches/fachada-gaviotas-miguel.webp",
@@ -67,13 +68,30 @@ const BRANCHES = {
     address: "Carr. Villahermosa a La Isla, Miguel Hidalgo III Etapa, C.P. 86126, Villahermosa, Tab.",
     landmark: "Carretera a La Isla III Etapa",
     city: "Villahermosa, Tabasco",
-    phone: "993 141 2755",
-    whatsapp: "529931412755",
+    phone: "993 141 2679",
+    whatsapp: "529931412679",
     mapsUrl: "https://maps.app.goo.gl/xnaBo218rGoQQvMZ7",
     badge: "Sucursal Miguel Hidalgo",
     image: "assets/images/branches/fachada-hidalgo-salomon.webp",
     isMatriz: false,
     schedule: "Lun a Vie: 8:00 a 18:30 hrs | Sáb: 8:00 a 17:00 hrs | Dom: 8:00 a 13:00 hrs"
+  },
+  joem: {
+    id: "joem",
+    name: "Sucursal Joem",
+    owner: "Salomón Méndez",
+    address: "Carr. Villahermosa a La Isla, Col. Miguel Hidalgo I, C.P. 86280, Villahermosa, Tab.",
+    landmark: "Carretera a La Isla (Ferretería Joem)",
+    city: "Villahermosa, Tabasco",
+    phone: "Atención en mostrador",
+    whatsapp: "",
+    noDirectPhone: true,
+    noWhatsApp: true,
+    mapsUrl: "https://maps.app.goo.gl/y2qguKEAUhhGPpfw5",
+    badge: "Sucursal Joem",
+    image: "assets/images/branches/fachada-joem.webp",
+    isMatriz: false,
+    schedule: "Lunes a Viernes: 8:00 a 18:00 hrs | Sábado: 8:00 a 15:00 hrs"
   }
 };
 
@@ -193,12 +211,32 @@ async function loadFallbackCatalog() {
 // ==========================================================================
 // 4. Sucursales en Villahermosa
 // ==========================================================================
+function openBranchSelectorDropdown(e) {
+  const sel = document.getElementById("branch-select");
+  if (!sel) return;
+  if (e && e.target === sel) return;
+  if (typeof sel.showPicker === "function") {
+    try {
+      sel.showPicker();
+      return;
+    } catch (_) {}
+  }
+  sel.focus();
+}
+window.openBranchSelectorDropdown = openBranchSelectorDropdown;
+
 function initBranchSelector() {
   const select = document.getElementById("branch-select");
   if (select) {
     select.value = AppState.selectedBranch;
     select.addEventListener("change", (e) => setBranch(e.target.value));
   }
+
+  const selectorBlock = document.getElementById("header-branch-selector");
+  if (selectorBlock) {
+    selectorBlock.addEventListener("click", openBranchSelectorDropdown);
+  }
+
   updateBranchUI(AppState.selectedBranch);
 }
 
@@ -234,13 +272,20 @@ function updateBranchUI(branchId) {
   // Actualizar texto del botón de despacho en el cajón de cotización
   const sendWhatsAppBtn = document.getElementById("whatsapp-order-btn");
   if (sendWhatsAppBtn) {
-    sendWhatsAppBtn.innerHTML = `<span>💬 Enviar Presupuesto a ${branch.name} (WhatsApp)</span>`;
+    if (branch.whatsapp) {
+      sendWhatsAppBtn.innerHTML = `<span>💬 Enviar Presupuesto a ${branch.name} (WhatsApp)</span>`;
+      sendWhatsAppBtn.style.opacity = "1";
+    } else {
+      sendWhatsAppBtn.innerHTML = `<span>🏪 ${branch.name}: Atención en Mostrador</span>`;
+      sendWhatsAppBtn.style.opacity = "0.9";
+    }
   }
 
   // Actualizar botón flotante de WhatsApp y barra fija móvil
   const floatingWa = document.getElementById("floating-wa-btn");
   const mobileNavWa = document.getElementById("mobile-nav-wa");
-  const waUrl = `https://wa.me/${branch.whatsapp}?text=${encodeURIComponent("Hola Ferretería El Águila (" + branch.name + "), me gustaría consultar existencias y cotizar un material.")}`;
+  const targetWaNumber = branch.whatsapp || BRANCHES.delicias.whatsapp;
+  const waUrl = `https://wa.me/${targetWaNumber}?text=${encodeURIComponent("Hola Ferretería El Águila (" + branch.name + "), me gustaría consultar existencias y cotizar un material.")}`;
   if (floatingWa) floatingWa.href = waUrl;
   if (mobileNavWa) mobileNavWa.href = waUrl;
 
@@ -1034,6 +1079,10 @@ function dispatchToWhatsApp() {
   }
 
   const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
+  if (!branch.whatsapp) {
+    alert("La Sucursal Joem no cuenta con línea de WhatsApp actualmente. Te invitamos a visitarnos directamente en mostrador o elegir otra sucursal para cotizar por WhatsApp.");
+    return;
+  }
   const clientNameInput = document.getElementById("quote-client-name");
   const siteInput = document.getElementById("quote-client-site");
   const notesInput = document.getElementById("quote-client-notes");
@@ -1054,6 +1103,8 @@ function dispatchToWhatsApp() {
 function initEventListeners() {
   const searchInput = document.getElementById("catalog-search-input");
   const clearBtn = document.getElementById("search-clear-btn");
+  const searchForm = document.getElementById("catalog-search-form");
+  const searchSubmitBtn = document.getElementById("search-submit-btn");
   let searchDebounceTimer = null;
 
   if (searchInput) {
@@ -1066,6 +1117,30 @@ function initEventListeners() {
       searchDebounceTimer = setTimeout(() => {
         applyFilterPipeline();
       }, 50);
+    });
+
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        triggerCatalogSearch();
+      }
+    });
+  }
+
+  if (searchForm) {
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      clearTimeout(searchDebounceTimer);
+      triggerCatalogSearch();
+    });
+  }
+
+  if (searchSubmitBtn) {
+    searchSubmitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearTimeout(searchDebounceTimer);
+      triggerCatalogSearch();
     });
   }
 
@@ -1124,6 +1199,26 @@ window.filterByCategoryBanner = function(catName) {
   updateFacetSelection();
   applyFilterPipeline();
   scrollToCatalog();
+};
+
+window.triggerCatalogSearch = function() {
+  const searchInput = document.getElementById("catalog-search-input");
+  if (searchInput) {
+    AppState.searchTerm = searchInput.value.trim();
+    const clearBtn = document.getElementById("search-clear-btn");
+    if (clearBtn) {
+      clearBtn.style.display = searchInput.value ? "block" : "none";
+    }
+  }
+  applyFilterPipeline();
+  scrollToCatalog();
+
+  const counter = document.getElementById("counter-display");
+  if (counter) {
+    counter.classList.remove("highlight-pulse");
+    void counter.offsetWidth;
+    counter.classList.add("highlight-pulse");
+  }
 };
 
 window.scrollToCatalog = function() {

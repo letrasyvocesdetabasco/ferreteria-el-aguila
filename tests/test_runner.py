@@ -22,6 +22,7 @@ from tests.test_milestone_3 import TestMilestone3
 from tests.test_milestone_4 import TestMilestone4WhatsAppAndTiers
 from tests.test_senior_search_and_maps import TestSeniorSearchAndMaps
 from tests.test_frequent_product_covers_and_branch_grid import TestFrequentProductsAndBranchGrid
+from tests.test_audit_updates import TestAuditUpdates
 
 
 def build_suite():
@@ -33,6 +34,7 @@ def build_suite():
     suite.addTests(loader.loadTestsFromTestCase(TestMilestone4WhatsAppAndTiers))
     suite.addTests(loader.loadTestsFromTestCase(TestSeniorSearchAndMaps))
     suite.addTests(loader.loadTestsFromTestCase(TestFrequentProductsAndBranchGrid))
+    suite.addTests(loader.loadTestsFromTestCase(TestAuditUpdates))
     return suite
 
 
