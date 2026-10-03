@@ -11,7 +11,8 @@ const CONFIG = {
   SUPABASE_ANON_KEY: "TU_CLAVE_ANONIMA",
   FALLBACK_DATA_URL: "data/products.json",
   STORAGE_CART_KEY: "elaguila_quote_cart",
-  STORAGE_BRANCH_KEY: "elaguila_selected_branch"
+  STORAGE_BRANCH_KEY: "elaguila_selected_branch",
+  STORAGE_CUSTOMER_KEY: "el_aguila_customer_profile"
 };
 
 const BRANCHES = {
@@ -205,6 +206,14 @@ async function loadFallbackCatalog() {
     AppState.isSupabaseActive = false;
   } catch (err) {
     console.error("Error al cargar data/products.json:", err);
+    const counterElem = document.getElementById("counter-display");
+    if (counterElem) {
+      if (window.location.protocol === "file:") {
+        counterElem.innerHTML = `<span style="color: #c9242b; font-weight: bold;">⚠️ Abierto mediante file://. Por seguridad del navegador (CORS), debes abrir la tienda en tu servidor local: <a href="http://localhost:8080" style="text-decoration: underline; color: #0284c7;">http://localhost:8080</a></span>`;
+      } else {
+        counterElem.textContent = "Error al cargar inventario local.";
+      }
+    }
   }
 }
 
@@ -245,6 +254,9 @@ function setBranch(branchId) {
   AppState.selectedBranch = branchId;
   localStorage.setItem(CONFIG.STORAGE_BRANCH_KEY, branchId);
   updateBranchUI(branchId);
+  if (typeof saveCustomerDataToCache === "function") {
+    saveCustomerDataToCache();
+  }
 }
 
 function updateBranchUI(branchId) {
@@ -996,7 +1008,199 @@ function updateCartUI() {
   if (countPill) countPill.textContent = totalItemsCount;
   const mobileCountPill = document.getElementById("mobile-cart-count");
   if (mobileCountPill) mobileCountPill.textContent = totalItemsCount;
+  const stepCountPill = document.getElementById("cart-item-count-step");
+  if (stepCountPill) stepCountPill.textContent = totalItemsCount;
   if (totalElem) totalElem.textContent = `$${totalMoney.toFixed(2)}`;
+
+  const btnContinue = document.getElementById("btn-continue-step-2");
+  if (btnContinue) {
+    btnContinue.disabled = (AppState.quoteCart.size === 0);
+    btnContinue.style.opacity = (AppState.quoteCart.size === 0) ? "0.5" : "1";
+    btnContinue.style.pointerEvents = (AppState.quoteCart.size === 0) ? "none" : "auto";
+  }
+}
+
+// ==========================================================================
+// 7.1. Control del Stepper de 2 Pasos del Cajón
+// ==========================================================================
+function setDrawerStep(step) {
+  const step1View = document.getElementById("drawer-step-1");
+  const step2View = document.getElementById("drawer-step-2");
+  const step1Btn = document.getElementById("step-btn-1");
+  const step2Btn = document.getElementById("step-btn-2");
+  const footer1 = document.getElementById("footer-actions-step-1");
+  const footer2 = document.getElementById("footer-actions-step-2");
+
+  if (step === 2) {
+    if (AppState.quoteCart.size === 0) {
+      alert("Agrega al menos un artículo a tu presupuesto para ingresar tus datos de recolección.");
+      return;
+    }
+    if (step1View) step1View.style.display = "none";
+    if (step2View) step2View.style.display = "block";
+    if (step1Btn) step1Btn.classList.remove("active");
+    if (step2Btn) step2Btn.classList.add("active");
+    if (footer1) footer1.style.display = "none";
+    if (footer2) footer2.style.display = "block";
+
+    const nameInput = document.getElementById("quote-client-name");
+    if (nameInput) {
+      setTimeout(() => nameInput.focus(), 150);
+    }
+  } else {
+    if (step1View) step1View.style.display = "block";
+    if (step2View) step2View.style.display = "none";
+    if (step1Btn) step1Btn.classList.add("active");
+    if (step2Btn) step2Btn.classList.remove("active");
+    if (footer1) footer1.style.display = "block";
+    if (footer2) footer2.style.display = "none";
+  }
+}
+window.setDrawerStep = setDrawerStep;
+
+// ==========================================================================
+// 7.2. Persistencia en Cache Local y Validación de Datos del Solicitante
+// ==========================================================================
+const CUSTOMER_CACHE_KEY = "el_aguila_customer_profile";
+
+function saveCustomerDataToCache() {
+  try {
+    const nameInput = document.getElementById("quote-client-name");
+    const phoneInput = document.getElementById("quote-client-phone");
+    const siteInput = document.getElementById("quote-client-site");
+    const notesInput = document.getElementById("quote-client-notes");
+
+    const profile = {
+      name: nameInput ? nameInput.value.trim() : "",
+      phone: phoneInput ? phoneInput.value.trim() : "",
+      site: siteInput ? siteInput.value.trim() : "",
+      notes: notesInput ? notesInput.value.trim() : "",
+      preferredBranch: AppState.selectedBranch || "delicias",
+      updatedAt: Date.now()
+    };
+
+    if (profile.name || profile.phone || profile.notes) {
+      localStorage.setItem(CUSTOMER_CACHE_KEY, JSON.stringify(profile));
+    }
+    updateCustomerDataStatusBadge();
+  } catch (e) {
+    console.warn("No se pudo guardar datos del cliente en localStorage:", e);
+  }
+}
+
+function loadCustomerDataFromCache() {
+  try {
+    const raw = localStorage.getItem(CUSTOMER_CACHE_KEY);
+    if (!raw) {
+      updateCustomerDataStatusBadge();
+      return;
+    }
+    const data = JSON.parse(raw);
+    if (!data || typeof data !== "object") {
+      updateCustomerDataStatusBadge();
+      return;
+    }
+
+    const nameInput = document.getElementById("quote-client-name");
+    const phoneInput = document.getElementById("quote-client-phone");
+    const notesInput = document.getElementById("quote-client-notes");
+
+    if (nameInput && data.name && !nameInput.value) {
+      nameInput.value = data.name;
+    }
+    if (phoneInput && data.phone && !phoneInput.value) {
+      phoneInput.value = data.phone;
+    }
+    if (notesInput && data.notes && !notesInput.value) {
+      notesInput.value = data.notes;
+    }
+
+    if (data.preferredBranch && BRANCHES[data.preferredBranch] && !localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY)) {
+      setBranch(data.preferredBranch);
+    }
+
+    updateCustomerDataStatusBadge();
+  } catch (e) {
+    console.warn("Error cargando perfil de cliente desde cache:", e);
+  }
+}
+
+function clearCustomerCache() {
+  try {
+    localStorage.removeItem(CUSTOMER_CACHE_KEY);
+    const nameInput = document.getElementById("quote-client-name");
+    const phoneInput = document.getElementById("quote-client-phone");
+    const notesInput = document.getElementById("quote-client-notes");
+
+    if (nameInput) {
+      nameInput.value = "";
+      nameInput.classList.remove("form-input-error");
+    }
+    if (phoneInput) {
+      phoneInput.value = "";
+      phoneInput.classList.remove("form-input-error");
+    }
+    if (notesInput) {
+      notesInput.value = "";
+    }
+
+    const nameErr = document.getElementById("name-error-msg");
+    if (nameErr) nameErr.style.display = "none";
+    const phoneErr = document.getElementById("phone-error-msg");
+    if (phoneErr) phoneErr.style.display = "none";
+
+    updateCustomerDataStatusBadge();
+  } catch (e) {
+    console.warn("Error limpiando cache de cliente:", e);
+  }
+}
+
+function updateCustomerDataStatusBadge() {
+  const nameInput = document.getElementById("quote-client-name");
+  const phoneInput = document.getElementById("quote-client-phone");
+  const statusBadge = document.getElementById("customer-cache-status-badge");
+  const stepperPill = document.getElementById("stepper-client-pill");
+
+  const nameVal = nameInput ? nameInput.value.trim() : "";
+  const phoneVal = phoneInput ? phoneInput.value.trim() : "";
+  const phoneClean = phoneVal.replace(/\D/g, "");
+
+  const isComplete = (nameVal.length >= 2 && phoneClean.length >= 10);
+
+  if (stepperPill) {
+    if (isComplete) {
+      stepperPill.className = "stepper-pill-complete";
+      stepperPill.textContent = "✓ Listo";
+    } else {
+      stepperPill.className = "stepper-pill-pending";
+      stepperPill.textContent = "Requerido";
+    }
+  }
+
+  if (statusBadge) {
+    const hasStored = !!localStorage.getItem(CUSTOMER_CACHE_KEY);
+    if (hasStored || (nameVal && phoneVal)) {
+      statusBadge.style.display = "inline-flex";
+    } else {
+      statusBadge.style.display = "none";
+    }
+  }
+}
+
+function formatPhoneInput(e) {
+  const input = e.target;
+  let digits = input.value.replace(/\D/g, "");
+  if (digits.length > 10) digits = digits.slice(0, 10);
+
+  let formatted = "";
+  if (digits.length > 6) {
+    formatted = `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+  } else if (digits.length > 3) {
+    formatted = `${digits.slice(0, 3)} ${digits.slice(3)}`;
+  } else {
+    formatted = digits;
+  }
+  input.value = formatted;
 }
 
 // ==========================================================================
@@ -1019,6 +1223,7 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
   }
 
   const clientName = clientData.clientName ? clientData.clientName.trim() : "";
+  const clientPhone = clientData.clientPhone ? clientData.clientPhone.trim() : "";
   const siteLocation = clientData.siteLocation ? clientData.siteLocation.trim() : "";
   const notes = clientData.notes ? clientData.notes.trim() : "";
 
@@ -1036,6 +1241,9 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
 
   msg += `*DATOS DEL CLIENTE / RECOLECCIÓN:*\n`;
   msg += `• *Solicitante / Empresa:* ${clientName || "Cliente Particular / Mostrador"}\n`;
+  if (clientPhone) {
+    msg += `• *Teléfono de Contacto:* ${clientPhone}\n`;
+  }
   msg += `• *Modalidad:* ${siteLocation || "Recolección en Mostrador"}\n`;
   if (notes) {
     msg += `• *Notas / Preguntas:* ${notes}\n`;
@@ -1057,7 +1265,7 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `*TOTAL ESTIMADO:* *$${totalEstimado.toFixed(2)} MXN*\n\n`;
-  msg += `_Solicito amablemente confirmar existencias en ${branch.name} para recolección en mostrador y descuentos por volumen. Saludos cordiales._`;
+  msg += `_Solicito amablemente confirmar existencias en ${branch.name} para recolección en mostrador y apartar mis piezas. Saludos cordiales._`;
 
   const encodedMsg = encodeURIComponent(msg);
   const targetNumber = branch.whatsapp;
@@ -1078,18 +1286,69 @@ function dispatchToWhatsApp() {
     return;
   }
 
+  const clientNameInput = document.getElementById("quote-client-name");
+  const clientPhoneInput = document.getElementById("quote-client-phone");
+  const siteInput = document.getElementById("quote-client-site");
+  const notesInput = document.getElementById("quote-client-notes");
+  const nameErrorMsg = document.getElementById("name-error-msg");
+  const phoneErrorMsg = document.getElementById("phone-error-msg");
+
+  if (clientNameInput) clientNameInput.classList.remove("form-input-error");
+  if (clientPhoneInput) clientPhoneInput.classList.remove("form-input-error");
+  if (nameErrorMsg) nameErrorMsg.style.display = "none";
+  if (phoneErrorMsg) phoneErrorMsg.style.display = "none";
+
+  const nameVal = clientNameInput ? clientNameInput.value.trim() : "";
+  const phoneVal = clientPhoneInput ? clientPhoneInput.value.trim() : "";
+  const phoneClean = phoneVal.replace(/\D/g, "");
+
+  let hasError = false;
+
+  if (!nameVal || nameVal.length < 2) {
+    setDrawerStep(2);
+    if (clientNameInput) {
+      clientNameInput.classList.add("form-input-error");
+      clientNameInput.focus();
+    }
+    if (nameErrorMsg) {
+      nameErrorMsg.style.display = "block";
+    }
+    hasError = true;
+  }
+
+  if (!phoneClean || phoneClean.length < 10) {
+    if (!hasError) {
+      setDrawerStep(2);
+      if (clientPhoneInput) {
+        clientPhoneInput.focus();
+      }
+    }
+    if (clientPhoneInput) {
+      clientPhoneInput.classList.add("form-input-error");
+    }
+    if (phoneErrorMsg) {
+      phoneErrorMsg.style.display = "block";
+    }
+    hasError = true;
+  }
+
+  if (hasError) {
+    return;
+  }
+
+  // Guardar datos validados en cache para futuras visitas
+  saveCustomerDataToCache();
+
   const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
   if (!branch.whatsapp) {
     alert("La Sucursal Joem no cuenta con línea de WhatsApp actualmente. Te invitamos a visitarnos directamente en mostrador o elegir otra sucursal para cotizar por WhatsApp.");
     return;
   }
-  const clientNameInput = document.getElementById("quote-client-name");
-  const siteInput = document.getElementById("quote-client-site");
-  const notesInput = document.getElementById("quote-client-notes");
 
   const clientData = {
-    clientName: clientNameInput ? clientNameInput.value.trim() : "",
-    siteLocation: siteInput ? siteInput.value.trim() : "",
+    clientName: nameVal,
+    clientPhone: phoneVal,
+    siteLocation: siteInput ? siteInput.value.trim() : "Recolección en mostrador",
     notes: notesInput ? notesInput.value.trim() : ""
   };
 
@@ -1174,6 +1433,7 @@ function initEventListeners() {
   const sendWhatsAppBtn = document.getElementById("whatsapp-order-btn");
 
   const openDrawer = () => {
+    loadCustomerDataFromCache();
     if (drawer) drawer.classList.add("active");
     if (backdrop) backdrop.classList.add("active");
   };
@@ -1187,6 +1447,44 @@ function initEventListeners() {
   if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
   if (sendWhatsAppBtn) sendWhatsAppBtn.addEventListener("click", dispatchToWhatsApp);
+
+  // Customer Data Auto-Save, Formatting & Inline Validation
+  const clientNameInput = document.getElementById("quote-client-name");
+  const clientPhoneInput = document.getElementById("quote-client-phone");
+  const clientNotesInput = document.getElementById("quote-client-notes");
+  const nameErrorMsg = document.getElementById("name-error-msg");
+  const phoneErrorMsg = document.getElementById("phone-error-msg");
+
+  if (clientNameInput) {
+    clientNameInput.addEventListener("input", () => {
+      if (clientNameInput.value.trim().length >= 2) {
+        clientNameInput.classList.remove("form-input-error");
+        if (nameErrorMsg) nameErrorMsg.style.display = "none";
+      }
+      saveCustomerDataToCache();
+    });
+  }
+
+  if (clientPhoneInput) {
+    clientPhoneInput.addEventListener("input", (e) => {
+      formatPhoneInput(e);
+      const digits = clientPhoneInput.value.replace(/\D/g, "");
+      if (digits.length >= 10) {
+        clientPhoneInput.classList.remove("form-input-error");
+        if (phoneErrorMsg) phoneErrorMsg.style.display = "none";
+      }
+      saveCustomerDataToCache();
+    });
+  }
+
+  if (clientNotesInput) {
+    clientNotesInput.addEventListener("input", () => {
+      saveCustomerDataToCache();
+    });
+  }
+
+  // Preload cached customer data if available
+  loadCustomerDataFromCache();
 
   window.openQuoteDrawer = openDrawer;
 }
@@ -1293,6 +1591,12 @@ window.AppState = AppState;
 window.addProductToCart = addProductToCart;
 window.quickSearch = quickSearch;
 window.resetAllFiltersKeepSearch = resetAllFiltersKeepSearch;
+window.setDrawerStep = setDrawerStep;
+window.saveCustomerDataToCache = saveCustomerDataToCache;
+window.loadCustomerDataFromCache = loadCustomerDataFromCache;
+window.clearCustomerCache = clearCustomerCache;
+window.updateCustomerDataStatusBadge = updateCustomerDataStatusBadge;
+window.formatPhoneInput = formatPhoneInput;
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
@@ -1307,6 +1611,12 @@ if (typeof module !== "undefined" && module.exports) {
     dispatchToWhatsApp,
     quickSearch,
     resetAllFiltersKeepSearch,
+    setDrawerStep,
+    saveCustomerDataToCache,
+    loadCustomerDataFromCache,
+    clearCustomerCache,
+    updateCustomerDataStatusBadge,
+    formatPhoneInput,
     escapeHtml
   };
 }

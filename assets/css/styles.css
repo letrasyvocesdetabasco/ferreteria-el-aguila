@@ -2478,4 +2478,341 @@ body {
   transform: scale(1.04);
 }
 
+/* ==========================================================================
+   Cajón de Cotización: Stepper Ergonómico de 2 Pasos (Mobile First)
+   ========================================================================== */
+.drawer-stepper-bar {
+  display: flex;
+  background: #f1f5f9;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.stepper-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stepper-tab.active {
+  background: #ffffff;
+  color: var(--primary-navy);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.stepper-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.stepper-tab.active .stepper-badge {
+  background: var(--accent-gold);
+  color: #001937;
+}
+
+/* Vistas de paso */
+.drawer-step-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Tarjeta Prioritaria de Datos del Cliente */
+.customer-priority-card {
+  background: #ffffff;
+  border: 2px solid #fbbf24;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.12);
+}
+
+.customer-priority-header {
+  margin-bottom: 16px;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 12px;
+}
+
+.priority-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.priority-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #b45309;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  border: 1px solid #fde68a;
+}
+
+.customer-cache-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.btn-clear-cache {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.btn-clear-cache:hover {
+  color: #ef4444;
+}
+
+.stepper-pill-pending {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+.stepper-pill-complete {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+.step-guide-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  color: #166534;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.step-guide-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.field-error-msg {
+  font-size: 0.76rem;
+  color: #b91c1c;
+  font-weight: 700;
+  margin-top: 5px;
+  line-height: 1.3;
+}
+
+.form-input-error {
+  border-color: #ef4444 !important;
+  background: #fff5f5 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+  animation: shakeInput 0.3s ease-in-out;
+}
+
+@keyframes shakeInput {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.priority-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--primary-navy);
+  margin-bottom: 4px;
+}
+
+.priority-desc {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.form-group-prominent {
+  margin-bottom: 16px;
+}
+
+.form-group-prominent label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.required-tag {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.optional-tag {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.form-input-lg {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f8fafc;
+}
+
+.form-input-lg:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25);
+}
+
+/* Botones de acción del Stepper en Footer */
+.btn-drawer-next {
+  width: 100%;
+  background: var(--primary-navy);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 32, 91, 0.25);
+}
+
+.btn-drawer-next:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.footer-buttons-dual {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-drawer-back {
+  flex: 0 0 auto;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-drawer-back:hover {
+  background: #f1f5f9;
+}
+
+.footer-buttons-dual .btn-whatsapp-dispatch {
+  flex: 1;
+}
+
+/* ==========================================================================
+   Ajustes Críticos para Pantallas Móviles (<= 640px)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .quote-drawer {
+    width: 100vw;
+    max-width: 100%;
+    height: 100dvh;
+    right: -100vw;
+    z-index: 1000;
+  }
+
+  .drawer-header {
+    padding: 14px 16px;
+  }
+
+  .drawer-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .drawer-body {
+    padding: 14px;
+  }
+
+  .customer-priority-card {
+    padding: 14px;
+  }
+
+  .drawer-branch-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .drawer-footer {
+    padding: 14px 16px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
+  }
+
+  .total-amount {
+    font-size: 1.35rem;
+  }
+}
+
 

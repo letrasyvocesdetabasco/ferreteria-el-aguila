@@ -726,93 +726,170 @@
       <button id="quote-close-btn" class="btn-close-drawer" title="Cerrar presupuesto">&times;</button>
     </div>
 
-    <!-- Selector Interactivo de Sucursal para Despacho de Pedido -->
-    <div class="drawer-branch-selector-container">
-      <div class="drawer-branch-selector-title">
-        <span>📍 ¿A qué sucursal deseas enviar tu cotización?</span>
-      </div>
-      <div class="drawer-branch-options-grid">
-        <div class="drawer-branch-card active" id="drawer-card-delicias" data-branch-id="delicias" onclick="setBranch('delicias')">
-          <div class="branch-card-radio-indicator"></div>
-          <div class="branch-card-details">
-            <div class="branch-card-name">Sucursal Las Delicias</div>
-            <div class="branch-card-address">Av. Revolución 1203 &bull; <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
-            <div class="branch-card-wa">📱 WhatsApp: 993 289 2935</div>
-          </div>
-        </div>
-
-        <div class="drawer-branch-card" id="drawer-card-buenavista" data-branch-id="buenavista" onclick="setBranch('buenavista')">
-          <div class="branch-card-radio-indicator"></div>
-          <div class="branch-card-details">
-            <div class="branch-card-name">Suc. Estrellas de Buena Vista</div>
-            <div class="branch-card-address">Carr. a La Isla Km 5.300 &bull; <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
-            <div class="branch-card-wa">📱 WhatsApp: 993 192 8313</div>
-          </div>
-        </div>
-
-        <div class="drawer-branch-card" id="drawer-card-gaviotas" data-branch-id="gaviotas" onclick="setBranch('gaviotas')">
-          <div class="branch-card-radio-indicator"></div>
-          <div class="branch-card-details">
-            <div class="branch-card-name">Sucursal Gaviotas Norte</div>
-            <div class="branch-card-address">Aquiles Calderón 120 &bull; <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
-            <div class="branch-card-wa">💬 WhatsApp: 993 200 1178</div>
-          </div>
-        </div>
-
-        <div class="drawer-branch-card" id="drawer-card-hidalgo" data-branch-id="hidalgo" onclick="setBranch('hidalgo')">
-          <div class="branch-card-radio-indicator"></div>
-          <div class="branch-card-details">
-            <div class="branch-card-name">Sucursal Miguel Hidalgo III Etapa</div>
-            <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
-            <div class="branch-card-wa">📱 WhatsApp: 993 141 2679</div>
-          </div>
-        </div>
-
-        <div class="drawer-branch-card" id="drawer-card-joem" data-branch-id="joem" onclick="setBranch('joem')">
-          <div class="branch-card-radio-indicator"></div>
-          <div class="branch-card-details">
-            <div class="branch-card-name">Sucursal Joem</div>
-            <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
-            <div class="branch-card-wa">🏪 Mostrador Presencial</div>
-          </div>
-        </div>
-      </div>
+    <!-- Barra Stepper de 2 Pasos para Móvil y PC -->
+    <div class="drawer-stepper-bar" id="drawer-stepper-bar">
+      <button type="button" id="step-btn-1" class="stepper-tab active" onclick="setDrawerStep(1)">
+        <span class="stepper-badge">1</span>
+        <span>🛒 Materiales (<span id="cart-item-count-step">0</span>)</span>
+      </button>
+      <button type="button" id="step-btn-2" class="stepper-tab" onclick="setDrawerStep(2)">
+        <span class="stepper-badge">2</span>
+        <span>👤 Datos del Solicitante</span>
+        <span id="stepper-client-pill" class="stepper-pill-pending">Requerido</span>
+      </button>
     </div>
 
     <div class="drawer-body">
-      <!-- Contenedor de partidas con thumbnails -->
-      <div id="cart-items-container" class="cart-items-container">
-        <!-- Llenado reactivamente por app.js -->
+      <!-- PASO 1: Lista de Productos y Partidas -->
+      <div id="drawer-step-1" class="drawer-step-view active">
+        <div class="step-guide-banner" id="step-guide-banner">
+          <span class="step-guide-icon">💡</span>
+          <div class="step-guide-text">
+            <strong>Paso 1:</strong> Revisa tus materiales. En el siguiente paso te pediremos tu <strong>Nombre y WhatsApp</strong> para apartar tus piezas en mostrador.
+          </div>
+        </div>
+        <div id="cart-items-container" class="cart-items-container">
+          <!-- Llenado reactivamente por app.js -->
+        </div>
       </div>
 
-      <!-- Datos del Solicitante / Obra -->
-      <div class="quote-customer-form">
-        <div class="form-group">
-          <label for="quote-client-name">Nombre del Solicitante / Empresa:</label>
-          <input type="text" id="quote-client-name" class="form-input" placeholder="Ej. Ing. Carlos Mendoza / Constructora Tabasco">
+      <!-- PASO 2: Datos Primordiales del Cliente y Sucursal -->
+      <div id="drawer-step-2" class="drawer-step-view" style="display: none;">
+        
+        <div class="customer-priority-card">
+          <div class="customer-priority-header">
+            <div class="priority-badge-row">
+              <span class="priority-badge">⚠️ INDISPENSABLE PARA APARTAR</span>
+              <div id="customer-cache-status-badge" class="customer-cache-status-badge" style="display: none;">
+                <span class="cache-badge-icon">💾</span>
+                <span class="cache-badge-text">Datos guardados en este equipo</span>
+                <button type="button" class="btn-clear-cache" onclick="clearCustomerCache()" title="Limpiar datos guardados">✕</button>
+              </div>
+            </div>
+            <h3 class="priority-title">Datos de Quien Solicita la Cotización</h3>
+            <p class="priority-desc">
+              Indica tu nombre y teléfono para que el encargado del mostrador verifique existencias físicas y <strong>aparte tus piezas de inmediato</strong> sin hacer filas al recoger.
+            </p>
+          </div>
+
+          <!-- Campos Prominentes del Cliente -->
+          <div class="quote-customer-form">
+            <div class="form-group-prominent">
+              <label for="quote-client-name">
+                <span class="field-icon">👤</span> <strong>Nombre Completo o Empresa *</strong>
+                <span class="required-tag">Requerido</span>
+              </label>
+              <input type="text" id="quote-client-name" class="form-input form-input-lg" placeholder="Ej. Ing. Carlos Mendoza / Constructora Tabasco" required autocomplete="name">
+              <div class="field-error-msg" id="name-error-msg" style="display: none;">⚠️ Por favor ingresa tu Nombre o Empresa para apartar tus piezas.</div>
+            </div>
+
+            <div class="form-group-prominent">
+              <label for="quote-client-phone">
+                <span class="field-icon">📱</span> <strong>Teléfono / WhatsApp de Contacto *</strong>
+                <span class="required-tag">Requerido</span>
+              </label>
+              <input type="tel" id="quote-client-phone" class="form-input form-input-lg" placeholder="Ej. 993 123 4567 (10 dígitos)" required autocomplete="tel" maxlength="15">
+              <div class="field-error-msg" id="phone-error-msg" style="display: none;">⚠️ Ingresa un número de WhatsApp de 10 dígitos para poder avisarte.</div>
+            </div>
+
+            <!-- Selector Compacto de Sucursal para Despacho -->
+            <div class="form-group-prominent">
+              <label>
+                <span class="field-icon">📍</span> <strong>¿En qué sucursal deseas recoger o cotizar? *</strong>
+              </label>
+              <div class="drawer-branch-selector-container">
+                <div class="drawer-branch-options-grid">
+                  <div class="drawer-branch-card active" id="drawer-card-delicias" data-branch-id="delicias" onclick="setBranch('delicias')">
+                    <div class="branch-card-radio-indicator"></div>
+                    <div class="branch-card-details">
+                      <div class="branch-card-name">Sucursal Las Delicias</div>
+                      <div class="branch-card-address">Av. Revolución 1203 &bull; <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-wa">📱 WhatsApp: 993 289 2935</div>
+                    </div>
+                  </div>
+
+                  <div class="drawer-branch-card" id="drawer-card-buenavista" data-branch-id="buenavista" onclick="setBranch('buenavista')">
+                    <div class="branch-card-radio-indicator"></div>
+                    <div class="branch-card-details">
+                      <div class="branch-card-name">Suc. Buena Vista</div>
+                      <div class="branch-card-address">Carr. a La Isla Km 5.300 &bull; <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-wa">📱 WhatsApp: 993 192 8313</div>
+                    </div>
+                  </div>
+
+                  <div class="drawer-branch-card" id="drawer-card-gaviotas" data-branch-id="gaviotas" onclick="setBranch('gaviotas')">
+                    <div class="branch-card-radio-indicator"></div>
+                    <div class="branch-card-details">
+                      <div class="branch-card-name">Suc. Gaviotas Norte</div>
+                      <div class="branch-card-address">Aquiles Calderón 120 &bull; <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-wa">💬 WhatsApp: 993 200 1178</div>
+                    </div>
+                  </div>
+
+                  <div class="drawer-branch-card" id="drawer-card-hidalgo" data-branch-id="hidalgo" onclick="setBranch('hidalgo')">
+                    <div class="branch-card-radio-indicator"></div>
+                    <div class="branch-card-details">
+                      <div class="branch-card-name">Suc. Hidalgo III Etapa</div>
+                      <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-wa">📱 WhatsApp: 993 141 2679</div>
+                    </div>
+                  </div>
+
+                  <div class="drawer-branch-card" id="drawer-card-joem" data-branch-id="joem" onclick="setBranch('joem')">
+                    <div class="branch-card-radio-indicator"></div>
+                    <div class="branch-card-details">
+                      <div class="branch-card-name">Sucursal Joem</div>
+                      <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-wa">🏪 Mostrador Presencial</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo de Ubicación / Modalidad preservado para compatibilidad -->
+            <input type="hidden" id="quote-client-site" value="Recolección en mostrador">
+
+            <div class="form-group-prominent">
+              <label for="quote-client-notes">
+                <span class="field-icon">📝</span> <strong>Instrucciones o ¿Requieres Factura CFDI?</strong>
+              </label>
+              <input type="text" id="quote-client-notes" class="form-input form-input-lg" placeholder="Ej. Confirmar existencias antes de acudir / requiero factura CFDI">
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="quote-client-site">Sucursal o Modalidad de Recolección:</label>
-          <input type="text" id="quote-client-site" class="form-input" placeholder="Ej. Recolección en mostrador / Suc. Las Delicias">
-        </div>
-        <div class="form-group">
-          <label for="quote-client-notes">Instrucciones o Preguntas sobre Existencias:</label>
-          <input type="text" id="quote-client-notes" class="form-input" placeholder="Ej. Confirmar existencias antes de acudir / requiero factura CFDI">
-        </div>
+
       </div>
     </div>
 
+    <!-- Footer del Drawer con Botones de Paso Dinámicos -->
     <div class="drawer-footer">
       <div class="total-summary-row">
         <span class="total-label">Subtotal Estimado:</span>
         <span id="estimated-total-amount" class="total-amount">$0.00</span>
       </div>
+      
+      <!-- Controles de Navegación de Pasos -->
+      <div id="footer-actions-step-1" class="drawer-footer-actions">
+        <button type="button" id="btn-continue-step-2" class="btn-drawer-next" onclick="setDrawerStep(2)">
+          <span>Continuar: Datos del Solicitante ➔</span>
+        </button>
+      </div>
+
+      <div id="footer-actions-step-2" class="drawer-footer-actions" style="display: none;">
+        <div class="footer-buttons-dual">
+          <button type="button" class="btn-drawer-back" onclick="setDrawerStep(1)" title="Regresar a editar cantidades de materiales">
+            <span>⬅ Ver Productos</span>
+          </button>
+          <button id="whatsapp-order-btn" class="btn-whatsapp-dispatch">
+            <span>💬 Enviar a WhatsApp Mostrador</span>
+          </button>
+        </div>
+      </div>
+
       <p class="footer-disclaimer">
         * Precios netos con IVA incluido. Las existencias físicas en sucursal y apartados para recolección en mostrador se confirman al momento con el encargado vía WhatsApp.
       </p>
-      <button id="whatsapp-order-btn" class="btn-whatsapp-dispatch">
-        <span>💬 Enviar Presupuesto a WhatsApp Mostrador</span>
-      </button>
     </div>
   </aside>
 
