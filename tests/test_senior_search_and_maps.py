@@ -74,8 +74,9 @@ class TestSeniorSearchAndMaps(unittest.TestCase):
 
         self.assertIn(MAPS_DELICIAS, html)
         self.assertIn(MAPS_BUENAVISTA, html)
-        self.assertIn(MAPS_GAVIOTAS, html)
-        self.assertIn(MAPS_HIDALGO, html)
+        # Gaviotas e Hidalgo se exhiben pero son decorativas: sin enlaces a mapas
+        self.assertNotIn(f'href="{MAPS_GAVIOTAS}"', html)
+        self.assertNotIn(f'href="{MAPS_HIDALGO}"', html)
 
         self.assertIn(MAPS_DELICIAS, js)
         self.assertIn(MAPS_BUENAVISTA, js)

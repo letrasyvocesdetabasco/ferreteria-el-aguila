@@ -129,7 +129,8 @@ class TestMilestone3(unittest.TestCase):
         ]
         self.assertEqual(len(header_imgs), 1, "Exactly one .brand-logo-img expected in header")
         img = header_imgs[0]
-        self.assertEqual(img.get("src"), "assets/images/logo-aguila.png")
+        # Versión optimizada (WebP 128px) del logo oficial para carga rápida en celular
+        self.assertIn(img.get("src"), ("assets/images/logo-aguila.png", "assets/images/opt/logo-aguila-128.webp"))
         self.assertIn("Logo Oficial", img.get("alt", ""))
 
     def test_06_hero_badge_eagle_logo(self):

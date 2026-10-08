@@ -1,0 +1,17 @@
+{
+  "name": "Ferretería y Tlapalería El Águila",
+  "short_name": "El Águila",
+  "description": "Catálogo con precios y cotización por WhatsApp. Sucursales Las Delicias y Estrellas de Buena Vista, Villahermosa.",
+  "lang": "es-MX",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c1c2e",
+  "theme_color": "#0c1c2e",
+  "icons": [
+    { "src": "assets/images/favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/logo-aguila.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -11,7 +11,7 @@ import re
 import unittest
 from PIL import Image
 
-PROJECT_ROOT = "/home/divadios/Escritorio/pagina web/ferreteria_el_aguila"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_HTML = os.path.join(PROJECT_ROOT, "index.html")
 APP_JS = os.path.join(PROJECT_ROOT, "assets", "js", "app.js")
 STYLES_CSS = os.path.join(PROJECT_ROOT, "assets", "css", "styles.css")
@@ -82,13 +82,15 @@ class TestAuditUpdates(unittest.TestCase):
         gaviotas_card = gaviotas_card_match.group(0)
 
         self.assertNotIn("href=\"tel:", gaviotas_card, "Gaviotas branch must NOT have a call button (tel: link)!")
-        self.assertIn("https://wa.me/529932001178", gaviotas_card, "Gaviotas must link to WhatsApp 993 200 1178")
+        # Sucursal decorativa: el botón se ve pero no enlaza a WhatsApp
+        self.assertNotIn('href="https://wa.me/529932001178"', gaviotas_card, "Gaviotas es decorativa: sin enlace a WhatsApp")
+        self.assertIn('data-decorative="true"', gaviotas_card)
         self.assertNotIn("Solo Mensajes", gaviotas_card, "Solo Mensajes must be removed from button for layout balance")
         self.assertIn("💬 WhatsApp", gaviotas_card)
 
     def test_gaviotas_contact_in_footer_and_drawer(self):
         """Verify Gaviotas contact in footer and drawer uses 993 200 1178."""
-        self.assertIn("https://wa.me/529932001178", self.html)
+        self.assertNotIn('href="https://wa.me/529932001178"', self.html)
         self.assertIn("993 200 1178", self.html)
 
     def test_gaviotas_in_app_js(self):
@@ -181,7 +183,8 @@ class TestAuditUpdates(unittest.TestCase):
         """Verify Joem branch in app.js and index.html with confidentiality and maps URL."""
         self.assertIn("joem:", self.js)
         self.assertIn("https://maps.app.goo.gl/y2qguKEAUhhGPpfw5", self.js)
-        self.assertIn("https://maps.app.goo.gl/y2qguKEAUhhGPpfw5", self.html)
+        # Joem se exhibe pero es decorativa: su mapa NO debe ser un enlace interactivo
+        self.assertNotIn('href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5"', self.html)
         self.assertIn('data-branch-id="joem"', self.html)
         self.assertIn('id="drawer-card-joem"', self.html)
 
@@ -211,9 +214,23 @@ class TestAuditUpdates(unittest.TestCase):
         self.assertNotIn("529931412755", self.html)
         self.assertNotIn("529931412755", self.js)
         self.assertIn("993 141 2679", self.html)
-        self.assertIn("+529931412679", self.html)
+        self.assertNotIn('href="tel:9931412679"', self.html)  # decorativa: sin llamada
         self.assertIn('phone: "993 141 2679"', self.js)
         self.assertIn('whatsapp: "529931412679"', self.js)
+
+    def test_only_delicias_and_buenavista_are_interactive(self):
+        """Solo Las Delicias y Estrellas de Buena Vista son funcionales; las demás son de exhibición."""
+        self.assertIn("function isActiveBranch", self.js)
+        for b in ["gaviotas", "hidalgo", "joem"]:
+            self.assertIn(f'<option value="{b}" disabled>', self.html)
+            self.assertNotIn(f"setBranch('{b}')", self.html)
+            self.assertNotIn(f"selectBranchFromCard('{b}')", self.html)
+            card = re.search(r'<article[^>]+data-branch-id="%s".*?</article>' % b, self.html, re.DOTALL).group(0)
+            self.assertNotIn("<a ", card, f"La tarjeta de {b} no debe tener enlaces")
+        for b in ["delicias", "buenavista"]:
+            card = re.search(r'<article[^>]+data-branch-id="%s".*?</article>' % b, self.html, re.DOTALL).group(0)
+            self.assertIn("https://wa.me/", card)
+            self.assertIn(f"selectBranchFromCard('{b}')", card)
 
     def test_joem_branch_no_fake_phone_and_informative_handling(self):
         """Verify Joem has no fabricated phone number or WhatsApp in app.js, and graceful handling in UI."""

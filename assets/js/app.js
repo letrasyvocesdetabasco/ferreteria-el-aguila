@@ -18,6 +18,7 @@ const CONFIG = {
 const BRANCHES = {
   delicias: {
     id: "delicias",
+    active: true,
     name: "Sucursal Las Delicias",
     owner: "Timoteo Méndez",
     address: "Av. Revolución 1203, Cuadrante II, Las Delicias, C.P. 86140, Villahermosa, Tab.",
@@ -33,6 +34,7 @@ const BRANCHES = {
   },
   buenavista: {
     id: "buenavista",
+    active: true,
     name: "Sucursal Estrellas de Buena Vista",
     owner: "Timoteo Méndez",
     address: "Carr. Villahermosa a La Isla Km 5.300, Buena Vista 1ra Secc, C.P. 86280, Villahermosa, Tab.",
@@ -48,6 +50,7 @@ const BRANCHES = {
   },
   gaviotas: {
     id: "gaviotas",
+    active: false, // Solo exhibición: sin interacción (decorativa)
     name: "Sucursal Gaviotas Norte",
     owner: "Miguel Méndez",
     address: "Aquiles Calderón Marchena 120, Col. Gaviotas Nte., C.P. 86068, Villahermosa, Tab.",
@@ -64,6 +67,7 @@ const BRANCHES = {
   },
   hidalgo: {
     id: "hidalgo",
+    active: false, // Solo exhibición: sin interacción (decorativa)
     name: "Sucursal Miguel Hidalgo III Etapa",
     owner: "Salomón Méndez",
     address: "Carr. Villahermosa a La Isla, Miguel Hidalgo III Etapa, C.P. 86126, Villahermosa, Tab.",
@@ -79,6 +83,7 @@ const BRANCHES = {
   },
   joem: {
     id: "joem",
+    active: false, // Solo exhibición: sin interacción (decorativa)
     name: "Sucursal Joem",
     owner: "Salomón Méndez",
     address: "Carr. Villahermosa a La Isla, Col. Miguel Hidalgo I, C.P. 86280, Villahermosa, Tab.",
@@ -96,11 +101,24 @@ const BRANCHES = {
   }
 };
 
+// Solo las sucursales activas (Las Delicias y Estrellas de Buena Vista) reciben
+// cotizaciones, llamadas o selección. Las demás se muestran como exhibición.
+function isActiveBranch(branchId) {
+  return !!(BRANCHES[branchId] && BRANCHES[branchId].active);
+}
+
+function safeStorageGet(key) {
+  try { return localStorage.getItem(key); } catch (_) { return null; }
+}
+function safeStorageSet(key, value) {
+  try { localStorage.setItem(key, value); } catch (_) {}
+}
+
 // ==========================================================================
 // 2. Estado Global de la Aplicación
 // ==========================================================================
-const storedBranchId = localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY);
-const initialBranch = (storedBranchId && BRANCHES[storedBranchId]) ? storedBranchId : "delicias";
+const storedBranchId = safeStorageGet(CONFIG.STORAGE_BRANCH_KEY);
+const initialBranch = isActiveBranch(storedBranchId) ? storedBranchId : "delicias";
 
 const AppState = {
   masterCatalog: [],
@@ -111,7 +129,7 @@ const AppState = {
   filterCategory: "all",
   filterBrand: "all",
   searchTerm: "",
-  sortMode: "name-asc",
+  sortMode: "relevance",
   quoteCart: new Map(), // SKU -> { item, quantity }
   isSupabaseActive: false,
   autoExpandedToAll: false,
@@ -127,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBranchSelector();
   initCartFromStorage();
   initEventListeners();
+  initMobileEnhancements();
   loadCatalogData();
 });
 
@@ -134,10 +153,16 @@ async function loadCatalogData() {
   const counterElem = document.getElementById("counter-display");
   if (counterElem) counterElem.textContent = "Conectando con inventario técnico...";
 
+  const supabaseConfigured = CONFIG.SUPABASE_URL && !CONFIG.SUPABASE_URL.includes("TU_PROYECTO");
+  if (supabaseConfigured && typeof supabase === "undefined") {
+    try {
+      await loadExternalScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
+    } catch (_) { /* sin conexión al CDN: se usa el respaldo local */ }
+  }
+
   if (
     typeof supabase !== "undefined" &&
-    CONFIG.SUPABASE_URL &&
-    !CONFIG.SUPABASE_URL.includes("TU_PROYECTO")
+    supabaseConfigured
   ) {
     try {
       supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
@@ -166,13 +191,31 @@ async function loadCatalogData() {
       const item = AppState.masterCatalog[i];
       const catName = item.category || item.categories?.name || "";
       const brandName = item.brand || item.brands?.name || "";
-      item._s = (
+      item._s = normalizeText(
         (item.sku || "") + " " +
         (item.manufacturer_code || "") + " " +
         (item.name || "") + " " +
         brandName + " " +
         catName
-      ).toLowerCase();
+      );
+      item._n = normalizeText(item.name || "");
+      item._img = resolveProductImage(item);
+      item._photo = item._img.indexOf("assets/images/products/") === 0;
+      // Orden base: primero artículos con foto real, al final nombres con símbolos "(BAJE)", "#", etc.
+      item._base = (item._photo ? 0 : 2) + (/^[a-z0-9ñ]/.test(item._n) ? 0 : 4);
+      item._i = i;
+    }
+
+    // Vista inicial variada: se intercalan los artículos con foto por tipo de producto
+    // (válvula, broca, candado, dado…) en lugar de mostrar 30 abrazaderas seguidas.
+    const seenByWord = new Map();
+    for (let i = 0; i < AppState.masterCatalog.length; i++) {
+      const item = AppState.masterCatalog[i];
+      if (!item._photo) { item._mix = 0; continue; }
+      const word = (item._n.match(/^[a-z0-9ñ]+/) || [""])[0];
+      const n = seenByWord.get(word) || 0;
+      seenByWord.set(word, n + 1);
+      item._mix = n;
     }
 
     // Refresh prices of any items currently stored in AppState.quoteCart
@@ -194,7 +237,20 @@ async function loadCatalogData() {
   }
 
   generateFacetFilters();
+  applyStateFromUrl();
   applyFilterPipeline();
+  AppState.catalogReady = true;
+}
+
+function loadExternalScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.async = true;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
 }
 
 async function loadFallbackCatalog() {
@@ -211,8 +267,21 @@ async function loadFallbackCatalog() {
       if (window.location.protocol === "file:") {
         counterElem.innerHTML = `<span style="color: #c9242b; font-weight: bold;">⚠️ Abierto mediante file://. Por seguridad del navegador (CORS), debes abrir la tienda en tu servidor local: <a href="http://localhost:8080" style="text-decoration: underline; color: #0284c7;">http://localhost:8080</a></span>`;
       } else {
-        counterElem.textContent = "Error al cargar inventario local.";
+        counterElem.textContent = "No se pudo cargar el catálogo.";
       }
+    }
+    const grid = document.getElementById("products-container");
+    if (grid && window.location.protocol !== "file:") {
+      grid.innerHTML = `
+        <div class="senior-empty-card">
+          <div class="senior-empty-icon">📶</div>
+          <h3 class="senior-empty-title">Señal débil: no cargó el catálogo</h3>
+          <p class="senior-empty-desc">Revisa tu internet y vuelve a intentar. También puedes mandarnos tu lista de materiales directo por WhatsApp.</p>
+          <div class="senior-empty-actions">
+            <button class="btn-senior-reset" onclick="location.reload()"><span>🔄 Reintentar</span></button>
+            <a class="btn-senior-wa" href="https://wa.me/${BRANCHES[AppState.selectedBranch].whatsapp}" target="_blank" rel="noopener"><span>💬 Mandar lista por WhatsApp</span></a>
+          </div>
+        </div>`;
     }
   }
 }
@@ -250,9 +319,14 @@ function initBranchSelector() {
 }
 
 function setBranch(branchId) {
-  if (!BRANCHES[branchId]) return;
+  if (!isActiveBranch(branchId)) {
+    // Sucursal de exhibición: se ignora y se mantiene la selección vigente
+    const select = document.getElementById("branch-select");
+    if (select) select.value = AppState.selectedBranch;
+    return;
+  }
   AppState.selectedBranch = branchId;
-  localStorage.setItem(CONFIG.STORAGE_BRANCH_KEY, branchId);
+  safeStorageSet(CONFIG.STORAGE_BRANCH_KEY, branchId);
   updateBranchUI(branchId);
   if (typeof saveCustomerDataToCache === "function") {
     saveCustomerDataToCache();
@@ -284,14 +358,20 @@ function updateBranchUI(branchId) {
   // Actualizar texto del botón de despacho en el cajón de cotización
   const sendWhatsAppBtn = document.getElementById("whatsapp-order-btn");
   if (sendWhatsAppBtn) {
-    if (branch.whatsapp) {
-      sendWhatsAppBtn.innerHTML = `<span>💬 Enviar Presupuesto a ${branch.name} (WhatsApp)</span>`;
-      sendWhatsAppBtn.style.opacity = "1";
-    } else {
-      sendWhatsAppBtn.innerHTML = `<span>🏪 ${branch.name}: Atención en Mostrador</span>`;
-      sendWhatsAppBtn.style.opacity = "0.9";
-    }
+    const shortName = branch.id === "buenavista" ? "Buena Vista" : "Las Delicias";
+    sendWhatsAppBtn.innerHTML = `<span>💬 Enviar a ${shortName} por WhatsApp</span>`;
+    sendWhatsAppBtn.style.opacity = "1";
   }
+
+  // Botón "Llamar" de la barra inferior y del hero: marca a la sucursal elegida
+  const telHref = "tel:" + branch.phone.replace(/\D/g, "");
+  document.querySelectorAll("[data-call-selected-branch]").forEach((a) => {
+    a.href = telHref;
+    a.setAttribute("aria-label", `Llamar a ${branch.name}`);
+  });
+  document.querySelectorAll("[data-selected-branch-name]").forEach((el) => {
+    el.textContent = branch.id === "buenavista" ? "Buena Vista" : "Las Delicias";
+  });
 
   // Actualizar botón flotante de WhatsApp y barra fija móvil
   const floatingWa = document.getElementById("floating-wa-btn");
@@ -303,6 +383,7 @@ function updateBranchUI(branchId) {
 
   // Actualizar tarjetas de sucursal destacadas
   document.querySelectorAll(".branch-feature-card").forEach((card) => {
+    if (!isActiveBranch(card.dataset.branchId)) return;
     if (card.dataset.branchId === branchId) {
       card.classList.add("selected-branch");
       const btn = card.querySelector(".btn-branch-select-store");
@@ -348,7 +429,7 @@ function generateFacetFilters() {
         AppState.filterCategory = name;
         updateFacetSelection();
         applyFilterPipeline();
-        scrollToCatalog();
+        syncUrlState();
       };
       catList.appendChild(li);
     });
@@ -357,7 +438,7 @@ function generateFacetFilters() {
       AppState.filterCategory = "all";
       updateFacetSelection();
       applyFilterPipeline();
-      scrollToCatalog();
+      syncUrlState();
     };
   }
 
@@ -379,7 +460,7 @@ function generateFacetFilters() {
         AppState.filterBrand = name;
         updateFacetSelection();
         applyFilterPipeline();
-        scrollToCatalog();
+        syncUrlState();
       };
       brandList.appendChild(li);
     });
@@ -388,7 +469,7 @@ function generateFacetFilters() {
       AppState.filterBrand = "all";
       updateFacetSelection();
       applyFilterPipeline();
-      scrollToCatalog();
+      syncUrlState();
     };
   }
 }
@@ -402,23 +483,73 @@ function updateFacetSelection() {
   });
 }
 
+// --------------------------------------------------------------------------
+// Búsqueda tolerante: sin acentos, plurales y orden por relevancia
+// ("valvulas" encuentra "Válvula", "tornillos" encuentra "Tornillo")
+// --------------------------------------------------------------------------
+function normalizeText(str) {
+  return String(str || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function stemToken(token) {
+  if (token.length <= 3 || /\d/.test(token)) return token;
+  if (token.endsWith("ces")) return token.slice(0, -3) + "z";      // luces -> luz
+  if (/[lnrdj]es$/.test(token)) return token.slice(0, -2);         // conexiones -> conexion
+  if (token.endsWith("s")) return token.slice(0, -1);              // tornillos -> tornillo
+  return token;
+}
+
+function buildSearchTokens(rawQuery) {
+  const query = normalizeText(rawQuery);
+  if (!query) return [];
+  return query.split(" ").filter(Boolean).map(stemToken);
+}
+
+function itemSearchIndex(item) {
+  if (!item._s) {
+    item._s = normalizeText(
+      (item.sku || "") + " " + (item.manufacturer_code || "") + " " + (item.name || "") + " " +
+      (item.brand || item.brands?.name || "") + " " + (item.category || item.categories?.name || "")
+    );
+  }
+  return item._s;
+}
+
+function scoreItem(item, tokens, rawNorm) {
+  const name = item._n || normalizeText(item.name);
+  let score = 0;
+  const sku = normalizeText(item.sku);
+  const code = normalizeText(item.manufacturer_code);
+  if (rawNorm && (sku === rawNorm || code === rawNorm)) score += 1000;
+  if (tokens.length && name.startsWith(tokens[0])) score += 300;
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    const pos = name.indexOf(t);
+    if (pos === 0 || (pos > 0 && /[\s\-\/(,.]/.test(name[pos - 1]))) score += 40;
+    else if (pos > 0) score += 10;
+  }
+  if (item._photo) score += 6;
+  if (!/^[a-z0-9ñ]/.test(name)) score -= 50;
+  score -= Math.min(name.length, 80) * 0.05;
+  return score;
+}
+
 function applyFilterPipeline() {
-  const query = AppState.searchTerm.toLowerCase().trim();
-  const tokens = query ? query.split(/\s+/).filter(Boolean) : [];
+  const tokens = buildSearchTokens(AppState.searchTerm);
   const hasActiveFilters = AppState.filterCategory !== "all" || AppState.filterBrand !== "all";
 
   const matchSearch = (item) => {
     if (tokens.length === 0) return true;
-    const brandName = item.brand || item.brands?.name || "";
-    const catName = item.category || item.categories?.name || "";
-    const searchIndex = item._s || (
-      (item.sku || "") + " " +
-      (item.manufacturer_code || "") + " " +
-      (item.name || "") + " " +
-      brandName + " " +
-      catName
-    ).toLowerCase();
-    return tokens.every((token) => searchIndex.includes(token));
+    const searchIndex = itemSearchIndex(item);
+    for (let i = 0; i < tokens.length; i++) {
+      if (searchIndex.indexOf(tokens[i]) === -1) return false;
+    }
+    return true;
   };
 
   // 1. Filtrado normal con departamento y marca actualmente seleccionados
@@ -454,10 +585,34 @@ function applyFilterPipeline() {
     }
   }
 
+  // 3. Búsqueda aproximada: si "pijas tablaroca" no da nada, se muestran los que
+  //    coinciden con la mayor cantidad de palabras (ej. todas las pijas).
+  let partialMatch = false;
+  if (filtered.length === 0 && tokens.length > 1) {
+    let best = 0;
+    const counts = new Map();
+    AppState.masterCatalog.forEach((item) => {
+      const idx = itemSearchIndex(item);
+      let c = 0;
+      for (let i = 0; i < tokens.length; i++) if (idx.indexOf(tokens[i]) !== -1) c++;
+      if (c > 0) {
+        counts.set(item, c);
+        if (c > best) best = c;
+      }
+    });
+    if (best > 0) {
+      filtered = [];
+      counts.forEach((c, item) => { if (c === best) filtered.push(item); });
+      partialMatch = true;
+    }
+  }
+  AppState.partialMatch = partialMatch;
+
   AppState.filteredCatalog = filtered;
   AppState.autoExpandedToAll = autoExpanded;
   AppState.autoExpandedOrigin = autoExpandedOrigin;
   AppState.displayedCount = AppState.pageSize;
+  AppState.autoLoads = 0;
 
   updateSeniorAlertBanner();
   sortCatalog();
@@ -467,6 +622,21 @@ function applyFilterPipeline() {
 function updateSeniorAlertBanner() {
   const alertBox = document.getElementById("search-senior-alert");
   if (!alertBox) return;
+
+  if (AppState.partialMatch) {
+    alertBox.style.display = "flex";
+    alertBox.className = "search-senior-alert";
+    alertBox.innerHTML = `
+      <div class="search-senior-alert-content">
+        <span class="search-senior-alert-icon">💡</span>
+        <div>
+          <div class="search-senior-alert-title">No hay coincidencia exacta para "${escapeHtml(AppState.searchTerm)}"</div>
+          <div class="search-senior-alert-desc">Te mostramos los artículos más parecidos. Si no ves lo que necesitas, pregúntanos por WhatsApp.</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
 
   if (AppState.autoExpandedToAll && AppState.autoExpandedOrigin) {
     const origCat = AppState.autoExpandedOrigin.category !== "all" ? AppState.autoExpandedOrigin.category : "";
@@ -495,6 +665,18 @@ function updateSeniorAlertBanner() {
 
 function sortCatalog() {
   switch (AppState.sortMode) {
+    case "relevance": {
+      const tokens = buildSearchTokens(AppState.searchTerm);
+      if (tokens.length) {
+        const rawNorm = normalizeText(AppState.searchTerm);
+        AppState.filteredCatalog.forEach((it) => { it._score = scoreItem(it, tokens, rawNorm); });
+        AppState.filteredCatalog.sort((a, b) => (b._score - a._score) || ((a._i || 0) - (b._i || 0)));
+      } else {
+        AppState.filteredCatalog.sort((a, b) =>
+          ((a._base || 0) - (b._base || 0)) || ((a._mix || 0) - (b._mix || 0)) || ((a._i || 0) - (b._i || 0)));
+      }
+      break;
+    }
     case "price-asc":
       AppState.filteredCatalog.sort((a, b) => parseFloat(a.base_price) - parseFloat(b.base_price));
       break;
@@ -506,8 +688,8 @@ function sortCatalog() {
       break;
     case "name-asc":
     default:
-      // data/products.json is already pre-sorted by name ascending at build time.
-      // Array.prototype.filter() preserves original insertion order, making name-asc sorting 0ms.
+      // data/products.json ya viene ordenado por nombre; se restaura el orden original.
+      AppState.filteredCatalog.sort((a, b) => (a._i || 0) - (b._i || 0));
       break;
   }
 }
@@ -526,8 +708,7 @@ function renderCatalogGrid() {
   const currentShowing = Math.min(AppState.displayedCount, totalCount);
 
   if (counter) {
-    const scopeLabel = AppState.autoExpandedToAll ? " (búsqueda ampliada a todo el inventario)" : "";
-    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos${scopeLabel} (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
+    counter.textContent = buildCounterText(currentShowing, totalCount);
   }
 
   if (totalCount === 0) {
@@ -719,6 +900,12 @@ function resolveProductImage(prod) {
   return prod.image || prod.image_url || "assets/images/cat-tlapaleria.jpg";
 }
 
+function formatMoney(value) {
+  const n = parseFloat(value);
+  if (!isFinite(n)) return "$0.00";
+  return "$" + n.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 function createProductCardElement(prod) {
   const card = document.createElement("article");
   card.className = "product-card";
@@ -726,10 +913,13 @@ function createProductCardElement(prod) {
 
   const catName = prod.category || prod.categories?.name || "General";
   const brandName = prod.brand || prod.brands?.name || "Homologado";
-  const priceFormatted = parseFloat(prod.base_price).toFixed(2);
-  const featureBadge = prod.badge || "En Existencia";
-  const imgUrl = resolveProductImage(prod);
-  const descText = prod.description || `${prod.name} - Calidad garantizada para obra y mantenimiento.`;
+  const price = parseFloat(prod.base_price) || 0;
+  const priceHtml = price > 0
+    ? `<span class="price-val">${formatMoney(price)}</span>`
+    : `<span class="price-val price-ask">Precio en mostrador</span>`;
+  const imgUrl = prod._img || resolveProductImage(prod);
+  const unit = (prod.unit_measure || "PZA").toLowerCase();
+  if (!prod._photo && !(imgUrl.indexOf("assets/images/products/") === 0)) card.classList.add("no-photo");
 
   // Chips de Atributos Técnicos
   let chipsHtml = "";
@@ -741,31 +931,31 @@ function createProductCardElement(prod) {
   } else {
     chipsHtml = `<span class="spec-chip"><strong>Línea:</strong> ${escapeHtml(catName)}</span>`;
   }
+  const descHtml = prod.description ? `<p class="product-description">${escapeHtml(prod.description)}</p>` : "";
+  const featureHtml = prod.badge ? `<div class="card-badge-feature">${escapeHtml(prod.badge)}</div>` : "";
 
   card.innerHTML = `
     <div class="product-image-container">
       <img 
-        src="${escapeHtml(imgUrl)}" 
+        src="${escapeHtml(optimizedImage(imgUrl))}" 
         alt="${escapeHtml(prod.name)}" 
         class="product-thumb-img" 
         loading="lazy"
-        onerror="this.src='assets/images/hero-storefront.jpg'"
+        decoding="async"
+        width="300" height="200"
+        onerror="this.onerror=null;this.src='assets/images/opt/cat-tlapaleria-sm.webp'"
       >
-      <div class="card-badge-stock">
-        <span class="stock-pulsing-dot"></span>
-        <span>En Mostrador</span>
-      </div>
-      <div class="card-badge-feature">${escapeHtml(featureBadge)}</div>
+      ${featureHtml}
     </div>
 
     <div class="product-card-body">
       <div class="product-brand-line">
         <span class="brand-name-pill">${escapeHtml(brandName)}</span>
-        <span class="sku-pill">SKU: ${escapeHtml(prod.sku)}</span>
+        <span class="sku-pill">Clave: ${escapeHtml(prod.sku)}</span>
       </div>
 
       <h3 class="product-title" title="${escapeHtml(prod.name)}">${escapeHtml(prod.name)}</h3>
-      <p class="product-description">${escapeHtml(descText)}</p>
+      ${descHtml}
 
       <div class="specs-chips-container">
         ${chipsHtml}
@@ -774,25 +964,45 @@ function createProductCardElement(prod) {
 
     <div class="product-card-footer">
       <div class="price-row">
-        <span class="price-val">$${priceFormatted}</span>
-        <span class="unit-val">x ${escapeHtml(prod.unit_measure || "PZA")}</span>
+        ${priceHtml}
+        <span class="unit-val">/ ${escapeHtml(unit)}</span>
       </div>
 
       <div class="card-actions-bar">
         <div class="stepper-container">
-          <button class="stepper-btn" onclick="stepQuantity(this, -1)">-</button>
-          <input type="number" class="qty-input" min="1" max="999" value="1">
-          <button class="stepper-btn" onclick="stepQuantity(this, 1)">+</button>
+          <button type="button" class="stepper-btn" onclick="stepQuantity(this, -1)" aria-label="Quitar uno">−</button>
+          <input type="number" class="qty-input" min="1" max="999" value="1" inputmode="numeric" pattern="[0-9]*" aria-label="Cantidad">
+          <button type="button" class="stepper-btn" onclick="stepQuantity(this, 1)" aria-label="Agregar uno">+</button>
         </div>
 
-        <button class="btn-add-to-quote" onclick="handleAddProductFromCard(this)">
-          <span>🛒 + Cotizar</span>
+        <button type="button" class="btn-add-to-quote" onclick="handleAddProductFromCard(this)">
+          <span>+ Agregar</span>
         </button>
       </div>
     </div>
   `;
 
   return card;
+}
+
+// Versiones ligeras (WebP) de las fotos genéricas de departamento para ahorrar datos en celular
+const OPTIMIZED_IMAGES = {
+  "assets/images/cat-tlapaleria.jpg": "assets/images/opt/cat-tlapaleria-sm.webp",
+  "assets/images/cat-tornilleria.jpg": "assets/images/opt/cat-tornilleria-sm.webp",
+  "assets/images/cat-plomeria.jpg": "assets/images/opt/cat-plomeria-sm.webp",
+  "assets/images/cat-herramientas.jpg": "assets/images/opt/cat-herramientas-sm.webp",
+  "assets/images/cat-electrico.jpg": "assets/images/opt/cat-electrico-sm.webp",
+  "assets/images/hero-storefront.jpg": "assets/images/opt/cat-tlapaleria-sm.webp"
+};
+function optimizedImage(url) {
+  return OPTIMIZED_IMAGES[url] || url;
+}
+
+function buildCounterText(showing, total) {
+  const term = AppState.searchTerm ? ` para "${AppState.searchTerm}"` : "";
+  const scope = AppState.autoExpandedToAll ? " (en toda la tienda)" : "";
+  if (total === 0) return `0 resultados${term}`;
+  return `${total.toLocaleString('es-MX')} ${total === 1 ? "artículo" : "artículos"}${term}${scope}`;
 }
 
 function updatePaginationUI() {
@@ -804,7 +1014,7 @@ function updatePaginationUI() {
   const currentShowing = Math.min(AppState.displayedCount, totalCount);
 
   if (counter) {
-    counter.textContent = `Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} artículos (${AppState.masterCatalog.length.toLocaleString('es-MX')} en inventario total)`;
+    counter.textContent = buildCounterText(currentShowing, totalCount);
   }
 
   if (AppState.displayedCount >= totalCount) {
@@ -821,7 +1031,7 @@ function updatePaginationUI() {
 
   paginationBox.innerHTML = `
     <button class="btn-load-more" onclick="loadMoreProducts()">
-      <span>📥 Cargar ${nextBatch.toLocaleString('es-MX')} productos más (${remaining.toLocaleString('es-MX')} restantes)</span>
+      <span>Ver ${nextBatch.toLocaleString('es-MX')} más (${remaining.toLocaleString('es-MX')} restantes)</span>
     </button>
     <div class="pagination-stats">
       Mostrando ${currentShowing.toLocaleString('es-MX')} de ${totalCount.toLocaleString('es-MX')} resultados disponibles
@@ -912,15 +1122,78 @@ function addProductToCart(sku, quantityToAdd, btn) {
   updateCartUI();
 
   if (btn) {
-    const originalText = btn.innerHTML;
+    if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
     btn.classList.add("added");
     btn.innerHTML = "<span>✓ Agregado</span>";
-    setTimeout(() => {
+    clearTimeout(btn._addedTimer);
+    btn._addedTimer = setTimeout(() => {
       btn.classList.remove("added");
-      btn.innerHTML = originalText;
-    }, 1200);
+      btn.innerHTML = btn.dataset.originalHtml;
+    }, 1400);
+    const card = btn.closest(".product-card");
+    const qty = card && card.querySelector(".qty-input");
+    if (qty) qty.value = 1;
   }
+
+  const inCart = AppState.quoteCart.get(sku).quantity;
+  showToast(`✓ ${quantityToAdd} × ${product.name}`, {
+    detail: inCart > quantityToAdd ? `Ya llevas ${inCart} en tu cotización` : "Agregado a tu cotización",
+    actionLabel: "Ver cotización",
+    action: () => window.openQuoteDrawer && window.openQuoteDrawer()
+  });
+  bumpCartBadges();
+  if (navigator.vibrate) { try { navigator.vibrate(15); } catch (_) {} }
 }
+
+function bumpCartBadges() {
+  ["cart-item-count", "mobile-cart-count"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("bump");
+    void el.offsetWidth;
+    el.classList.add("bump");
+  });
+}
+
+// Aviso flotante breve (toast) para confirmar acciones sin interrumpir
+let toastTimer = null;
+function showToast(message, opts = {}) {
+  let toast = document.getElementById("app-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "app-toast";
+    toast.className = "app-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `
+    <div class="app-toast-text">
+      <strong>${escapeHtml(message)}</strong>
+      ${opts.detail ? `<span>${escapeHtml(opts.detail)}</span>` : ""}
+    </div>
+    ${opts.actionLabel ? `<button type="button" class="app-toast-action">${escapeHtml(opts.actionLabel)}</button>` : ""}
+  `;
+  const actionBtn = toast.querySelector(".app-toast-action");
+  if (actionBtn && typeof opts.action === "function") {
+    actionBtn.addEventListener("click", () => {
+      toast.classList.remove("show");
+      opts.action();
+    });
+  }
+  // Siempre por encima de la barra inferior del celular, sin taparla
+  const nav = document.querySelector(".mobile-bottom-nav");
+  if (nav && getComputedStyle(nav).display !== "none") {
+    const navTop = nav.getBoundingClientRect().top;
+    toast.style.bottom = Math.max(12, Math.round(window.innerHeight - navTop + 10)) + "px";
+  } else {
+    toast.style.bottom = "";
+  }
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), opts.duration || 3200);
+}
+window.showToast = showToast;
 
 window.handleAddProduct = function (sku) {
   const qtyInput = document.getElementById(`qty-${sku}`);
@@ -946,6 +1219,15 @@ window.handleRemoveCartItem = function (sku) {
   updateCartUI();
 };
 
+window.clearQuoteCart = function () {
+  if (!AppState.quoteCart.size) return;
+  if (!confirm("¿Vaciar toda la cotización?")) return;
+  AppState.quoteCart.clear();
+  saveCartToStorage();
+  updateCartUI();
+  setDrawerStep(1);
+};
+
 function updateCartUI() {
   const countPill = document.getElementById("cart-item-count");
   const drawerList = document.getElementById("cart-items-container");
@@ -963,7 +1245,8 @@ function updateCartUI() {
         <div style="text-align: center; color: #64748b; padding: 40px 10px;">
           <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
           <p style="font-weight: 700; color: #0f172a; margin-bottom: 6px;">Tu presupuesto está vacío</p>
-          <p style="font-size: 0.8rem;">Selecciona productos de plomería, tornillería G5, cable o herramientas para cotizar de inmediato vía WhatsApp.</p>
+          <p style="font-size: 0.9rem;">Busca tus materiales, toca <strong>+ Agregar</strong> y aquí se arma tu lista para mandarla por WhatsApp.</p>
+          <button type="button" class="btn-empty-cart-cta" onclick="closeQuoteDrawerAndSearch()">🔍 Buscar materiales</button>
         </div>
       `;
     }
@@ -981,23 +1264,30 @@ function updateCartUI() {
         row.className = "cart-item-row";
         const thumb = resolveProductImage(item);
 
+        const skuJs = escapeHtml(JSON.stringify(String(sku)));
         row.innerHTML = `
-          <img src="${thumb}" alt="${escapeHtml(item.name)}" class="cart-item-thumb" onerror="this.src='assets/images/hero-storefront.jpg'">
+          <img src="${escapeHtml(optimizedImage(thumb))}" alt="" class="cart-item-thumb" loading="lazy" onerror="this.onerror=null;this.src='assets/images/opt/cat-tlapaleria-sm.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
-            <div class="cart-item-sku">SKU: ${escapeHtml(sku)}</div>
-            <div class="cart-item-price">$${parseFloat(item.base_price).toFixed(2)} x ${item.unit_measure || "PZA"} = <strong>$${subtotal.toFixed(2)}</strong></div>
+            <div class="cart-item-sku">Clave: ${escapeHtml(sku)}</div>
+            <div class="cart-item-price">${formatMoney(item.base_price)} / ${escapeHtml((item.unit_measure || "PZA").toLowerCase())} · <strong>${formatMoney(subtotal)}</strong></div>
           </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <input 
-              type="number" 
-              class="cart-item-qty" 
-              min="1" 
-              max="999" 
-              value="${quantity}" 
-              onchange="handleUpdateCartQty('${sku}', this.value)"
-            >
-            <button class="btn-remove-item" title="Eliminar partida" onclick="handleRemoveCartItem('${sku}')">&times;</button>
+          <div class="cart-item-controls">
+            <div class="cart-qty-stepper">
+              <button type="button" class="cart-qty-btn" aria-label="Quitar uno" onclick="handleUpdateCartQty(${skuJs}, ${quantity - 1})">−</button>
+              <input 
+                type="number" 
+                class="cart-item-qty" 
+                min="1" 
+                max="999" 
+                inputmode="numeric"
+                aria-label="Cantidad"
+                value="${quantity}" 
+                onchange="handleUpdateCartQty(${skuJs}, this.value)"
+              >
+              <button type="button" class="cart-qty-btn" aria-label="Agregar uno" onclick="handleUpdateCartQty(${skuJs}, ${quantity + 1})">+</button>
+            </div>
+            <button type="button" class="btn-remove-item" title="Eliminar partida" aria-label="Eliminar" onclick="handleRemoveCartItem(${skuJs})">🗑</button>
           </div>
         `;
         drawerList.appendChild(row);
@@ -1007,10 +1297,15 @@ function updateCartUI() {
 
   if (countPill) countPill.textContent = totalItemsCount;
   const mobileCountPill = document.getElementById("mobile-cart-count");
-  if (mobileCountPill) mobileCountPill.textContent = totalItemsCount;
+  if (mobileCountPill) {
+    mobileCountPill.textContent = totalItemsCount;
+    mobileCountPill.dataset.count = String(totalItemsCount);
+  }
   const stepCountPill = document.getElementById("cart-item-count-step");
   if (stepCountPill) stepCountPill.textContent = totalItemsCount;
-  if (totalElem) totalElem.textContent = `$${totalMoney.toFixed(2)}`;
+  if (totalElem) totalElem.textContent = formatMoney(totalMoney);
+  const clearCartBtn = document.getElementById("btn-clear-cart");
+  if (clearCartBtn) clearCartBtn.style.display = AppState.quoteCart.size ? "inline-flex" : "none";
 
   const btnContinue = document.getElementById("btn-continue-step-2");
   if (btnContinue) {
@@ -1115,7 +1410,7 @@ function loadCustomerDataFromCache() {
       notesInput.value = data.notes;
     }
 
-    if (data.preferredBranch && BRANCHES[data.preferredBranch] && !localStorage.getItem(CONFIG.STORAGE_BRANCH_KEY)) {
+    if (isActiveBranch(data.preferredBranch) && !safeStorageGet(CONFIG.STORAGE_BRANCH_KEY)) {
       setBranch(data.preferredBranch);
     }
 
@@ -1178,7 +1473,7 @@ function updateCustomerDataStatusBadge() {
   }
 
   if (statusBadge) {
-    const hasStored = !!localStorage.getItem(CUSTOMER_CACHE_KEY);
+    const hasStored = !!safeStorageGet(CUSTOMER_CACHE_KEY);
     if (hasStored || (nameVal && phoneVal)) {
       statusBadge.style.display = "inline-flex";
     } else {
@@ -1259,12 +1554,12 @@ function formatWhatsAppMessage(quoteCart, branch, clientData = {}, dateStr = nul
     const refCode = item.manufacturer_code ? `[Clave: ${item.manufacturer_code}]` : `[SKU: ${sku}]`;
 
     msg += `${idx}. ${refCode} *${item.name}*\n`;
-    msg += `   └ Cantidad: *${quantity}* ${item.unit_measure || "PZA"} | Subtotal: *$${itemSubtotal.toFixed(2)}*\n`;
+    msg += `   └ Cantidad: *${quantity}* ${item.unit_measure || "PZA"} | Subtotal: *${formatMoney(itemSubtotal)}*\n`;
     idx++;
   });
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `*TOTAL ESTIMADO:* *$${totalEstimado.toFixed(2)} MXN*\n\n`;
+  msg += `*TOTAL ESTIMADO:* *${formatMoney(totalEstimado)} MXN*\n\n`;
   msg += `_Solicito amablemente confirmar existencias en ${branch.name} para recolección en mostrador y apartar mis piezas. Saludos cordiales._`;
 
   const encodedMsg = encodeURIComponent(msg);
@@ -1339,11 +1634,7 @@ function dispatchToWhatsApp() {
   // Guardar datos validados en cache para futuras visitas
   saveCustomerDataToCache();
 
-  const branch = BRANCHES[AppState.selectedBranch] || BRANCHES.delicias;
-  if (!branch.whatsapp) {
-    alert("La Sucursal Joem no cuenta con línea de WhatsApp actualmente. Te invitamos a visitarnos directamente en mostrador o elegir otra sucursal para cotizar por WhatsApp.");
-    return;
-  }
+  const branch = isActiveBranch(AppState.selectedBranch) ? BRANCHES[AppState.selectedBranch] : BRANCHES.delicias;
 
   const clientData = {
     clientName: nameVal,
@@ -1353,7 +1644,9 @@ function dispatchToWhatsApp() {
   };
 
   const quoteResult = formatWhatsAppMessage(AppState.quoteCart, branch, clientData);
-  window.open(quoteResult.whatsappUrl, "_blank");
+  const win = window.open(quoteResult.whatsappUrl, "_blank");
+  if (!win) window.location.href = quoteResult.whatsappUrl;
+  showToast("✓ Abriendo WhatsApp…", { detail: `Tu lista va para ${branch.name}`, duration: 4000 });
 }
 
 // ==========================================================================
@@ -1375,7 +1668,12 @@ function initEventListeners() {
       clearTimeout(searchDebounceTimer);
       searchDebounceTimer = setTimeout(() => {
         applyFilterPipeline();
-      }, 50);
+        renderSearchSuggestions();
+      }, 160);
+    });
+
+    searchInput.addEventListener("focus", () => {
+      if (searchInput.value.trim()) renderSearchSuggestions();
     });
 
     searchInput.addEventListener("keydown", (e) => {
@@ -1412,12 +1710,15 @@ function initEventListeners() {
       AppState.searchTerm = "";
       clearBtn.style.display = "none";
       clearTimeout(searchDebounceTimer);
+      hideSearchSuggestions();
+      syncUrlState();
       applyFilterPipeline();
     });
   }
 
   const sortSelect = document.getElementById("catalog-sort-select");
   if (sortSelect) {
+    sortSelect.value = AppState.sortMode;
     sortSelect.addEventListener("change", (e) => {
       AppState.sortMode = e.target.value;
       sortCatalog();
@@ -1432,20 +1733,54 @@ function initEventListeners() {
   const closeDrawerBtn = document.getElementById("quote-close-btn");
   const sendWhatsAppBtn = document.getElementById("whatsapp-order-btn");
 
+  let drawerHistoryPushed = false;
   const openDrawer = () => {
     loadCustomerDataFromCache();
+    if (drawer && drawer.classList.contains("active")) return;
     if (drawer) drawer.classList.add("active");
     if (backdrop) backdrop.classList.add("active");
+    document.body.classList.add("drawer-open");
+    hideSearchSuggestions();
+    const toast = document.getElementById("app-toast");
+    if (toast) toast.classList.remove("show");
+    // En Android el botón "Atrás" cierra la cotización en lugar de salir de la página
+    try {
+      history.pushState({ quoteDrawer: true }, "");
+      drawerHistoryPushed = true;
+    } catch (_) {}
   };
 
-  const closeDrawer = () => {
-    if (drawer) drawer.classList.remove("active");
+  const closeDrawer = (fromPopState) => {
+    if (!drawer || !drawer.classList.contains("active")) return;
+    drawer.classList.remove("active");
     if (backdrop) backdrop.classList.remove("active");
+    document.body.classList.remove("drawer-open");
+    if (drawerHistoryPushed && fromPopState !== true) {
+      drawerHistoryPushed = false;
+      try { history.back(); } catch (_) {}
+    }
+    drawerHistoryPushed = false;
   };
+
+  window.addEventListener("popstate", () => {
+    if (drawer && drawer.classList.contains("active")) {
+      drawerHistoryPushed = false;
+      closeDrawer(true);
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDrawer();
+      hideSearchSuggestions();
+    }
+  });
+
+  window.closeQuoteDrawer = closeDrawer;
 
   if (openDrawerBtn) openDrawerBtn.addEventListener("click", openDrawer);
-  if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", closeDrawer);
-  if (backdrop) backdrop.addEventListener("click", closeDrawer);
+  if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", () => closeDrawer());
+  if (backdrop) backdrop.addEventListener("click", () => closeDrawer());
   if (sendWhatsAppBtn) sendWhatsAppBtn.addEventListener("click", dispatchToWhatsApp);
 
   // Customer Data Auto-Save, Formatting & Inline Validation
@@ -1494,9 +1829,12 @@ window.filterByCategoryBanner = function(catName) {
   AppState.searchTerm = "";
   const searchInput = document.getElementById("catalog-search-input");
   if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("search-clear-btn");
+  if (clearBtn) clearBtn.style.display = "none";
   updateFacetSelection();
   applyFilterPipeline();
-  scrollToCatalog();
+  syncUrlState();
+  scrollToResults();
 };
 
 window.triggerCatalogSearch = function() {
@@ -1509,7 +1847,10 @@ window.triggerCatalogSearch = function() {
     }
   }
   applyFilterPipeline();
-  scrollToCatalog();
+  hideSearchSuggestions();
+  syncUrlState();
+  if (searchInput) searchInput.blur(); // cierra el teclado del celular para ver resultados
+  scrollToResults();
 
   const counter = document.getElementById("counter-display");
   if (counter) {
@@ -1526,8 +1867,29 @@ window.scrollToCatalog = function() {
   }
 };
 
+// Lleva directo a los resultados (en celular evita pasar por los filtros)
+window.scrollToResults = function() {
+  const elem = document.getElementById("catalog-results") || document.getElementById("catalog-section");
+  if (elem) {
+    elem.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+window.closeQuoteDrawerAndSearch = function() {
+  if (window.closeQuoteDrawer) window.closeQuoteDrawer();
+  setTimeout(() => {
+    const input = document.getElementById("catalog-search-input");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (input) input.focus();
+  }, 250);
+};
+
 window.scrollToBranches = function() {
   const elem = document.getElementById("branches-section");
+  // Evita que la carga automática de productos empuje la sección mientras se desplaza
+  AppState.suspendAutoLoad = true;
+  clearTimeout(window._autoLoadResume);
+  window._autoLoadResume = setTimeout(() => { AppState.suspendAutoLoad = false; }, 2500);
   if (elem) {
     elem.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -1543,6 +1905,7 @@ window.resetAllFilters = function () {
   if (clearBtn) clearBtn.style.display = "none";
   updateFacetSelection();
   applyFilterPipeline();
+  syncUrlState();
 };
 
 window.resetAllFiltersKeepSearch = function () {
@@ -1559,18 +1922,190 @@ window.quickSearch = function (term) {
   const searchInput = document.getElementById("catalog-search-input");
   if (searchInput) {
     searchInput.value = term;
-    searchInput.focus();
   }
   const clearBtn = document.getElementById("search-clear-btn");
   if (clearBtn) clearBtn.style.display = "block";
   updateFacetSelection();
   applyFilterPipeline();
-  scrollToCatalog();
+  hideSearchSuggestions();
+  syncUrlState();
+  scrollToResults();
 };
 
 window.selectBranchFromCard = function (branchId) {
+  if (!isActiveBranch(branchId)) return;
   setBranch(branchId);
+  showToast(`✓ Cotizarás con ${BRANCHES[branchId].name}`);
 };
+
+// Bloqueo global: cualquier elemento marcado como decorativo no responde a toques ni clics
+document.addEventListener("click", (e) => {
+  const deco = e.target.closest && e.target.closest('[data-decorative="true"]');
+  if (deco) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}, true);
+
+// ==========================================================================
+// 10. Mejoras para Celular: sugerencias, carga continua, URL y cabecera
+// ==========================================================================
+function renderSearchSuggestions() {
+  const box = document.getElementById("search-suggest");
+  const input = document.getElementById("catalog-search-input");
+  if (!box || !input || !AppState.masterCatalog.length) return;
+  const term = input.value.trim();
+  if (term.length < 2 || document.activeElement !== input) {
+    hideSearchSuggestions();
+    return;
+  }
+  const list = AppState.filteredCatalog.slice(0, 6);
+  const total = AppState.filteredCatalog.length;
+  if (!list.length) {
+    box.innerHTML = `<div class="suggest-empty">Sin coincidencias para "<strong>${escapeHtml(term)}</strong>". Prueba con otra palabra o pregúntanos por WhatsApp.</div>`;
+  } else {
+    box.innerHTML = list.map((p) => {
+      const price = parseFloat(p.base_price) || 0;
+      const skuJs = escapeHtml(JSON.stringify(String(p.sku)));
+      return `
+        <div class="suggest-row">
+          <img src="${escapeHtml(optimizedImage(p._img || resolveProductImage(p)))}" alt="" loading="lazy" class="suggest-thumb">
+          <button type="button" class="suggest-main" onclick="openSuggestion(${skuJs})">
+            <span class="suggest-name">${escapeHtml(p.name)}</span>
+            <span class="suggest-price">${price > 0 ? formatMoney(price) : "Precio en mostrador"} <em>/ ${escapeHtml((p.unit_measure || "PZA").toLowerCase())}</em></span>
+          </button>
+          <button type="button" class="suggest-add" aria-label="Agregar a cotización" onmousedown="event.preventDefault()" onclick="quickAddFromSuggestion(${skuJs}, this)">+</button>
+        </div>`;
+    }).join("") + `<button type="button" class="suggest-all" onclick="triggerCatalogSearch()">Ver los ${total.toLocaleString("es-MX")} resultados →</button>`;
+  }
+  box.hidden = false;
+  positionSearchSuggestions();
+}
+
+// En celular el cuadro de sugerencias va fijo justo debajo del buscador
+function positionSearchSuggestions() {
+  const box = document.getElementById("search-suggest");
+  const form = document.getElementById("catalog-search-form");
+  if (!box || !form || box.hidden) return;
+  if (window.matchMedia("(max-width: 640px)").matches) {
+    const r = form.getBoundingClientRect();
+    box.style.top = Math.max(8, Math.round(r.bottom + 6)) + "px";
+  } else {
+    box.style.top = "";
+  }
+}
+
+function hideSearchSuggestions() {
+  const box = document.getElementById("search-suggest");
+  if (box) box.hidden = true;
+}
+
+window.quickAddFromSuggestion = function (sku, btn) {
+  addProductToCart(sku, 1, null);
+  if (btn) {
+    btn.textContent = "✓";
+    btn.classList.add("added");
+    setTimeout(() => { btn.textContent = "+"; btn.classList.remove("added"); }, 1200);
+  }
+};
+
+window.openSuggestion = function (sku) {
+  const prod = AppState.masterCatalog.find((p) => p.sku === sku);
+  if (!prod) return;
+  const input = document.getElementById("catalog-search-input");
+  triggerCatalogSearch();
+  // Resalta el producto elegido dentro de los resultados
+  setTimeout(() => {
+    const card = document.querySelector(`.product-card[data-sku="${CSS && CSS.escape ? CSS.escape(sku) : sku}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("flash");
+      setTimeout(() => card.classList.remove("flash"), 1800);
+    }
+  }, 350);
+  if (input) input.blur();
+};
+
+function syncUrlState() {
+  try {
+    const url = new URL(window.location.href);
+    const q = (AppState.searchTerm || "").trim();
+    if (q) url.searchParams.set("q", q); else url.searchParams.delete("q");
+    if (AppState.filterCategory !== "all") url.searchParams.set("depto", AppState.filterCategory); else url.searchParams.delete("depto");
+    const next = url.pathname + (url.searchParams.toString() ? "?" + url.searchParams.toString() : "") + url.hash;
+    history.replaceState(history.state, "", next);
+  } catch (_) {}
+}
+
+function applyStateFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const q = (params.get("q") || "").trim();
+    const depto = params.get("depto");
+    if (depto && AppState.masterCatalog.some((p) => (p.category || p.categories?.name) === depto)) {
+      AppState.filterCategory = depto;
+      updateFacetSelection();
+    }
+    if (q) {
+      AppState.searchTerm = q;
+      const input = document.getElementById("catalog-search-input");
+      if (input) input.value = q;
+      const clearBtn = document.getElementById("search-clear-btn");
+      if (clearBtn) clearBtn.style.display = "block";
+    }
+    if (q || depto) setTimeout(() => scrollToResults(), 300);
+  } catch (_) {}
+}
+
+function initMobileEnhancements() {
+  // Cierra sugerencias al tocar fuera del buscador
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest || !e.target.closest("#catalog-search-form")) hideSearchSuggestions();
+  });
+
+  // Carga continua de productos al llegar al final (sin tener que tocar "Ver más")
+  const pager = document.getElementById("pagination-container");
+  if (pager && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // Máximo 3 cargas automáticas por búsqueda: así siempre se puede llegar a Sucursales y al pie de página
+        if (
+          entry.isIntersecting &&
+          AppState.catalogReady &&
+          !AppState.suspendAutoLoad &&
+          (AppState.autoLoads || 0) < 3 &&
+          AppState.displayedCount < AppState.filteredCatalog.length
+        ) {
+          AppState.autoLoads = (AppState.autoLoads || 0) + 1;
+          window.loadMoreProducts();
+        }
+      });
+    }, { rootMargin: "600px 0px" });
+    io.observe(pager);
+  }
+
+  // Cabecera compacta al desplazarse (deja solo el buscador visible en celular)
+  let ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    document.body.classList.toggle("is-scrolled", window.scrollY > 160);
+  };
+  window.addEventListener("scroll", () => {
+    positionSearchSuggestions();
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(onScroll);
+    }
+  }, { passive: true });
+  onScroll();
+
+  // Service Worker: abre más rápido y funciona con señal débil en la obra
+  if ("serviceWorker" in navigator && window.location.protocol === "https:") {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
+}
 
 function escapeHtml(str) {
   if (!str) return "";

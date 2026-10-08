@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- Evita que el celular convierta en enlace cualquier número escrito en texto -->
+  <meta name="format-detection" content="telephone=no">
   <title>Ferretería y Tlapalería El Águila | Red de 5 Sucursales en Tabasco - Catálogo y Cotizaciones</title>
   <meta name="description" content="Red ferretera líder con 5 sucursales en Villahermosa y Tabasco: Las Delicias, Estrellas de Buena Vista, Gaviotas Norte y Miguel Hidalgo. 17,641 productos con precio real con IVA para obra, taller y hogar.">
   <meta name="theme-color" content="#0c1c2e">
@@ -106,51 +108,6 @@
           "postalCode": "86280",
           "addressCountry": "MX"
         }
-      },
-      {
-        "@type": "HardwareStore",
-        "name": "Ferretería y Tlapalería El Águila - Sucursal Gaviotas Norte",
-        "telephone": "+529932001178",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Aquiles Calderón Marchena 120, Col. Gaviotas Nte.",
-          "addressLocality": "Villahermosa",
-          "addressRegion": "Tabasco",
-          "postalCode": "86068",
-          "addressCountry": "MX"
-        }
-      },
-      {
-        "@type": "HardwareStore",
-        "name": "Ferretería y Tlapalería El Águila - Sucursal Miguel Hidalgo III Etapa",
-        "telephone": "+529931412679",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Carr. Villahermosa a La Isla, Miguel Hidalgo III Etapa",
-          "addressLocality": "Villahermosa",
-          "addressRegion": "Tabasco",
-          "postalCode": "86126",
-          "addressCountry": "MX"
-        }
-      },
-      {
-        "@type": "HardwareStore",
-        "name": "Ferretería y Tlapalería El Águila - Sucursal Joem",
-        "image": "https://ferreteriaytlapaleria-elaguila.com/assets/images/branches/fachada-joem.webp",
-        "hasMap": "https://maps.app.goo.gl/y2qguKEAUhhGPpfw5",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Carretera Villahermosa a La Isla, Col. Miguel Hidalgo I",
-          "addressLocality": "Villahermosa",
-          "addressRegion": "Tabasco",
-          "postalCode": "86280",
-          "addressCountry": "MX"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 17.9796954,
-          "longitude": -92.9801271
-        }
       }
     ]
   }
@@ -169,10 +126,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.6">
-  
-  <!-- Supabase JS Client (v2) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=3.0">
+
+  <!-- App instalable en el celular (Agregar a pantalla de inicio) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="El Águila">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Precarga del catálogo para que aparezca más rápido -->
+  <link rel="preload" href="data/products.json" as="fetch" type="application/json" crossorigin>
+  <!-- Supabase JS se carga solo si está configurado (ver app.js) para no frenar la carga en celular -->
 </head>
 <body>
 
@@ -184,9 +149,9 @@
         <span>Mostradores: 
           <a href="https://maps.app.goo.gl/vkQLYW1u62gbRRDf7" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;" title="Sucursal Las Delicias en Google Maps"><strong>Las Delicias</strong> 🗺️</a> | 
           <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;" title="Sucursal Buena Vista en Google Maps"><strong>Buena Vista</strong> 🗺️</a> | 
-          <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;" title="Sucursal Gaviotas Norte en Google Maps"><strong>Gaviotas Nte.</strong> 🗺️</a> | 
-          <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;" title="Sucursal Miguel Hidalgo en Google Maps"><strong>Miguel Hidalgo</strong> 🗺️</a> | 
-          <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;" title="Sucursal Joem en Google Maps"><strong>Joem</strong> 🗺️</a>
+          <span style="color:inherit; text-decoration:underline;" data-decorative="true" aria-disabled="true"><strong>Gaviotas Nte.</strong> 🗺️</span> | 
+          <span style="color:inherit; text-decoration:underline;" data-decorative="true" aria-disabled="true"><strong>Miguel Hidalgo</strong> 🗺️</span> | 
+          <span style="color:inherit; text-decoration:underline;" data-decorative="true" aria-disabled="true"><strong>Joem</strong> 🗺️</span>
         </span>
       </div>
       <div class="top-notice-links">
@@ -202,7 +167,7 @@
       <!-- Logotipo y Nombre de Marca -->
       <a href="#" class="brand-wrapper">
         <div class="brand-badge-logo">
-          <img src="assets/images/logo-aguila.png" alt="Logo Oficial Ferretería El Águila" class="brand-logo-img">
+          <img src="assets/images/opt/logo-aguila-128.webp" alt="Logo Oficial Ferretería El Águila" class="brand-logo-img" width="64" height="64">
         </div>
         <div class="brand-block">
           <span class="store-title">FERRETERÍA EL ÁGUILA</span>
@@ -216,9 +181,9 @@
         <select id="branch-select" class="branch-select" onchange="setBranch(this.value)">
           <option value="delicias">Suc. Las Delicias (Av. Revolución)</option>
           <option value="buenavista">Suc. Estrellas de Buena Vista (Carr. La Isla)</option>
-          <option value="gaviotas">Suc. Gaviotas Norte (Aquiles Calderón)</option>
-          <option value="hidalgo">Suc. Miguel Hidalgo III Etapa (Carr. La Isla)</option>
-          <option value="joem">Suc. Joem (Carr. La Isla)</option>
+          <option value="gaviotas" disabled>Suc. Gaviotas Norte (Aquiles Calderón)</option>
+          <option value="hidalgo" disabled>Suc. Miguel Hidalgo III Etapa (Carr. La Isla)</option>
+          <option value="joem" disabled>Suc. Joem (Carr. La Isla)</option>
         </select>
       </div>
 
@@ -228,7 +193,8 @@
           type="search" 
           id="catalog-search-input" 
           class="search-input-field" 
-          placeholder="Buscar tornillo G5, tubo PVC, cable THW, lija Fandeli, taladro..." 
+          placeholder="¿Qué material buscas? Ej. tornillo, PVC, cable…" 
+          aria-label="Buscar materiales en el catálogo"
           autocomplete="off"
           spellcheck="false"
           enterkeyhint="search"
@@ -238,6 +204,7 @@
           <span class="search-btn-icon">🔍</span>
           <span class="search-btn-label">Buscar</span>
         </button>
+        <div id="search-suggest" class="search-suggest" hidden></div>
       </form>
 
       <!-- Acciones Rápidas en Cabecera -->
@@ -280,23 +247,45 @@
           <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
             <span>📍 <strong>Buena Vista:</strong> Carr. La Isla Km 5.300 &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
           </a>
-          <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
+          <span class="landmark-pill" data-decorative="true" aria-disabled="true">
             <span>📍 <strong>Gaviotas Norte:</strong> Aquiles Calderón 120 &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
-          </a>
-          <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
+          </span>
+          <span class="landmark-pill" data-decorative="true" aria-disabled="true">
             <span>📍 <strong>Miguel Hidalgo III Etapa:</strong> Carr. La Isla &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
-          </a>
-          <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" class="landmark-pill" title="Abrir ubicación en Google Maps">
+          </span>
+          <span class="landmark-pill" data-decorative="true" aria-disabled="true">
             <span>📍 <strong>Sucursal Joem:</strong> Carr. La Isla &bull; <strong style="text-decoration: underline;">🗺️ Maps</strong></span>
-          </a>
+          </span>
+        </div>
+
+        <!-- Búsquedas rápidas de un toque para gente de obra -->
+        <div class="hero-quick-search" aria-label="Búsquedas rápidas">
+          <span class="hero-quick-label">Lo más pedido en obra:</span>
+          <div class="hero-quick-chips">
+            <button type="button" onclick="quickSearch('Tornillo')">🔩 Tornillos</button>
+            <button type="button" onclick="quickSearch('Pija')">🪛 Pijas</button>
+            <button type="button" onclick="quickSearch('Taquete')">🧱 Taquetes</button>
+            <button type="button" onclick="quickSearch('Clavo')">📌 Clavos</button>
+            <button type="button" onclick="quickSearch('Alambre')">➰ Alambre</button>
+            <button type="button" onclick="quickSearch('Varilla')">📏 Varilla</button>
+            <button type="button" onclick="quickSearch('PVC')">🚰 PVC</button>
+            <button type="button" onclick="quickSearch('Cable')">⚡ Cable</button>
+            <button type="button" onclick="quickSearch('Disco')">💿 Discos</button>
+            <button type="button" onclick="quickSearch('Broca')">🛠️ Brocas</button>
+            <button type="button" onclick="quickSearch('Llana')">🧰 Llanas</button>
+            <button type="button" onclick="quickSearch('Guante')">🧤 Guantes</button>
+          </div>
         </div>
 
         <div class="hero-cta-group">
-          <a href="#catalog-section" class="btn-hero-primary" onclick="scrollToCatalog()">
+          <a href="#catalog-section" class="btn-hero-primary" onclick="event.preventDefault(); scrollToResults()">
             <span>🔍 Explorar 17,641 Productos</span>
           </a>
           <a href="javascript:void(0)" class="btn-hero-whatsapp" onclick="openQuoteDrawer()">
             <span>💬 Cotizar por WhatsApp</span>
+          </a>
+          <a href="tel:9932892935" class="btn-hero-call" data-call-selected-branch>
+            <span>📞 Llamar a <span data-selected-branch-name>Las Delicias</span></span>
           </a>
           <button class="btn-hero-outline" onclick="scrollToBranches()">
             <span>📍 Ver Nuestras 5 Sucursales</span>
@@ -313,6 +302,7 @@
             width="1536"
             height="1024"
             loading="eager"
+            decoding="async"
           >
         </div>
       </div>
@@ -374,7 +364,7 @@
       
       <!-- Tarjeta 1: Tlapalería y Construcción -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Tlapalería y Construcción')">
-        <img src="assets/images/cat-tlapaleria.jpg" alt="Tlapalería y Construcción, Lijas Fandeli, Pinturas y Selladores" loading="lazy">
+        <img src="assets/images/opt/cat-tlapaleria-md.webp" width="640" height="478" decoding="async" alt="Tlapalería y Construcción, Lijas Fandeli, Pinturas y Selladores" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">🎨 Tlapalería y Construcción</h3>
           <p class="category-banner-desc">7,312 artículos: Lijas Fandeli, pinturas, brochas, impermeabilizantes y selladores.</p>
@@ -383,7 +373,7 @@
 
       <!-- Tarjeta 2: Tornillería y Fijación -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Tornillería y Fijación')">
-        <img src="assets/images/cat-tornilleria.jpg" alt="Tornillería Grado 5, Varilla Roscada y Arandelas" loading="lazy">
+        <img src="assets/images/opt/cat-tornilleria-md.webp" width="640" height="478" decoding="async" alt="Tornillería Grado 5, Varilla Roscada y Arandelas" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">🔩 Tornillería y Fijación</h3>
           <p class="category-banner-desc">2,917 artículos: Hexagonal G5 (NC y NF), métricos, varilla roscada, pijas y rondanas.</p>
@@ -392,7 +382,7 @@
 
       <!-- Tarjeta 3: Plomería y Conexiones -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Plomería y Conexiones')">
-        <img src="assets/images/cat-plomeria.jpg" alt="Tubería PVC, CPVC, Cobre y Válvulas" loading="lazy">
+        <img src="assets/images/opt/cat-plomeria-md.webp" width="640" height="478" decoding="async" alt="Tubería PVC, CPVC, Cobre y Válvulas" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">🚰 Plomería y Conexiones</h3>
           <p class="category-banner-desc">2,865 artículos: PVC hidráulico/sanitario, CPVC caliente, cobre Nacobre y grifería.</p>
@@ -401,7 +391,7 @@
 
       <!-- Tarjeta 4: Herramientas en General -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Herramientas en General')">
-        <img src="assets/images/cat-herramientas.jpg" alt="Herramientas Manuales y Eléctricas Truper" loading="lazy">
+        <img src="assets/images/opt/cat-herramientas-md.webp" width="640" height="478" decoding="async" alt="Herramientas Manuales y Eléctricas Truper" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">🛠️ Herramientas en General</h3>
           <p class="category-banner-desc">2,770 artículos: Herramientas manuales Truper/Pretul, dados, martillos y esmeriles.</p>
@@ -410,7 +400,7 @@
 
       <!-- Tarjeta 5: Material Eléctrico -->
       <div class="category-banner-card" onclick="filterByCategoryBanner('Material Eléctrico')">
-        <img src="assets/images/cat-electrico.jpg" alt="Cables de Cobre THW, Conduit y Centros de Carga" loading="lazy">
+        <img src="assets/images/opt/cat-electrico-md.webp" width="640" height="478" decoding="async" alt="Cables de Cobre THW, Conduit y Centros de Carga" loading="lazy">
         <div class="category-banner-overlay">
           <h3 class="category-banner-title">⚡ Material Eléctrico</h3>
           <p class="category-banner-desc">1,777 artículos: Cable THW 10/12 Condumex/IUSA, centros de carga y pastillas.</p>
@@ -466,7 +456,7 @@
     <section class="catalog-content">
       
       <!-- Barra de Metadatos y Ordenación -->
-      <div class="catalog-meta-toolbar">
+      <div class="catalog-meta-toolbar" id="catalog-results">
         <div>
           <span id="counter-display" class="meta-stats">Consultando catálogo técnico...</span>
           <span class="meta-active-badge">Precios Netos en Moneda Nacional (MXN)</span>
@@ -475,6 +465,7 @@
         <div class="catalog-sort-group">
           <label for="catalog-sort-select">Ordenar por:</label>
           <select id="catalog-sort-select" class="catalog-sort-select">
+            <option value="relevance">Más relevantes</option>
             <option value="name-asc">Nombre (A - Z)</option>
             <option value="name-desc">Nombre (Z - A)</option>
             <option value="price-asc">Menor Precio</option>
@@ -487,7 +478,7 @@
       <div class="store-availability-banner">
         <span class="availability-badge">ℹ️ AVISO DE DISPONIBILIDAD</span>
         <span class="availability-text">
-          Las existencias físicas pueden variar según el mostrador de cada sucursal. Al cotizar por WhatsApp, <strong>te confirmamos disponibilidad real y apartamos tus piezas de inmediato</strong> para Recolección en Mostrador en cualquiera de nuestras 5 tiendas.
+          Precios con IVA. Al cotizar por WhatsApp <strong>te confirmamos existencias y apartamos tus piezas</strong> para Recolección en Mostrador sin hacer filas.
         </span>
       </div>
 
@@ -496,7 +487,13 @@
 
       <!-- Cuadrícula Dinámica de Fichas de Producto -->
       <div id="products-container" class="products-grid">
-        <!-- Generado dinámicamente con fotos reales por app.js -->
+        <!-- Generado dinámicamente con fotos reales por app.js. Mientras carga se muestran tarjetas de espera -->
+        <div class="product-skeleton" aria-hidden="true"></div>
+        <div class="product-skeleton" aria-hidden="true"></div>
+        <div class="product-skeleton" aria-hidden="true"></div>
+        <div class="product-skeleton" aria-hidden="true"></div>
+        <div class="product-skeleton" aria-hidden="true"></div>
+        <div class="product-skeleton" aria-hidden="true"></div>
       </div>
 
       <!-- Contenedor de Paginación y Carga de Más Productos -->
@@ -602,12 +599,12 @@
             </div>
             <div>
               <div class="branch-buttons-row branch-buttons-no-call">
-                <a href="https://wa.me/529932001178" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
+                <span class="btn-branch-action btn-branch-wa" data-decorative="true" aria-disabled="true">💬 WhatsApp</span>
+                <span class="btn-branch-action btn-branch-maps" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span>
               </div>
-              <button class="btn-branch-select-store" onclick="selectBranchFromCard('gaviotas')">
+              <span class="btn-branch-select-store" data-decorative="true" aria-disabled="true">
                 Seleccionar esta Sucursal
-              </button>
+              </span>
             </div>
           </div>
         </article>
@@ -633,13 +630,13 @@
             </div>
             <div>
               <div class="branch-buttons-row">
-                <a href="tel:9931412679" class="btn-branch-action btn-branch-phone">📞 Llamar</a>
-                <a href="https://wa.me/529931412679" target="_blank" rel="noopener" class="btn-branch-action btn-branch-wa">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
+                <span class="btn-branch-action btn-branch-phone" data-decorative="true" aria-disabled="true">📞 Llamar</span>
+                <span class="btn-branch-action btn-branch-wa" data-decorative="true" aria-disabled="true">💬 WhatsApp</span>
+                <span class="btn-branch-action btn-branch-maps" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span>
               </div>
-              <button class="btn-branch-select-store" onclick="selectBranchFromCard('hidalgo')">
+              <span class="btn-branch-select-store" data-decorative="true" aria-disabled="true">
                 Seleccionar esta Sucursal
-              </button>
+              </span>
             </div>
           </div>
         </article>
@@ -665,12 +662,12 @@
             </div>
             <div>
               <div class="branch-buttons-row branch-buttons-no-call">
-                <a href="javascript:void(0)" onclick="alert('Sucursal Joem no cuenta con línea de WhatsApp actualmente. Te atendemos con gusto directamente en mostrador.');" class="btn-branch-action btn-branch-wa" title="Atención directa en mostrador">💬 WhatsApp</a>
-                <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" class="btn-branch-action btn-branch-maps">🗺️ Ver Mapa</a>
+                <span class="btn-branch-action btn-branch-wa" data-decorative="true" aria-disabled="true">💬 WhatsApp</span>
+                <span class="btn-branch-action btn-branch-maps" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span>
               </div>
-              <button class="btn-branch-select-store" onclick="selectBranchFromCard('joem')">
+              <span class="btn-branch-select-store" data-decorative="true" aria-disabled="true">
                 Seleccionar esta Sucursal
-              </button>
+              </span>
             </div>
           </div>
         </article>
@@ -684,7 +681,7 @@
     <div class="footer-inner">
       <div class="footer-col">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-          <img src="assets/images/logo-aguila-oficial.png" alt="Logotipo Oficial Ferretería El Águila" style="width:48px; height:48px; object-fit:contain; border-radius:50%; background:#ffffff; padding:3px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+          <img src="assets/images/opt/logo-aguila-128.webp" loading="lazy" alt="Logotipo Oficial Ferretería El Águila" style="width:48px; height:48px; object-fit:contain; border-radius:50%; background:#ffffff; padding:3px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
           <h4 style="margin:0; font-size:1.15rem;">Ferretería y Tlapalería El Águila</h4>
         </div>
         <p>Más de 3 décadas abasteciendo obra gruesa, remodelaciones, fontanería, electricidad y mantenimiento industrial en Villahermosa y municipios de Tabasco.</p>
@@ -702,18 +699,18 @@
            📞 Tel / WA: <a href="https://wa.me/529932892935" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 289 2935</a></p>
         <p style="margin-top: 6px;">📍 <strong>Estrellas de Buena Vista:</strong> <a href="https://maps.app.goo.gl/w1FCsu9A2V2WqvCu5" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Carr. La Isla Km 5.300 🗺️</a><br>
            📞 Tel / WA: <a href="https://wa.me/529931928313" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 192 8313</a></p>
-        <p style="margin-top: 6px;">📍 <strong>Gaviotas Norte:</strong> <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Aquiles Calderón 120 🗺️</a><br>
-           🕒 Abierto Todos los Días &bull; 💬 WhatsApp: <a href="https://wa.me/529932001178" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 200 1178</a></p>
-        <p style="margin-top: 6px;">📍 <strong>Miguel Hidalgo III Etapa:</strong> <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Carr. a La Isla 🗺️</a><br>
-           📞 Tel / WA: <a href="https://wa.me/529931412679" target="_blank" rel="noopener" style="color: var(--whatsapp-green); font-weight: 700;">993 141 2679</a></p>
-        <p style="margin-top: 6px;">📍 <strong>Sucursal Joem:</strong> <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" style="color: #fff; text-decoration: underline;">Carr. a La Isla, Miguel Hidalgo I 🗺️</a><br>
+        <p style="margin-top: 6px;">📍 <strong>Gaviotas Norte:</strong> <span style="color: #fff; text-decoration: underline;" data-decorative="true" aria-disabled="true">Aquiles Calderón 120 🗺️</span><br>
+           🕒 Abierto Todos los Días &bull; 💬 WhatsApp: <span style="color: var(--whatsapp-green); font-weight: 700;" data-decorative="true" aria-disabled="true">993 200 1178</span></p>
+        <p style="margin-top: 6px;">📍 <strong>Miguel Hidalgo III Etapa:</strong> <span style="color: #fff; text-decoration: underline;" data-decorative="true" aria-disabled="true">Carr. a La Isla 🗺️</span><br>
+           📞 Tel / WA: <span style="color: var(--whatsapp-green); font-weight: 700;" data-decorative="true" aria-disabled="true">993 141 2679</span></p>
+        <p style="margin-top: 6px;">📍 <strong>Sucursal Joem:</strong> <span style="color: #fff; text-decoration: underline;" data-decorative="true" aria-disabled="true">Carr. a La Isla, Miguel Hidalgo I 🗺️</span><br>
            🏪 Mostrador Presencial</p>
       </div>
     </div>
 
     <div class="footer-bottom-bar">
       <span>&copy; 2026 Ferretería y Tlapalería El Águila. Red de 5 Sucursales en Tabasco. Villahermosa, México.</span>
-      <span>Desarrollado con Arquitectura Jamstack de Alto Rendimiento.</span>
+      <span>Precios con IVA incluido, sujetos a cambio sin previo aviso. Existencias confirmadas por WhatsApp.</span>
     </div>
   </footer>
 
@@ -742,6 +739,9 @@
     <div class="drawer-body">
       <!-- PASO 1: Lista de Productos y Partidas -->
       <div id="drawer-step-1" class="drawer-step-view active">
+        <div class="cart-toolbar">
+          <button type="button" id="btn-clear-cart" class="btn-clear-cart-all" onclick="clearQuoteCart()" style="display:none;">🗑 Vaciar lista</button>
+        </div>
         <div class="step-guide-banner" id="step-guide-banner">
           <span class="step-guide-icon">💡</span>
           <div class="step-guide-text">
@@ -817,29 +817,29 @@
                     </div>
                   </div>
 
-                  <div class="drawer-branch-card" id="drawer-card-gaviotas" data-branch-id="gaviotas" onclick="setBranch('gaviotas')">
+                  <div class="drawer-branch-card is-decorative" id="drawer-card-gaviotas" data-branch-id="gaviotas" data-decorative="true" aria-disabled="true">
                     <div class="branch-card-radio-indicator"></div>
                     <div class="branch-card-details">
                       <div class="branch-card-name">Suc. Gaviotas Norte</div>
-                      <div class="branch-card-address">Aquiles Calderón 120 &bull; <a href="https://maps.app.goo.gl/qWtBwNkb8vABa5Wj8" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-address">Aquiles Calderón 120 &bull; <span style="color:var(--accent-gold); text-decoration:underline;" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span></div>
                       <div class="branch-card-wa">💬 WhatsApp: 993 200 1178</div>
                     </div>
                   </div>
 
-                  <div class="drawer-branch-card" id="drawer-card-hidalgo" data-branch-id="hidalgo" onclick="setBranch('hidalgo')">
+                  <div class="drawer-branch-card is-decorative" id="drawer-card-hidalgo" data-branch-id="hidalgo" data-decorative="true" aria-disabled="true">
                     <div class="branch-card-radio-indicator"></div>
                     <div class="branch-card-details">
                       <div class="branch-card-name">Suc. Hidalgo III Etapa</div>
-                      <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/xnaBo218rGoQQvMZ7" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-address">Carr. a La Isla &bull; <span style="color:var(--accent-gold); text-decoration:underline;" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span></div>
                       <div class="branch-card-wa">📱 WhatsApp: 993 141 2679</div>
                     </div>
                   </div>
 
-                  <div class="drawer-branch-card" id="drawer-card-joem" data-branch-id="joem" onclick="setBranch('joem')">
+                  <div class="drawer-branch-card is-decorative" id="drawer-card-joem" data-branch-id="joem" data-decorative="true" aria-disabled="true">
                     <div class="branch-card-radio-indicator"></div>
                     <div class="branch-card-details">
                       <div class="branch-card-name">Sucursal Joem</div>
-                      <div class="branch-card-address">Carr. a La Isla &bull; <a href="https://maps.app.goo.gl/y2qguKEAUhhGPpfw5" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">🗺️ Ver Mapa</a></div>
+                      <div class="branch-card-address">Carr. a La Isla &bull; <span style="color:var(--accent-gold); text-decoration:underline;" data-decorative="true" aria-disabled="true">🗺️ Ver Mapa</span></div>
                       <div class="branch-card-wa">🏪 Mostrador Presencial</div>
                     </div>
                   </div>
@@ -901,13 +901,13 @@
 
   <!-- 11. Barra Fija Inferior Optimizada para Celular (Mobile Bottom Navigation) -->
   <nav class="mobile-bottom-nav">
-    <a href="javascript:void(0)" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="nav-item">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Inicio</span>
-    </a>
-    <a href="javascript:void(0)" onclick="scrollToCatalog()" class="nav-item">
+    <a href="javascript:void(0)" onclick="closeQuoteDrawerAndSearch()" class="nav-item">
       <span class="nav-icon">🔍</span>
-      <span class="nav-label">Catálogo</span>
+      <span class="nav-label">Buscar</span>
+    </a>
+    <a href="tel:9932892935" class="nav-item" data-call-selected-branch>
+      <span class="nav-icon">📞</span>
+      <span class="nav-label">Llamar</span>
     </a>
     <a href="javascript:void(0)" onclick="scrollToBranches()" class="nav-item">
       <span class="nav-icon">📍</span>
@@ -917,13 +917,13 @@
       <span class="nav-icon">💬</span>
       <span class="nav-label">WhatsApp</span>
     </a>
-    <a href="javascript:void(0)" onclick="openQuoteDrawer()" class="nav-item">
+    <a href="javascript:void(0)" onclick="openQuoteDrawer()" class="nav-item nav-quote">
       <span class="nav-icon">📋<span id="mobile-cart-count" class="mobile-nav-badge">0</span></span>
-      <span class="nav-label">Cotizar</span>
+      <span class="nav-label">Mi lista</span>
     </a>
   </nav>
 
   <!-- Script Principal -->
-  <script src="assets/js/app.js?v=2.5"></script>
+  <script src="assets/js/app.js?v=3.0"></script>
 </body>
 </html>
